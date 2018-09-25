@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setListeners() {
-        send_msg_btn.setOnClickListener { sendMessage(edit_text.text.toString()) }
+        send_msg_btn.setOnClickListener { sendMessageFromUser() }
         linkedin_link.setOnClickListener { openUrl(getString(R.string.linkedin_url)) }
         github_link.setOnClickListener { openUrl(getString(R.string.github_url)) }
         telegram_link.setOnClickListener { openUrl(getString(R.string.telegram_url)) }
@@ -47,7 +47,16 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, R.string.no_view_url_client_error, Toast.LENGTH_LONG).show()
     }
 
-    private fun sendMessage(message: String) {
+    private fun sendMessageFromUser() {
+        val message = edit_text.text.toString()
+        if (message.isBlank()) {
+            Toast.makeText(this, R.string.edit_text_hint, Toast.LENGTH_LONG).show()
+            return
+        }
+        sendMessageByEmail(message)
+    }
+
+    private fun sendMessageByEmail(message: String) {
         val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
             data = Uri.parse(MAIL_TO_URI)
             putExtra(Intent.EXTRA_SUBJECT, getString(R.string.default_mail_subject))
