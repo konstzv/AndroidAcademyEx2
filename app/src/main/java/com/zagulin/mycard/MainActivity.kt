@@ -46,8 +46,11 @@ class MainActivity : AppCompatActivity() {
     private fun openUrl(url: String) {
         val openUrlIntent = Intent(Intent.ACTION_VIEW)
         openUrlIntent.data = Uri.parse(url)
-        if (checkIntentResolving(openUrlIntent)) return
-        Toast.makeText(this, R.string.no_view_url_client_error, Toast.LENGTH_LONG).show()
+        if (checkIntentResolving(openUrlIntent)) {
+            startActivity(intent)
+        } else {
+            Toast.makeText(this, R.string.no_view_url_client_error, Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun sendMessageFromUser() {
