@@ -9,18 +9,18 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="2"
+        android:layout_weight="1"
         android:background="?android:attr/colorBackground"
         android:contentDescription="@string/photo_content_description"
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/photo" />
 
     <ScrollView
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_weight="2">
 
         <LinearLayout
             android:id="@+id/main_linear_layout"

@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.main_block.*
 class MainActivity : AppCompatActivity() {
     companion object {
         private const val MAIL_TO_URI = "mailto:konstzv@gmail.com"
+        private const val copyringPaddingDp = 50F
     }
 
 
@@ -26,9 +27,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun addCopyring() {
+        val paddingPx = convertDpToPixel(copyringPaddingDp)
         val textView = TextView(this).apply {
             text = getString(R.string.copyring)
             gravity = Gravity.CENTER
+            setPadding(0, paddingPx, 0, paddingPx)
         }
         main_linear_layout.addView(textView)
     }
@@ -62,16 +65,24 @@ class MainActivity : AppCompatActivity() {
             putExtra(Intent.EXTRA_SUBJECT, getString(R.string.default_mail_subject))
             putExtra(Intent.EXTRA_TEXT, message)
         }
-        if (checkIntentResolving(emailIntent)) return
-        Toast.makeText(this, R.string.no_email_client_error, Toast.LENGTH_LONG).show()
-
+        if (checkIntentResolving(emailIntent)) {
+            startActivity(intent)
+        } else {
+            Toast.makeText(this, R.string.no_email_client_error, Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun checkIntentResolving(intent: Intent): Boolean {
         if (intent.resolveActivity(packageManager) != null) {
-            startActivity(intent)
             return true
         }
         return false
     }
+
+
+    fun convertDpToPixel(dp: Float): Int {
+        val px = dp * (resources.displayMetrics.densityDpi / 160f)
+        return Math.round(px)
+    }
+
 }
