@@ -119,6 +119,7 @@
         android:layout_marginEnd="@dimen/main_section_end_margin"
         android:background="?android:attr/selectableItemBackground"
         android:text="@string/send_message"
+        android:textAllCaps="true"
         android:textColor="@color/colorAccent" />
 
     <LinearLayout

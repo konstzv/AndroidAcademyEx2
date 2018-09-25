@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Загулин Константин</string>
-    <string name="send_message">ПОСЛАТЬ СООБЩЕНИЕ</string>
+    <string name="send_message">Послать сообщение</string>
     <string name="first_role">Разработчик</string>
     <string name="second_role">Инженер</string>
     <string name="third_role">Любитель фрисби</string>
