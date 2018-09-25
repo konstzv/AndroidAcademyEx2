@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="main_section_start_margin">50dp</dimen>
+    <dimen name="main_section_end_margin">20dp</dimen>
+    <dimen name="separator_thickness">2dp</dimen>
+    <dimen name="social_imgs_padding">10dp</dimen>
+    <dimen name="icon_side">28dp</dimen>
+    <dimen name="social_img_padding">10dp</dimen>
+    <dimen name="edit_text_top_margin">20dp</dimen>
+    <dimen name="role_block_top_margin">8dp</dimen>
+    <dimen name="role_block_bottom_margin">8dp</dimen>
+    <dimen name="separator_margin">15dp</dimen>
+    <dimen name="main_block_bottom_padding">20dp</dimen>
+</resources>
