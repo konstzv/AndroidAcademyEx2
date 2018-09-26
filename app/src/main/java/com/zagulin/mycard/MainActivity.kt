@@ -1,6 +1,7 @@
 package com.zagulin.mycard
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -23,7 +24,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         addCopyring()
         setListeners()
+        setToolbarIfPortrait()
 
+    }
+
+    private fun setToolbarIfPortrait() {
+        val orientation = resources.configuration.orientation
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            setSupportActionBar(toolbar)
+
+        }
     }
 
     private fun addCopyring() {
