@@ -14,4 +14,5 @@
     <string name="no_view_url_client_error">No browser found</string>
     <string name="edit_text_hint">Enter a message…</string>
     <string name="photo_content_description">Photo of Konstantin Zagulin</string>
+    <string name="cancel">Cancel</string>
 </resources>
