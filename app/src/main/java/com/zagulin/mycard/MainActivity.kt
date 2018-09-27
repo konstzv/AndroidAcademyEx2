@@ -1,16 +1,17 @@
 package com.zagulin.mycard
 
+import android.app.Activity
 import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
-import android.support.design.widget.BottomSheetBehavior
-import android.support.design.widget.BottomSheetBehavior.BottomSheetCallback
-import android.support.v7.app.AppCompatActivity
 import android.view.Gravity
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bottom_sheet.*
 import kotlinx.android.synthetic.main.main_block.*
@@ -18,11 +19,11 @@ import kotlinx.android.synthetic.main.main_block.*
 
 class MainActivity : AppCompatActivity() {
     companion object {
-        private const val MAIL_TO_URI = "mailto:konstzv@gmail.com"
+        private const val MAIL_TO_URI = "mailto:"
         private const val copyringPaddingDp = 50F
     }
 
-    var bottomSheetBehavior: BottomSheetBehavior<View>? = null
+    private var bottomSheetBehavior: BottomSheetBehavior<View>? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity() {
     private fun setBottomSheet() {
         bottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet)
         bottomSheetBehavior!!.state = BottomSheetBehavior.STATE_HIDDEN
-        bottomSheetBehavior!!.setBottomSheetCallback(object : BottomSheetCallback() {
+        bottomSheetBehavior!!.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) {
                     fab.show()
@@ -113,14 +114,14 @@ class MainActivity : AppCompatActivity() {
         if (checkIntentResolving(openUrlIntent)) {
             startActivity(openUrlIntent)
         } else {
-            Toast.makeText(this, R.string.no_view_url_client_error, Toast.LENGTH_LONG).show()
+            showMsgById(R.string.no_view_url_client_error)
         }
     }
 
     private fun sendMessageFromUser(): Boolean {
         val message = edit_text.text.toString()
         if (message.isBlank()) {
-            Toast.makeText(this, R.string.edit_text_hint, Toast.LENGTH_LONG).show()
+            showMsgById(R.string.edit_text_hint)
             return false
         }
         return sendMessageByEmail(message)
@@ -132,12 +133,13 @@ class MainActivity : AppCompatActivity() {
             data = Uri.parse(MAIL_TO_URI)
             putExtra(Intent.EXTRA_SUBJECT, getString(R.string.default_mail_subject))
             putExtra(Intent.EXTRA_TEXT, message)
+
         }
         return if (checkIntentResolving(emailIntent)) {
             startActivity(emailIntent)
             true
         } else {
-            Toast.makeText(this, R.string.no_email_client_error, Toast.LENGTH_LONG).show()
+            showMsgById(R.string.no_email_client_error)
             false
         }
     }
@@ -150,9 +152,25 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun convertDpToPixel(dp: Float): Int {
+    private fun convertDpToPixel(dp: Float): Int {
         val px = dp * (resources.displayMetrics.densityDpi / 160f)
         return Math.round(px)
+    }
+
+    private fun showMsgById(id: Int) {
+        hideInput()
+        Snackbar.make(
+                window.decorView.rootView,
+                id,
+                Snackbar.LENGTH_SHORT
+        ).show()
+    }
+
+
+    private fun hideInput() {
+        val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        if (currentFocus != null)
+            imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
 
 }
