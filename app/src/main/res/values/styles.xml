@@ -5,7 +5,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="MyBasetTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="MyBasetTheme" parent="Base.Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
