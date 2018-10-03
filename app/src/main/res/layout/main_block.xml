@@ -7,12 +7,9 @@
 
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/role_block_bottom_margin"
-        android:layout_marginEnd="@dimen/main_section_end_margin"
-        android:layout_marginStart="@dimen/main_section_start_margin"
+        style="@style/main_block_element"
         android:layout_marginTop="@dimen/role_block_top_margin"
+        android:layout_marginBottom="@dimen/role_block_bottom_margin"
         android:orientation="horizontal">
 
         <ImageView
@@ -31,12 +28,9 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/role_block_bottom_margin"
-        android:layout_marginEnd="@dimen/main_section_end_margin"
-        android:layout_marginStart="@dimen/main_section_start_margin"
+        style="@style/main_block_element"
         android:layout_marginTop="@dimen/role_block_top_margin"
+        android:layout_marginBottom="@dimen/role_block_bottom_margin"
         android:orientation="horizontal">
 
         <ImageView
@@ -55,12 +49,9 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/role_block_bottom_margin"
-        android:layout_marginEnd="@dimen/main_section_end_margin"
-        android:layout_marginStart="@dimen/main_section_start_margin"
+        style="@style/main_block_element"
         android:layout_marginTop="@dimen/role_block_top_margin"
+        android:layout_marginBottom="@dimen/role_block_bottom_margin"
         android:orientation="horizontal">
 
         <ImageView
@@ -79,25 +70,18 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
+        style="@style/main_block_element"
         android:layout_height="@dimen/separator_thickness"
         android:layout_marginBottom="15dp"
-        android:layout_marginEnd="@dimen/main_section_end_margin"
-        android:layout_marginStart="@dimen/main_section_start_margin"
         android:background="@color/colorAccent" />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/main_section_end_margin"
-        android:layout_marginStart="@dimen/main_section_start_margin"
+        style="@style/main_block_element"
         android:text="@string/story" />
 
     <View
-        android:layout_width="match_parent"
+        style="@style/main_block_element"
         android:layout_height="@dimen/separator_thickness"
-        android:layout_marginEnd="@dimen/main_section_end_margin"
-        android:layout_marginStart="@dimen/main_section_start_margin"
         android:layout_marginTop="@dimen/separator_margin"
         android:background="@color/colorAccent" />
 
@@ -105,8 +89,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/main_section_end_margin"
         android:layout_marginStart="@dimen/main_section_start_margin"
+        android:layout_marginEnd="@dimen/main_section_end_margin"
         android:gravity="center"
         android:orientation="horizontal">
 

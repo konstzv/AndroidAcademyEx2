@@ -13,4 +13,14 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="main_block_element" parent="width_match_height_wrap">x
+        <item name="android:layout_marginEnd">@dimen/main_section_end_margin</item>
+        <item name="android:layout_marginStart">@dimen/main_section_start_margin</item>
+    </style>
+
+    <style name="width_match_height_wrap">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
 </resources>
