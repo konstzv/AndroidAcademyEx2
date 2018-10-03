@@ -1,11 +1,11 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="MyBasetTheme">
+    <style name="BaseThemeWithoutToolbar" parent="BaseThemeWithToolbar">
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="MyBasetTheme" parent="Base.Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="BaseThemeWithToolbar" parent="Base.Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>

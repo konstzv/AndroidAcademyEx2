@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Загулин Константин</string>
     <string name="send_message">Послать сообщение</string>
     <string name="first_role">Разработчик</string>
     <string name="second_role">Инженер</string>
@@ -14,4 +13,6 @@
     <string name="photo_content_description">Фотография Константина Загулина</string>
     <string name="cancel">Отмена</string>
     <string name="about">О разработчике</string>
+    <string name="feed_activity_title">Лента</string>
+    <string name="about_activity_title">Загулин Константин</string>
 </resources>

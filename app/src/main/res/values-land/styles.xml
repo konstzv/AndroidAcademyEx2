@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="MyBasetTheme">
+    <style name="BaseThemeWithoutToolbar" parent="BaseThemeWithToolbar">
         <item name="windowNoTitle">false</item>
     </style>
 
