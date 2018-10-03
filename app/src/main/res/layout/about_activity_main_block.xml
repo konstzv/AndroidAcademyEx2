@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="ContentDescription"
-    tools:showIn="@layout/activity_main">
+    tools:showIn="@layout/about_activity">
 
 
     <LinearLayout

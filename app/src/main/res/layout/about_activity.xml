@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".AboutActivity">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -54,12 +54,12 @@
                 android:paddingBottom="@dimen/main_block_bottom_padding">
 
 
-                <include layout="@layout/main_block" />
+                <include layout="@layout/about_activity_main_block" />
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
 
-        <include layout="@layout/bottom_sheet" />
+        <include layout="@layout/about_activity_bottom_sheet" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

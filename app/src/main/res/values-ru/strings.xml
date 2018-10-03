@@ -13,4 +13,5 @@
     <string name="edit_text_hint">Введите сообщение…</string>
     <string name="photo_content_description">Фотография Константина Загулина</string>
     <string name="cancel">Отмена</string>
+    <string name="about">О разработчике</string>
 </resources>

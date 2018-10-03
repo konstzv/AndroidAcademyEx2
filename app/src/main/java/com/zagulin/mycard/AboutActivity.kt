@@ -12,12 +12,12 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.bottom_sheet.*
-import kotlinx.android.synthetic.main.main_block.*
+import kotlinx.android.synthetic.main.about_activity.*
+import kotlinx.android.synthetic.main.about_activity_bottom_sheet.*
+import kotlinx.android.synthetic.main.about_activity_main_block.*
 
 
-class MainActivity : AppCompatActivity() {
+class AboutActivity : AppCompatActivity() {
     companion object {
         private const val MAIL_TO_URI = "mailto:"
         private const val copyringPaddingDp = 50F
@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.about_activity)
         setBottomSheet()
         addCopyring()
         setListeners()

@@ -15,4 +15,5 @@
     <string name="edit_text_hint">Enter a message…</string>
     <string name="photo_content_description">Photo of Konstantin Zagulin</string>
     <string name="cancel">Cancel</string>
+    <string name="about">About</string>
 </resources>
