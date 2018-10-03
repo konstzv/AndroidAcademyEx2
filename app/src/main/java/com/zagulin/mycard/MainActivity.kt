@@ -38,19 +38,23 @@ class MainActivity : AppCompatActivity() {
 
     private fun setBottomSheet() {
         bottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet)
-        bottomSheetBehavior!!.state = BottomSheetBehavior.STATE_HIDDEN
-        bottomSheetBehavior!!.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                    fab.show()
-                } else {
-                    fab.hide()
-                }
-            }
 
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-            }
-        })
+        bottomSheetBehavior?.let {
+            it.state = BottomSheetBehavior.STATE_HIDDEN
+            it.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+                override fun onStateChanged(bottomSheet: View, newState: Int) {
+                    if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                        fab.show()
+                    } else {
+                        fab.hide()
+                    }
+                }
+
+                override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                }
+            })
+        }
+
     }
 
     private fun setCustomToolbarIfPortrait() {
@@ -76,12 +80,21 @@ class MainActivity : AppCompatActivity() {
         send_msg_btn.setOnClickListener {
             onSendBtnClick()
         }
-        linkedin_link.setOnClickListener { openUrl(getString(R.string.linkedin_url)) }
-        github_link.setOnClickListener { openUrl(getString(R.string.github_url)) }
-        telegram_link.setOnClickListener { openUrl(getString(R.string.telegram_url)) }
-        cancel_btn.setOnClickListener { bottomSheetBehavior!!.state = BottomSheetBehavior.STATE_HIDDEN }
-        fab.setOnClickListener { onFabCLick() }
-
+        linkedin_link.setOnClickListener {
+            openUrl(getString(R.string.linkedin_url))
+        }
+        github_link.setOnClickListener {
+            openUrl(getString(R.string.github_url))
+        }
+        telegram_link.setOnClickListener {
+            openUrl(getString(R.string.telegram_url))
+        }
+        cancel_btn.setOnClickListener {
+            bottomSheetBehavior!!.state = BottomSheetBehavior.STATE_HIDDEN
+        }
+        fab.setOnClickListener {
+            onFabCLick()
+        }
         edit_text.setOnEditorActionListener { _, _, _ ->
             onSendBtnClick()
             return@setOnEditorActionListener true
@@ -90,20 +103,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun onSendBtnClick() {
         if (sendMessageFromUser()) {
-            bottomSheetBehavior!!.state = BottomSheetBehavior.STATE_HIDDEN
-            edit_text.setText("")
+            bottomSheetBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
+            edit_text.text.clear()
         }
     }
 
     private fun onFabCLick() {
-
-        if (bottomSheetBehavior != null) {
-            if (bottomSheetBehavior!!.state == BottomSheetBehavior.STATE_HIDDEN) {
-                bottomSheetBehavior!!.state = BottomSheetBehavior.STATE_EXPANDED
-
+        bottomSheetBehavior?.let {
+            if (it.state == BottomSheetBehavior.STATE_HIDDEN) {
+                it.state = BottomSheetBehavior.STATE_EXPANDED
             } else {
-                bottomSheetBehavior!!.state = BottomSheetBehavior.STATE_HIDDEN
-
+                it.state = BottomSheetBehavior.STATE_HIDDEN
             }
         }
     }
