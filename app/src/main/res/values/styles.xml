@@ -1,11 +1,26 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="MyBasetTheme">
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="MyBasetTheme" parent="Base.Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="main_block_element" parent="width_match_height_wrap">x
+        <item name="android:layout_marginEnd">@dimen/main_section_end_margin</item>
+        <item name="android:layout_marginStart">@dimen/main_section_start_margin</item>
+    </style>
+
+    <style name="width_match_height_wrap">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 
 </resources>

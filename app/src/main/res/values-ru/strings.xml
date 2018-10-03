@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Загулин Константин</string>
+    <string name="send_message">Послать сообщение</string>
+    <string name="first_role">Разработчик</string>
+    <string name="second_role">Инженер</string>
+    <string name="third_role">Любитель фрисби</string>
+    <string name="no_email_client_error">Не найдено приложение для работы с почтой</string>
+    <string name="no_view_url_client_error">Не найдено приложение для работы с адресом</string>
+    <string name="default_mail_subject">Письмо из тестового приложения</string>
+    <string name="copyring">©Константин Загулин, 2018</string>
+    <string name="story">"Равным образом дальнейшее развитие различных форм деятельности требуют определения и уточнения системы обучения кадров, соответствует насущным потребностям. Товарищи! реализация намеченных плановых заданий способствует подготовки и реализации позиций, занимаемых участниками в отношении поставленных задач. Таким образом сложившаяся структура организации позволяет оценить значение соответствующий условий активизации. Товарищи! консультация с широким активом влечет за собой процесс внедрения и модернизации дальнейших направлений развития.  "</string>
+    <string name="edit_text_hint">Введите сообщение…</string>
+    <string name="photo_content_description">Фотография Константина Загулина</string>
+    <string name="cancel">Отмена</string>
+</resources>

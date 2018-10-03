@@ -1,0 +1,9 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="MyBasetTheme">
+        <item name="windowNoTitle">false</item>
+    </style>
+
+
+</resources>
