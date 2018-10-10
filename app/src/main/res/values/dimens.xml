@@ -11,5 +11,6 @@
     <dimen name="role_block_bottom_margin">8dp</dimen>
     <dimen name="separator_margin">15dp</dimen>
     <dimen name="main_block_bottom_padding">20dp</dimen>
-    <dimen name="short_indent">5dp</dimen>
+    <dimen name="short_indent">4dp</dimen>
+    <dimen name="margin_standart_half">8dp</dimen>
 </resources>

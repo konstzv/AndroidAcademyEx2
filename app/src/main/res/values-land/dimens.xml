@@ -2,5 +2,6 @@
 <resources>
     <dimen name="main_section_start_margin">10dp</dimen>
     <dimen name="main_section_end_margin">10dp</dimen>
+    <dimen name="item_ad_width">300dp</dimen>
 
 </resources>

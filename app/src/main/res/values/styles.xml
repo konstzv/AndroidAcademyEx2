@@ -23,4 +23,8 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="StandardPadding">
+        <item name="android:padding">@dimen/margin_standart_half</item>
+    </style>
+
 </resources>
