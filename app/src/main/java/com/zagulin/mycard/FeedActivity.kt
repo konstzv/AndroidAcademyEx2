@@ -10,7 +10,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.feed_activity.*
 
-class FeedActivity : AppCompatActivity() {
+class FeedActivity : AppCompatActivity(),OnNewsItemClickListener {
+    override fun onItemClick(item: NewsItem) {
+        startActivity(SpecificNewsActivity.intent(this,item))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,7 +22,7 @@ class FeedActivity : AppCompatActivity() {
     }
 
     private fun initRecycle() {
-        feed_activity_recycler.adapter = FeedAdapter(LocalFeedRepository().getNewsWithAds())
+        feed_activity_recycler.adapter = FeedAdapter(LocalFeedRepository().getNewsWithAds(),this)
         feed_activity_recycler.addItemDecoration(ItemOffsetDecoration(this, R.dimen.short_indent))
         if (isVertical()) {
             feed_activity_recycler.layoutManager = GridLayoutManager(this, calculateHowManyItemsFitOnScreen())

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView style="@style/StandardPadding"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/item_ad_width"
+    android:layout_height="wrap_content"
+    android:elevation="20dp">
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        style="@style/StandardPadding"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:showIn="@layout/item_news">
+
+        <TextView
+            android:id="@+id/item_news_layout_recycler_date"
+            style="@style/StandardPadding"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:textColor="@android:color/darker_gray"
+            android:textStyle="bold"
+            tools:text="@tools:sample/date/ddmmyy" />
+
+        <ImageView
+            android:id="@+id/item_news_layout_recycler_img"
+            style="@style/StandardPadding"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:cropToPadding="true"
+            android:scaleType="fitCenter"
+            tools:ignore="ContentDescription"
+            tools:src="@tools:sample/backgrounds/scenic" />
+
+
+        <TextView
+            android:id="@+id/item_news_layout_title"
+            style="@style/StandardPadding"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="@tools:sample/first_names" />
+
+        <TextView
+            android:id="@+id/item_news_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:ellipsize="end"
+
+            android:textStyle="bold"
+            tools:text="@tools:sample/first_names" />
+
+        <TextView
+            android:id="@+id/item_news_layout_recycler_context"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:textStyle="bold"
+            tools:text="@tools:sample/lorem/random" />
+
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>
