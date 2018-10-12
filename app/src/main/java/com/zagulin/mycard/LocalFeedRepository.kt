@@ -1,5 +1,9 @@
 package com.zagulin.mycard
 
+import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
+
 class LocalFeedRepository : FeedRepository {
     override fun getNewsWithAds(): List<Any> {
         val data = DataUtils.generateNews().toMutableList<Any>()
@@ -15,5 +19,8 @@ class LocalFeedRepository : FeedRepository {
 
     }
 
+    override fun getNewsWithAdsAsObservable(): Observable<List<Any>> {
+        return Observable.just(getNewsWithAds()).delay(2, TimeUnit.SECONDS, Schedulers.computation()).subscribeOn(Schedulers.computation())
+    }
 
 }
