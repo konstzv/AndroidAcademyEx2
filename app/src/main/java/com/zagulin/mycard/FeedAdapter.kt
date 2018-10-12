@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_news.view.*
 import java.util.*
 
-class FeedAdapter(val items: List<Any>, val onNewsItemClickListener: OnNewsItemClickListener) : RecyclerView.Adapter<ViewHolder>() {
+class FeedAdapter(var items: List<Any> = emptyList(), val onNewsItemClickListener: OnNewsItemClickListener) : RecyclerView.Adapter<ViewHolder>() {
 
     companion object {
         const val TYPE_NEWS = 0
