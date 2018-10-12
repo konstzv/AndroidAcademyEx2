@@ -11,12 +11,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.feed_activity.*
 
 class FeedActivity : AppCompatActivity(), OnNewsItemClickListener {
 
     private var feedAdapter: FeedAdapter? = null
+    private var getNewsWithAdsDisposable: Disposable? = null
 
     override fun onItemClick(item: NewsItem) {
         startActivity(SpecificNewsActivity.intent(this, item))
@@ -33,7 +35,7 @@ class FeedActivity : AppCompatActivity(), OnNewsItemClickListener {
     private fun populateFeed() {
         showProgressBar(true)
 
-        LocalFeedRepository().getNewsWithAdsAsObservable().observeOn(AndroidSchedulers.mainThread()).subscribeBy(
+        getNewsWithAdsDisposable = LocalFeedRepository().getNewsWithAdsAsObservable().observeOn(AndroidSchedulers.mainThread()).subscribeBy(
                 onNext = { list ->
                     feedAdapter?.let {
                         it.items = list
@@ -87,7 +89,11 @@ class FeedActivity : AppCompatActivity(), OnNewsItemClickListener {
             true
         }
         else -> super.onOptionsItemSelected(item)
+    }
 
+    override fun onStop() {
+        super.onStop()
+        getNewsWithAdsDisposable?.dispose()
     }
 
 
