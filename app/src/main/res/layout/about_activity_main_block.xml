@@ -8,8 +8,8 @@
 
     <LinearLayout
         style="@style/main_block_element"
-        android:layout_marginTop="@dimen/role_block_top_margin"
         android:layout_marginBottom="@dimen/role_block_bottom_margin"
+        android:layout_marginTop="@dimen/role_block_top_margin"
         android:orientation="horizontal">
 
         <ImageView
@@ -29,8 +29,8 @@
 
     <LinearLayout
         style="@style/main_block_element"
-        android:layout_marginTop="@dimen/role_block_top_margin"
         android:layout_marginBottom="@dimen/role_block_bottom_margin"
+        android:layout_marginTop="@dimen/role_block_top_margin"
         android:orientation="horizontal">
 
         <ImageView
@@ -50,8 +50,8 @@
 
     <LinearLayout
         style="@style/main_block_element"
-        android:layout_marginTop="@dimen/role_block_top_margin"
         android:layout_marginBottom="@dimen/role_block_bottom_margin"
+        android:layout_marginTop="@dimen/role_block_top_margin"
         android:orientation="horizontal">
 
         <ImageView
@@ -89,8 +89,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/main_section_start_margin"
         android:layout_marginEnd="@dimen/main_section_end_margin"
+        android:layout_marginStart="@dimen/main_section_start_margin"
         android:gravity="center"
         android:orientation="horizontal">
 
