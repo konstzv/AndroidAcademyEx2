@@ -51,11 +51,11 @@ class FeedActivity : AppCompatActivity(), OnNewsItemClickListener {
 
                 onNext = { totalItemCount ->
                     isNewDataLoadingToFeed = true
+                    val newItems = mutableListOf<Any>()
+                    for (i in 0..ITEMS_PER_PAGE) {
+                        newItems.add(news[(totalItemCount + i) % news.size])
+                    }
                     feed_activity_recycler.post {
-                        val newItems = mutableListOf<Any>()
-                        for (i in 0..ITEMS_PER_PAGE) {
-                            newItems.add(news[(totalItemCount + i) % news.size])
-                        }
                         feedAdapter?.addItems(newItems)
                         isNewDataLoadingToFeed = false
                     }
