@@ -4,11 +4,14 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
@@ -16,9 +19,18 @@ import kotlinx.android.synthetic.main.feed_activity.*
 
 
 class FeedActivity : AppCompatActivity(), OnNewsItemClickListener {
+    companion object {
+        private const val ITEMS_PER_PAGE = 10
+        private const val TAG = "FeedActivity"
+    }
 
     private var feedAdapter: FeedAdapter? = null
     private var getNewsWithAdsDisposable: Disposable? = null
+    private var layoutManager: LinearLayoutManager? = null
+
+
+    @Volatile
+    private var isNewDataLoadingToFeed = false
 
     override fun onItemClick(item: NewsItem) {
         startActivity(SpecificNewsActivity.intent(this, item))
@@ -28,7 +40,59 @@ class FeedActivity : AppCompatActivity(), OnNewsItemClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.feed_activity)
         initRecycle()
-        populateFeed()
+//        populateFeed()
+        initPagination()
+    }
+
+    @SuppressLint("CheckResult")
+    private fun initPagination() {
+        val news = LocalFeedRepository().getNews()
+        getScrollObservable().subscribeOn(AndroidSchedulers.mainThread()).distinctUntilChanged().subscribeBy(
+
+                onNext = { totalItemCount ->
+                    isNewDataLoadingToFeed = true
+                    feed_activity_recycler.post {
+                        val newItems = mutableListOf<Any>()
+                        for (i in 0..ITEMS_PER_PAGE) {
+                            newItems.add(news[(totalItemCount + i) % news.size])
+                        }
+                        feedAdapter?.addItems(newItems)
+                        isNewDataLoadingToFeed = false
+                    }
+
+                },
+                onError = {
+                    Log.e(FeedActivity.TAG,it.message)
+                }
+        )
+    }
+
+    private fun getScrollObservable(): Observable<Int> {
+        return Observable.create { emitter ->
+            feed_activity_recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (!isNewDataLoadingToFeed) {
+
+                        layoutManager?.let {
+                            val lastVisibleItem = it.findLastVisibleItemPosition()
+                            val totalItemCount = it.itemCount
+                            if (totalItemCount <= lastVisibleItem + ITEMS_PER_PAGE / 2 + 1) {
+                                emitter.onNext(totalItemCount)
+                            }
+                        }
+                    }
+
+
+                }
+
+
+            })
+            if (feed_activity_recycler.adapter?.itemCount == 0) {
+                emitter.onNext(0)
+            }
+        }
+
     }
 
     @SuppressLint("CheckResult")
@@ -52,15 +116,17 @@ class FeedActivity : AppCompatActivity(), OnNewsItemClickListener {
 //        feed_activity_progress.visibility = if (isVisible) View.VISIBLE else View.GONE
 //    }
 
+
     private fun initRecycle() {
         feedAdapter = FeedAdapter(onNewsItemClickListener = this)
         feed_activity_recycler.adapter = feedAdapter
         feed_activity_recycler.addItemDecoration(ItemOffsetDecoration(this, R.dimen.short_indent))
-        if (isVertical()) {
-            feed_activity_recycler.layoutManager = GridLayoutManager(this, calculateHowManyItemsFitOnScreen())
+        layoutManager = if (isVertical()) {
+            GridLayoutManager(this, calculateHowManyItemsFitOnScreen())
         } else {
-            feed_activity_recycler.layoutManager = LinearLayoutManager(this)
+            LinearLayoutManager(this)
         }
+        feed_activity_recycler.layoutManager = layoutManager
     }
 
     private fun calculateHowManyItemsFitOnScreen(): Int {

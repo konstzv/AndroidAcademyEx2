@@ -37,9 +37,15 @@ class FeedAdapter(var items: MutableList<Any> = mutableListOf(), val onNewsItemC
         return items.size
     }
 
-    fun insertItem(index:Int, item:Any){
-        items.add(index,item)
+    fun insertItem(index: Int, item: Any) {
+        items.add(index, item)
         notifyItemInserted(index)
+    }
+
+    fun addItems(newItems: List<Any>) {
+        val endIndex = items.size - 1
+        items.addAll(newItems)
+        notifyItemRangeInserted(endIndex, items.size - 1)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
