@@ -6,7 +6,6 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +13,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.feed_activity.*
+
 
 class FeedActivity : AppCompatActivity(), OnNewsItemClickListener {
 
@@ -33,26 +33,24 @@ class FeedActivity : AppCompatActivity(), OnNewsItemClickListener {
 
     @SuppressLint("CheckResult")
     private fun populateFeed() {
-        showProgressBar(true)
 
-        getNewsWithAdsDisposable = LocalFeedRepository().getNewsWithAdsAsObservable().observeOn(AndroidSchedulers.mainThread()).subscribeBy(
-                onNext = { list ->
-                    feedAdapter?.let {
-                        it.items = list
-                        it.notifyDataSetChanged()
-                    }
+        LocalFeedRepository().getNewsAndAdsPeriodically().observeOn(AndroidSchedulers.mainThread()).subscribeBy(
+                onNext = { it ->
+                    feedAdapter?.insertItem(0, it)
+                    feed_activity_recycler.smoothScrollToPosition(0);
+
                 },
                 onError = {
-                    it.printStackTrace()
-                    showProgressBar(false)
-                },
-                onComplete = { showProgressBar(false) }
+                    println(it)
+
+                }
         )
+
     }
 
-    private fun showProgressBar(isVisible: Boolean) {
-        feed_activity_progress.visibility = if (isVisible) View.VISIBLE else View.GONE
-    }
+//    private fun showProgressBar(isVisible: Boolean) {
+//        feed_activity_progress.visibility = if (isVisible) View.VISIBLE else View.GONE
+//    }
 
     private fun initRecycle() {
         feedAdapter = FeedAdapter(onNewsItemClickListener = this)

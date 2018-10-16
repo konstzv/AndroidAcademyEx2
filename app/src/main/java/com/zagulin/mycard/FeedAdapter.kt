@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_news.view.*
 import java.util.*
 
-class FeedAdapter(var items: List<Any> = emptyList(), val onNewsItemClickListener: OnNewsItemClickListener) : RecyclerView.Adapter<ViewHolder>() {
+class FeedAdapter(var items: MutableList<Any> = mutableListOf(), val onNewsItemClickListener: OnNewsItemClickListener) : RecyclerView.Adapter<ViewHolder>() {
 
     companion object {
         const val TYPE_NEWS = 0
@@ -37,6 +37,10 @@ class FeedAdapter(var items: List<Any> = emptyList(), val onNewsItemClickListene
         return items.size
     }
 
+    fun insertItem(index:Int, item:Any){
+        items.add(index,item)
+        notifyItemInserted(index)
+    }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
