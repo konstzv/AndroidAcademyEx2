@@ -26,9 +26,9 @@ class SpecificNewsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.specific_news_activity)
-        val newsItem = intent.getParcelableExtra<NewsItem>(EXTRA_NEWS_ITEM)
+        val newsItem = intent.getSerializableExtra(EXTRA_NEWS_ITEM)
 
-        newsItem?.let {
+        (newsItem as? NewsItem)?.let {
             supportActionBar?.title = it.category?.name
             specific_news_activity_text_view_title.text = newsItem.title
             specific_news_activity_text_view_article.text = newsItem.fullText

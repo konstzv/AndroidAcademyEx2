@@ -1,7 +1,13 @@
 package com.zagulin.mycard
 
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import java.io.Serializable
 
-@Parcelize
-class Category(val id: Int = 0, var name: String? = null): Parcelable
+
+class Category(
+        val id: Int = 0,
+        var name: String? = null
+) : Serializable {
+    companion object {
+        private val serialVersionUid: Long = 1
+    }
+}
