@@ -37,10 +37,7 @@ class FeedActivity : AppCompatActivity(), OnNewsItemClickListener {
     }
 
     private fun isVertical(): Boolean {
-        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            return true
-        }
-        return false
+        return resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

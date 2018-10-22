@@ -28,11 +28,11 @@ class SpecificNewsActivity : AppCompatActivity() {
         setContentView(R.layout.specific_news_activity)
         val newsItem = intent.getSerializableExtra(EXTRA_NEWS_ITEM)
 
-        (newsItem as? NewsItem)?.let {
+        (newsItem as? NewsItem)?.let { it ->
             supportActionBar?.title = it.category?.name
-            specific_news_activity_text_view_title.text = newsItem.title
-            specific_news_activity_text_view_article.text = newsItem.fullText
-            Glide.with(this).load(newsItem.imageUrl).into(specific_news_activity_image)
+            specific_news_activity_text_view_title.text = it.title
+            specific_news_activity_text_view_article.text = it.fullText
+            Glide.with(this).load(it.imageUrl).into(specific_news_activity_image)
             it.publishDate?.let {
                 specific_news_activity_text_view_date.text =
                         DateUtils.getRelativeTimeSpanString(it.time, Calendar.getInstance().time.time,
