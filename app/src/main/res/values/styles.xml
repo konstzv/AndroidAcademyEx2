@@ -1,11 +1,11 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="BaseThemeWithoutToolbar" parent="BaseThemeWithToolbar">
+    <style name="BaseTheme.NoToolbar">
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="BaseThemeWithToolbar" parent="Base.Theme.AppCompat.Light">
+    <style name="BaseTheme" parent="Base.Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
         <item name="titleTextColor">@android:color/white</item>
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -27,5 +27,7 @@
     <style name="StandardPadding">
         <item name="android:padding">@dimen/margin_standart_half</item>
     </style>
+
+    <style name="AboutActivityTheme" parent="BaseTheme.NoToolbar"/>
 
 </resources>

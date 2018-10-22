@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     android:orientation="vertical">
+
+    <Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/colorPrimary">
+
+        <include layout="@layout/feed_activity_toolbar" />
+    </Toolbar>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/feed_activity_recycler"
@@ -10,4 +19,4 @@
         android:layout_height="match_parent"
         android:layout_gravity="center" />
 
-</FrameLayout>
+</LinearLayout>

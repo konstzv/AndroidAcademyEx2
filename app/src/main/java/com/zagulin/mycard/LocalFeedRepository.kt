@@ -4,7 +4,7 @@ class LocalFeedRepository : FeedRepository {
     override fun getNewsWithAds(): List<Any> {
         val data = DataUtils.generateNews().toMutableList<Any>()
         if (data.isNotEmpty()) {
-            data.add(1, String())
+            data.add(1, "")
         }
         return data
     }

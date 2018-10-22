@@ -3,12 +3,11 @@ package com.zagulin.mycard
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.feed_activity.*
+import kotlinx.android.synthetic.main.feed_activity_toolbar.*
 
 class FeedActivity : AppCompatActivity(), OnNewsItemClickListener {
     override fun onItemClick(item: NewsItem) {
@@ -19,6 +18,14 @@ class FeedActivity : AppCompatActivity(), OnNewsItemClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.feed_activity)
         initRecycle()
+        initToolbar()
+    }
+
+    private fun initToolbar() {
+        feed_activity_toolbar_text_view_title.text = title
+        feed_activity_toolbar_image_about.setOnClickListener {
+            startActivity(Intent(this, AboutActivity::class.java))
+        }
     }
 
     private fun initRecycle() {
@@ -38,21 +45,6 @@ class FeedActivity : AppCompatActivity(), OnNewsItemClickListener {
 
     private fun isVertical(): Boolean {
         return resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.feed_screen_toolbar, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?) = when (item?.itemId) {
-
-        R.id.feedAboutMenu -> {
-            startActivity(Intent(this, AboutActivity::class.java))
-            true
-        }
-        else -> super.onOptionsItemSelected(item)
-
     }
 
 
