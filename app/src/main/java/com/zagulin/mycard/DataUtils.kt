@@ -13,11 +13,11 @@ object DataUtils {
 
         val news = ArrayList<NewsItem>()
         news.add(NewsItem(
-                "Tourist filmed sitting on 5m-long crocodile",
+                "0) Tourist filmed sitting on 5m-long crocodile",
                 "https://e3.365dm.com/18/09/736x414/skynews-crocodile-australia_4433218.jpg",
                 darwinAwards,
                 createDate(2018, 10, 10, 10, 34),
-                "\"It was dangerous, I know. It is a scary feeling sitting on something that could kill you in a fraction of a " + "second,\" he says.",
+                "It was dangerous, I know. It is a scary feeling sitting on something that could kill you in a fraction of a " + "second,\" he says.",
                 "A Danish tourist has admitted he took his life in his hands by sitting on a large crocodile in Australia.\n\n"
                         + "Niels Jensen, 22, was on safari in a wildlife park east of Darwin in northern Australia when he "
                         + "encountered the predator, estimated to be 4.7m (15ft) long and weighing 653kg (1428 lbs).\n\n"
@@ -31,7 +31,7 @@ object DataUtils {
                         + "Mr Jensen admitted he took life in his hands by sitting on a live crocodile for the first time."
         ))
         news.add(NewsItem(
-                "Police warn daredevil cliff jumpers who are 'risking their lives for likes'",
+                "1) Police warn daredevil cliff jumpers who are 'risking their lives for likes'",
                 "https://e3.365dm.com/18/09/2048x1152/skynews-cliff-jumping-greg-milam_4433647.jpg",
                 criminal,
                 createDate(2018, 9, 25, 12, 45),
@@ -48,7 +48,7 @@ object DataUtils {
                         + "Hermit Falls.")
         ))
         news.add(NewsItem(
-                "Bear saved after getting his head stuck in milk can",
+                "2) Bear saved after getting his head stuck in milk can",
                 "https://e3.365dm.com/18/09/2048x1152/skynews-bear-minnesota_4419111.jpg",
                 animals,
                 createDate(2018, 9, 20, 14, 4),
@@ -64,7 +64,7 @@ object DataUtils {
                         + "After being released, the seemingly healthy bear ran off into the woods.")
         ))
         news.add(NewsItem(
-                "Nearly $18m of cocaine seized in donated boxes of bananas",
+                "3) Nearly $18m of cocaine seized in donated boxes of bananas",
                 "https://e3.365dm.com/18/09/2048x1152/skynews-texas-bananas-drugs_4430760.jpg",
                 criminal,
                 createDate(2018, 9, 18, 4, 4),
@@ -83,7 +83,7 @@ object DataUtils {
                         + "US Customs arrived and tested the substance, which confirmed the powder was cocaine.")
         ))
         news.add(NewsItem(
-                "US government hacker jailed after losing secrets",
+                "4) US government hacker jailed after losing secrets",
                 "https://e3.365dm.com/17/09/736x414/d55722dc4eb37f6959d2e047c14710d586aab99f90aa1e4acfd9f992125294f5_4107038.jpg",
                 criminal,
                 createDate(2018, 9, 17, 12, 45),
@@ -106,7 +106,7 @@ object DataUtils {
                         + "Kaspersky's anti-virus.")
         ))
         news.add(NewsItem(
-                "Wet Wet Wet announce Liberty X star Kevin Simm as new frontman",
+                "5) Wet Wet Wet announce Liberty X star Kevin Simm as new frontman",
                 "https://e3.365dm.com/18/09/2048x1152/skynews-wet-wet-wet-kevin-simm_4433314.jpg",
                 music,
                 createDate(2018, 9, 17, 12, 45),
