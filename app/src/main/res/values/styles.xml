@@ -7,6 +7,9 @@
 
     <style name="BaseTheme" parent="Base.Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
         <item name="titleTextColor">@android:color/white</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>

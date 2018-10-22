@@ -5,12 +5,9 @@
 
     android:orientation="vertical">
 
-    <Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize">
 
         <include layout="@layout/feed_activity_toolbar" />
-    </Toolbar>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/feed_activity_recycler"
