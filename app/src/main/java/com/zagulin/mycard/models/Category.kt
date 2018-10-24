@@ -1,4 +1,4 @@
-package com.zagulin.mycard
+package com.zagulin.mycard.models
 
 import java.io.Serializable
 
@@ -8,6 +8,6 @@ class Category(
         var name: String? = null
 ) : Serializable {
     companion object {
-        private val serialVersionUid: Long = 1
+        private const val serialVersionUID: Long = 1
     }
 }

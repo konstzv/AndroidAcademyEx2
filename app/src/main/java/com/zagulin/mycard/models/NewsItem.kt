@@ -1,9 +1,10 @@
-package com.zagulin.mycard
+package com.zagulin.mycard.models
 
 import java.io.Serializable
 import java.util.*
 
 class NewsItem(
+        val id:Int,
         val title: String? = null,
         val imageUrl: String? = null,
         val category: Category? = null,
@@ -12,6 +13,6 @@ class NewsItem(
         val fullText: String? = null
 ) : Serializable {
     companion object {
-        private val serialVersionUid: Long = 0
+        private const val serialVersionUID: Long = 0
     }
 }
