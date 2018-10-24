@@ -105,7 +105,7 @@ object DataUtils {
                         + "Reports have alleged that while these tools were stored on his home computer, Pho installed Kaspersky "
                         + "Lab anti-virus software, which Russian intelligence then used to steal those tools for themselves.\n\n"
                         + "Although the company has vigorously denied claims its software was used by Russian intelligence to steal"
-                        + " the dataList, the publicity damage has left Kaspersky Lab working to address customer fears in a global "
+                        + " the data, the publicity damage has left Kaspersky Lab working to address customer fears in a global "
                         + "transparency initiative - including moving a significant portion of its operations from Russia to "
                         + "Switzerland.\n\n"
                         + "An internal investigation at the cyber security company into the incident prompted the company to suggest"
