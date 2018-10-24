@@ -1,6 +1,8 @@
-package com.zagulin.mycard
+package com.zagulin.mycard.common
 
 
+import com.zagulin.mycard.models.Category
+import com.zagulin.mycard.models.NewsItem
 import java.util.*
 
 object DataUtils {
@@ -13,6 +15,7 @@ object DataUtils {
 
         val news = ArrayList<NewsItem>()
         news.add(NewsItem(
+                0,
                 "0) Tourist filmed sitting on 5m-long crocodile",
                 "https://e3.365dm.com/18/09/736x414/skynews-crocodile-australia_4433218.jpg",
                 darwinAwards,
@@ -31,6 +34,7 @@ object DataUtils {
                         + "Mr Jensen admitted he took life in his hands by sitting on a live crocodile for the first time."
         ))
         news.add(NewsItem(
+                1,
                 "1) Police warn daredevil cliff jumpers who are 'risking their lives for likes'",
                 "https://e3.365dm.com/18/09/2048x1152/skynews-cliff-jumping-greg-milam_4433647.jpg",
                 criminal,
@@ -48,6 +52,7 @@ object DataUtils {
                         + "Hermit Falls.")
         ))
         news.add(NewsItem(
+                2,
                 "2) Bear saved after getting his head stuck in milk can",
                 "https://e3.365dm.com/18/09/2048x1152/skynews-bear-minnesota_4419111.jpg",
                 animals,
@@ -64,6 +69,7 @@ object DataUtils {
                         + "After being released, the seemingly healthy bear ran off into the woods.")
         ))
         news.add(NewsItem(
+                3,
                 "3) Nearly $18m of cocaine seized in donated boxes of bananas",
                 "https://e3.365dm.com/18/09/2048x1152/skynews-texas-bananas-drugs_4430760.jpg",
                 criminal,
@@ -83,6 +89,7 @@ object DataUtils {
                         + "US Customs arrived and tested the substance, which confirmed the powder was cocaine.")
         ))
         news.add(NewsItem(
+                4,
                 "4) US government hacker jailed after losing secrets",
                 "https://e3.365dm.com/17/09/736x414/d55722dc4eb37f6959d2e047c14710d586aab99f90aa1e4acfd9f992125294f5_4107038.jpg",
                 criminal,
@@ -98,7 +105,7 @@ object DataUtils {
                         + "Reports have alleged that while these tools were stored on his home computer, Pho installed Kaspersky "
                         + "Lab anti-virus software, which Russian intelligence then used to steal those tools for themselves.\n\n"
                         + "Although the company has vigorously denied claims its software was used by Russian intelligence to steal"
-                        + " the data, the publicity damage has left Kaspersky Lab working to address customer fears in a global "
+                        + " the dataList, the publicity damage has left Kaspersky Lab working to address customer fears in a global "
                         + "transparency initiative - including moving a significant portion of its operations from Russia to "
                         + "Switzerland.\n\n"
                         + "An internal investigation at the cyber security company into the incident prompted the company to suggest"
@@ -106,6 +113,7 @@ object DataUtils {
                         + "Kaspersky's anti-virus.")
         ))
         news.add(NewsItem(
+                5,
                 "5) Wet Wet Wet announce Liberty X star Kevin Simm as new frontman",
                 "https://e3.365dm.com/18/09/2048x1152/skynews-wet-wet-wet-kevin-simm_4433314.jpg",
                 music,

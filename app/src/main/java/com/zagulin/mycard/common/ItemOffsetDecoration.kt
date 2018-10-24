@@ -1,4 +1,4 @@
-package com.zagulin.mycard
+package com.zagulin.mycard.common
 
 import android.content.Context
 import android.graphics.Rect

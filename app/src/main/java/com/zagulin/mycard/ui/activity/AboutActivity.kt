@@ -1,4 +1,4 @@
-package com.zagulin.mycard
+package com.zagulin.mycard.ui.activity
 
 import android.app.Activity
 import android.content.Intent
@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
+import com.zagulin.mycard.R
 import kotlinx.android.synthetic.main.about_activity.*
 import kotlinx.android.synthetic.main.about_activity_bottom_sheet.*
 import kotlinx.android.synthetic.main.about_activity_main_block.*

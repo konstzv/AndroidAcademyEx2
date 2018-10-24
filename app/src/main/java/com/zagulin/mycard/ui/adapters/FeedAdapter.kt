@@ -1,4 +1,4 @@
-package com.zagulin.mycard
+package com.zagulin.mycard.ui.adapters
 
 import android.text.format.DateUtils
 import android.view.LayoutInflater
@@ -6,6 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.zagulin.mycard.common.OnNewsItemClickListener
+import com.zagulin.mycard.R
+import com.zagulin.mycard.models.NewsItem
 import kotlinx.android.synthetic.main.item_news.view.*
 import java.util.*
 
