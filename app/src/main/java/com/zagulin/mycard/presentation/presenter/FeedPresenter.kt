@@ -5,27 +5,35 @@ import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.zagulin.mycard.common.pagination.FeedPaginator
 import com.zagulin.mycard.presentation.view.FeedView
-import com.zagulin.mycard.repositories.LocalFeedRepository
+import com.zagulin.mycard.repositories.FeedRepository
 import io.reactivex.rxkotlin.subscribeBy
 
 @InjectViewState
-class FeedPresenter : MvpPresenter<FeedView>() {
+class FeedPresenter(val repository: FeedRepository) : MvpPresenter<FeedView>() {
 
-    private val feedPaginator = FeedPaginator(LocalFeedRepository())
-    init {
-        feedPaginator.source.subscribeBy(
-                onNext = {
-                    println(it)
-                    viewState.addNews(it.dataList)
-                }
-        )
-    }
+    private val feedPaginator = FeedPaginator(repository)
+    //    init {
+    private val paginationDisposable = feedPaginator.paginationObservable().subscribeBy(
+            onNext = {
+                println(it)
+                viewState.addNews(it.dataList)
+            },
+            onError = {
+                viewState.showErrorMsg(it.localizedMessage)
+            }
+    )
+//    }
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         onLoadMore()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        if (!paginationDisposable.isDisposed)
+            paginationDisposable.dispose()
+    }
 
     @SuppressLint("CheckResult")
     fun onLoadMore() {

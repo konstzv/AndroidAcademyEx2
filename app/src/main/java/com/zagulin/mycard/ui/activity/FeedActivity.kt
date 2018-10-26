@@ -6,14 +6,16 @@ import android.os.Bundle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arellomobile.mvp.presenter.InjectPresenter
+import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.google.android.material.snackbar.Snackbar
-import com.zagulin.mycard.*
+import com.zagulin.mycard.R
 import com.zagulin.mycard.common.ItemOffsetDecoration
 import com.zagulin.mycard.common.OnNewsItemClickListener
 import com.zagulin.mycard.common.pagination.RecyclerViewPagination
 import com.zagulin.mycard.models.NewsItem
 import com.zagulin.mycard.presentation.presenter.FeedPresenter
 import com.zagulin.mycard.presentation.view.FeedView
+import com.zagulin.mycard.repositories.FeedRepositorySingleton
 import com.zagulin.mycard.ui.adapters.FeedAdapter
 import kotlinx.android.synthetic.main.feed_activity.*
 import kotlinx.android.synthetic.main.feed_activity_toolbar.*
@@ -24,13 +26,18 @@ class FeedActivity : MvpAppCompatActivity(), FeedView, OnNewsItemClickListener {
     @InjectPresenter
     lateinit var feedPresenter: FeedPresenter
 
+    @ProvidePresenter
+    fun provideFeedPresenter(): FeedPresenter {
+        return FeedPresenter(FeedRepositorySingleton.instance)
+    }
+
 
     private var feedAdapter: FeedAdapter? = null
     private var layoutManager: LinearLayoutManager? = null
 
 
     override fun onItemClick(item: NewsItem) {
-        startActivity(SpecificNewsActivity.intent(this, item.id))
+        startActivity(SpecificNewsActivity.intent(this, item.id!!))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,6 +59,7 @@ class FeedActivity : MvpAppCompatActivity(), FeedView, OnNewsItemClickListener {
         }
 
     }
+
     override fun showErrorMsg(msg: String) {
         Snackbar.make(
                 window.decorView.rootView,
@@ -70,8 +78,8 @@ class FeedActivity : MvpAppCompatActivity(), FeedView, OnNewsItemClickListener {
     }
 
     private fun initPagination() {
-         val pageListener = RecyclerViewPagination { feedPresenter.onLoadMore() }
-          feed_activity_recycler.addOnScrollListener(pageListener)
+        val pageListener = RecyclerViewPagination { feedPresenter.onLoadMore() }
+        feed_activity_recycler.addOnScrollListener(pageListener)
     }
 
 

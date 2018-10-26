@@ -19,6 +19,16 @@ public class MvpAppCompatActivity extends AppCompatActivity {
 
     private MvpDelegate<? extends MvpAppCompatActivity> mMvpDelegate;
 
+    /**
+     * @return The {@link MvpDelegate} being used by this Activity.
+     */
+    public MvpDelegate getMvpDelegate() {
+        if (mMvpDelegate == null) {
+            mMvpDelegate = new MvpDelegate<>(this);
+        }
+        return mMvpDelegate;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,21 +41,6 @@ public class MvpAppCompatActivity extends AppCompatActivity {
         super.onStart();
 
         getMvpDelegate().onAttach();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        getMvpDelegate().onAttach();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        getMvpDelegate().onSaveInstanceState(outState);
-        getMvpDelegate().onDetach();
     }
 
     @Override
@@ -66,13 +61,18 @@ public class MvpAppCompatActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * @return The {@link MvpDelegate} being used by this Activity.
-     */
-    public MvpDelegate getMvpDelegate() {
-        if (mMvpDelegate == null) {
-            mMvpDelegate = new MvpDelegate<>(this);
-        }
-        return mMvpDelegate;
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        getMvpDelegate().onSaveInstanceState(outState);
+        getMvpDelegate().onDetach();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        getMvpDelegate().onAttach();
     }
 }

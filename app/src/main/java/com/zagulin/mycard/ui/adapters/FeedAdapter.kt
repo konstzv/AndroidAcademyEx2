@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.zagulin.mycard.common.OnNewsItemClickListener
 import com.zagulin.mycard.R
+import com.zagulin.mycard.common.OnNewsItemClickListener
 import com.zagulin.mycard.models.NewsItem
 import kotlinx.android.synthetic.main.item_news.view.*
 import java.util.*
@@ -82,7 +82,17 @@ class NewsHolder(view: View) : ViewHolder(view) {
         item.category?.name.let {
             subTitle.text = it
         }
-        Glide.with(imageView).load(item.imageUrl).into(imageView)
+//        item.imageUrl?.let {
+//            Glide.with(imageView).load(it).into(imageView)
+//        }
+//
+
+        item.imageUrl?.let {
+            Glide.with(imageView).load(item.imageUrl).into(imageView)
+        } ?: run {
+            imageView.visibility = View.GONE
+        }
+
         itemView.setOnClickListener { onNewsItemClickListener.onItemClick(item) }
     }
 }

@@ -4,6 +4,6 @@ import com.arellomobile.mvp.MvpView
 import com.zagulin.mycard.models.NewsItem
 
 interface SpecificNewsView : MvpView {
-    fun displayNews(newsItem:NewsItem)
+    fun displayNews(newsItem: NewsItem)
 
 }
