@@ -23,7 +23,7 @@ class FeedPaginator(private val repository: FeedRepository) : Paginator<Any> {
     override fun loadNextPage() {
         val currentPageNum = pageNum
         val start = pageNum++ * PAGE_SIZE
-        repository.getNewsWithAdsAsObservable(start, PAGE_SIZE).subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread()).subscribeBy(
+        repository.getNewsWithAdsAsSingle(start, PAGE_SIZE).subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread()).subscribeBy(
                 onSuccess = {
                     source.onNext(PaginationData(it, currentPageNum, PAGE_SIZE))
                 },
@@ -44,3 +44,4 @@ class FeedPaginator(private val repository: FeedRepository) : Paginator<Any> {
     }
 
 }
+

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -14,7 +15,7 @@
         android:theme="@style/BaseTheme.NoToolbar"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".FeedActivity"
+            android:name=".ui.activity.FeedActivity"
             android:label="@string/feed_activity_title"
             android:theme="@style/BaseTheme.NoToolbar">
             <intent-filter>
@@ -24,13 +25,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AboutActivity"
+            android:name=".ui.activity.AboutActivity"
             android:label="@string/about_activity_title"
             android:theme="@style/AboutActivityTheme" />
         <activity
-            android:name=".SpecificNewsActivity"
-            android:theme="@style/BaseTheme.NoToolbar" />
-
+            android:name=".ui.activity.SpecificNewsActivity"
+            android:theme="@style/BaseTheme" />
     </application>
 
 </manifest>

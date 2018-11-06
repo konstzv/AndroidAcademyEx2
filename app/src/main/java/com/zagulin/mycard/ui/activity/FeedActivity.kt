@@ -48,23 +48,18 @@ class FeedActivity : MvpAppCompatActivity(), FeedView, OnNewsItemClickListener {
     }
 
     override fun addNews(list: List<Any>) {
-        feed_activity_recycler.post {
+
             feedAdapter?.addItems(list)
-        }
-    }
-
-    override fun setNews(list: List<Any>) {
-        feed_activity_recycler.post {
-            feedAdapter?.items = mutableListOf(list)
-        }
 
     }
+
+
 
     override fun showErrorMsg(msg: String) {
         Snackbar.make(
                 window.decorView.rootView,
                 msg,
-                Snackbar.LENGTH_SHORT
+                Snackbar.LENGTH_LONG
         ).show()
     }
 

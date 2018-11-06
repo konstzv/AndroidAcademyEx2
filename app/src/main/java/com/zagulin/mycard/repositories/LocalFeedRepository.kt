@@ -8,12 +8,7 @@ import io.reactivex.Single
 class LocalFeedRepository : FeedRepositoryWithPagingationImitation() {
 
     private val feedItems = getNewsWithAds()
-
-    override fun getNewsWithAdsAsObservable(from: Int, shift: Int): Single<List<Any>> {
-//        val newFeedItems = mutableListOf<Any>()
-//        for (i in 0 until shift) {
-//            newFeedItems.add(feedItems[(from + i) % feedItems.size])
-//        }
+    override fun getNewsWithAdsAsSingle(from: Int, shift: Int): Single<List<Any>> {
         return Single.just(getPage(feedItems, from, shift))
     }
 
@@ -23,10 +18,6 @@ class LocalFeedRepository : FeedRepositoryWithPagingationImitation() {
             data.add(1, "")
         }
         return data
-    }
-
-    fun getNews(): List<NewsItem> {
-        return DataUtils.generateNews()
     }
 
     override fun getNewsById(id: Int): Single<NewsItem> {

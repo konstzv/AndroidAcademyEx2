@@ -9,20 +9,18 @@ import com.zagulin.mycard.repositories.FeedRepository
 import io.reactivex.rxkotlin.subscribeBy
 
 @InjectViewState
-class FeedPresenter(val repository: FeedRepository) : MvpPresenter<FeedView>() {
+open class FeedPresenter(repository: FeedRepository) : MvpPresenter<FeedView>() {
 
     private val feedPaginator = FeedPaginator(repository)
-    //    init {
     private val paginationDisposable = feedPaginator.paginationObservable().subscribeBy(
             onNext = {
-                println(it)
                 viewState.addNews(it.dataList)
             },
             onError = {
                 viewState.showErrorMsg(it.localizedMessage)
             }
     )
-//    }
+
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()

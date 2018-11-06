@@ -4,16 +4,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 
-class RecyclerViewPagination(private val loadingThreshold: Int = 5,
+class RecyclerViewPagination(private val loadingThreshold: Int = DEFAULT_LOADING_THRESHOLD,
                              private val loadMore: () -> Unit
 ) : RecyclerView.OnScrollListener() {
-
-    /**
-     * Позволяет не дергать оверхед загрузок
-     * во время подгрузки следующей страницы
-     */
-    private var isLoading: Boolean = false
-
+companion object {
+    const val DEFAULT_LOADING_THRESHOLD =5
+}
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         val manager = recyclerView.layoutManager as? LinearLayoutManager ?: return
         val visibleItemCount = recyclerView.childCount
@@ -22,10 +18,10 @@ class RecyclerViewPagination(private val loadingThreshold: Int = 5,
         if (totalItemCount == 0) {
             return  // loading more feature is available if there is at least one item in list
         }
-        if (!isLoading && totalItemCount - visibleItemCount <= firstVisibleItem + loadingThreshold) {
-            isLoading = true
+        if (totalItemCount - visibleItemCount <= firstVisibleItem + loadingThreshold) {
+
             loadMore.invoke()
-            isLoading = false
+
         }
     }
 

@@ -5,7 +5,7 @@ import com.zagulin.mycard.models.NewsItem
 import com.zagulin.mycard.repositories.api.NewYorkTimesAPIService
 import io.reactivex.Single
 
-class NYTTopStoriesFeedRepository : FeedRepositoryWithPagingationImitation() {
+open class NYTTopStoriesFeedRepository : FeedRepositoryWithPagingationImitation() {
 
     enum class SectionNames(val sectionName: String) {
         WORLD("world")
@@ -17,20 +17,22 @@ class NYTTopStoriesFeedRepository : FeedRepositoryWithPagingationImitation() {
     @Volatile
     private var data = mutableListOf<Any>()
 
-    override fun getNewsWithAdsAsObservable(from: Int, shift: Int): Single<List<Any>> {
+    override fun getNewsWithAdsAsSingle(from: Int, shift: Int): Single<List<Any>> {
         if (data.isEmpty()) {
 
             return service
                     .getTopStories(SectionNames.WORLD.sectionName)
+
                     .flatMapIterable { it.results }
                     .map { it -> converter.convert(it) }
                     .toList()
 
                     .flatMap {
-                        if (data.isEmpty()) {
+                        if (data.isEmpty() && it.isNotEmpty()) {
                             data.addAll(it)
+                            data.add(1, "")
                         }
-                        Single.just(getPage(it, from, shift))
+                        Single.just(getPage(data, from, shift))
 
                     }
         } else {
