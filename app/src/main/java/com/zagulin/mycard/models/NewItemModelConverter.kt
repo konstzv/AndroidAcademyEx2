@@ -6,12 +6,20 @@ import org.joda.time.format.ISODateTimeFormat
 class NewItemModelConverter : ModelConvertor<NewsItemNetwork, NewsItem> {
 
 
+    enum class ImageFormats(val formatName: String) {
+        LargeImage("superJumbo")
+        ,
+        Thumbnail("Standard Thumbnail")
+    }
+
     override fun convert(item: NewsItemNetwork): NewsItem {
 
-
-        val url = if (item.multimedia != null && item.multimedia.isNotEmpty() && item.multimedia.first() != null) {
-            item.multimedia.first { it?.format == "superJumbo" }?.url
-        } else null
+        var url: String? = null
+        var thumbnailUrl: String?? = null
+        if (item.multimedia != null && item.multimedia.isNotEmpty()) {
+            url = item.multimedia.first { it?.format == ImageFormats.LargeImage.formatName }?.url
+            thumbnailUrl = item.multimedia.first { it?.format == ImageFormats.Thumbnail.formatName }?.url
+        }
 
         val result = NewsItem(
 
@@ -20,6 +28,7 @@ class NewItemModelConverter : ModelConvertor<NewsItemNetwork, NewsItem> {
                 previewText = item.abstract,
                 fullText = item.abstract,
                 imageUrl = url,
+                thumbnailUrl = thumbnailUrl,
                 publishDate = ISODateTimeFormat.dateTimeParser().withOffsetParsed().parseDateTime(item.publishedDate).toDate()
 
         )

@@ -14,6 +14,10 @@ import com.zagulin.mycard.presentation.view.SpecificNewsView
 import com.zagulin.mycard.repositories.FeedRepositorySingleton
 import kotlinx.android.synthetic.main.specific_news_activity.*
 import java.util.*
+import android.graphics.drawable.Drawable
+import com.bumptech.glide.RequestBuilder
+
+
 
 class SpecificNewsActivity : MvpAppCompatActivity(), SpecificNewsView {
 
@@ -48,7 +52,16 @@ class SpecificNewsActivity : MvpAppCompatActivity(), SpecificNewsView {
         supportActionBar?.title = newsItem.category?.name
         specific_news_activity_text_view_title.text = newsItem.title
         specific_news_activity_text_view_article.text = newsItem.fullText
-        Glide.with(this).load(newsItem.imageUrl).into(specific_news_activity_image)
+
+        val thumbnailRequest = Glide
+                .with(this)
+                .load(newsItem.thumbnailUrl)
+
+        Glide.with(this)
+                .load(newsItem.imageUrl)
+                .thumbnail(thumbnailRequest)
+                .into(specific_news_activity_image)
+
         newsItem.publishDate?.let {
             specific_news_activity_text_view_date.text =
                     DateUtils.getRelativeTimeSpanString(it.time, Calendar.getInstance().time.time,

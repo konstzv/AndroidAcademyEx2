@@ -9,7 +9,8 @@ data class NewsItem(
         val category: Category? = null,
         val publishDate: Date? = null,
         val previewText: String? = null,
-        val fullText: String? = null
+        val fullText: String? = null,
+        val thumbnailUrl: String? = null
 ) {
 
 
@@ -18,10 +19,11 @@ data class NewsItem(
         if (javaClass != other?.javaClass) return false
 
         other as NewsItem
-        if (id!=null && (id == other.id)) return true
+        if (id != null && (id == other.id)) return true
         if (id != other.id) return false
         if (title != other.title) return false
         if (imageUrl != other.imageUrl) return false
+        if (thumbnailUrl != other.thumbnailUrl) return false
         if (category != other.category) return false
         if (publishDate != other.publishDate) return false
         if (previewText != other.previewText) return false

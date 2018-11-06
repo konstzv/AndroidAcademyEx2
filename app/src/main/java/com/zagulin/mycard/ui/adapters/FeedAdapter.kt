@@ -10,6 +10,7 @@ import com.zagulin.mycard.R
 import com.zagulin.mycard.common.OnNewsItemClickListener
 import com.zagulin.mycard.models.NewsItem
 import kotlinx.android.synthetic.main.item_news.view.*
+import kotlinx.android.synthetic.main.specific_news_activity.*
 import java.util.*
 
 
@@ -41,6 +42,7 @@ class FeedAdapter(var items: MutableList<Any> = mutableListOf(), val onNewsItemC
     }
 
     fun addItems(newItems: List<Any>) {
+        items.addAll(newItems)
         notifyItemRangeInserted(itemCount - newItems.size, itemCount - 1)
     }
 
@@ -80,7 +82,12 @@ class NewsHolder(view: View) : ViewHolder(view) {
 //
 
         item.imageUrl?.let {
-            Glide.with(imageView).load(item.imageUrl).into(imageView)
+            imageView.visibility = View.VISIBLE
+            val thumbnailRequest = Glide
+                    .with(imageView)
+                    .load(item.thumbnailUrl)
+
+            Glide.with(imageView).load(item.imageUrl).thumbnail(thumbnailRequest).into(imageView)
         } ?: run {
             imageView.visibility = View.GONE
         }
