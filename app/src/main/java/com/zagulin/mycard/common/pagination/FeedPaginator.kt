@@ -14,7 +14,13 @@ class FeedPaginator(private val repository: FeedRepository) : Paginator<FeedItem
 
     companion object {
         const val PAGE_SIZE = 10
+
+        enum class STATE {
+            IDLE, LOADING
+        }
     }
+
+    private var state = STATE.IDLE
 
     private var pageNum = 0
 
@@ -22,21 +28,27 @@ class FeedPaginator(private val repository: FeedRepository) : Paginator<FeedItem
     private var source = PublishSubject.create<PaginationData<FeedItem>>()
 
     override fun loadNextPage() {
-        val currentPageNum = pageNum
-        val start = pageNum++ * PAGE_SIZE
-        repository.getNewsWithAdsAsSingle(start, PAGE_SIZE).subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread()).subscribeBy(
-                onSuccess = {
-                    source.onNext(PaginationData(it, currentPageNum, PAGE_SIZE))
-                },
-                onError = {
-                    source.onError(it)
-                }
+        if (state == STATE.IDLE) {
+            state = STATE.LOADING
+            val currentPageNum = pageNum
+            val start = pageNum++ * PAGE_SIZE
+            repository.getNewsWithAdsAsSingle(start, PAGE_SIZE).subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread()).subscribeBy(
+                    onSuccess = {
+                        source.onNext(PaginationData(it, currentPageNum, PAGE_SIZE))
+                        state = STATE.IDLE
+                    },
+                    onError = {
+                        source.onError(it)
+                        state = STATE.IDLE
+                    }
 
-        )
+            )
+        }
 
     }
 
     override fun reload() {
+        state = STATE.IDLE
         pageNum = 0
     }
 
