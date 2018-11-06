@@ -1,5 +1,7 @@
 package com.zagulin.mycard.repositories
 
+import com.zagulin.mycard.models.AdItem
+import com.zagulin.mycard.models.FeedItem
 import com.zagulin.mycard.models.NewItemModelConverter
 import com.zagulin.mycard.models.NewsItem
 import com.zagulin.mycard.repositories.api.NewYorkTimesAPIService
@@ -15,9 +17,9 @@ open class NYTTopStoriesFeedRepository : FeedRepositoryWithPagingationImitation(
     private val service = NewYorkTimesAPIService.create()
 
     @Volatile
-    private var data = mutableListOf<Any>()
+    private var data = mutableListOf<FeedItem>()
 
-    override fun getNewsWithAdsAsSingle(from: Int, shift: Int): Single<List<Any>> {
+    override fun getNewsWithAdsAsSingle(from: Int, shift: Int): Single<List<FeedItem>> {
         if (data.isEmpty()) {
 
             return service
@@ -30,7 +32,7 @@ open class NYTTopStoriesFeedRepository : FeedRepositoryWithPagingationImitation(
                     .flatMap {
                         if (data.isEmpty() && it.isNotEmpty()) {
                             data.addAll(it)
-                            data.add(1, "")
+                            data.add(1, AdItem())
                         }
                         Single.just(getPage(data, from, shift))
 

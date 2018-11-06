@@ -8,13 +8,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.zagulin.mycard.R
 import com.zagulin.mycard.common.OnNewsItemClickListener
+import com.zagulin.mycard.models.AdItem
+import com.zagulin.mycard.models.FeedItem
 import com.zagulin.mycard.models.NewsItem
 import kotlinx.android.synthetic.main.item_news.view.*
 import kotlinx.android.synthetic.main.specific_news_activity.*
 import java.util.*
 
 
-class FeedAdapter(var items: MutableList<Any> = mutableListOf(), val onNewsItemClickListener: OnNewsItemClickListener) : RecyclerView.Adapter<ViewHolder>() {
+class FeedAdapter(var items: MutableList<FeedItem> = mutableListOf(), val onNewsItemClickListener: OnNewsItemClickListener) : RecyclerView.Adapter<ViewHolder>() {
 
 
     enum class ItemTypes(val type: Int) {
@@ -31,7 +33,7 @@ class FeedAdapter(var items: MutableList<Any> = mutableListOf(), val onNewsItemC
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (items[position] is String) {
+        if (items[position] is AdItem) {
             return ItemTypes.TYPE_AD.type
         }
         return ItemTypes.TYPE_NEWS.type
@@ -41,7 +43,7 @@ class FeedAdapter(var items: MutableList<Any> = mutableListOf(), val onNewsItemC
         return items.size
     }
 
-    fun addItems(newItems: List<Any>) {
+    fun addItems(newItems: List<FeedItem>) {
         items.addAll(newItems)
         notifyItemRangeInserted(itemCount - newItems.size, itemCount - 1)
     }

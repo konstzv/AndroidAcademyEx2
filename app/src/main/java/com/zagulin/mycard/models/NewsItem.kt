@@ -11,7 +11,7 @@ data class NewsItem(
         val previewText: String? = null,
         val fullText: String? = null,
         val thumbnailUrl: String? = null
-) {
+):FeedItem {
 
 
     override fun equals(other: Any?): Boolean {

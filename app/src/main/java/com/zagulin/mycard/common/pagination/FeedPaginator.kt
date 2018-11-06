@@ -1,5 +1,6 @@
 package com.zagulin.mycard.common.pagination
 
+import com.zagulin.mycard.models.FeedItem
 import com.zagulin.mycard.models.PaginationData
 import com.zagulin.mycard.repositories.FeedRepository
 import io.reactivex.Observable
@@ -9,7 +10,7 @@ import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 
 
-class FeedPaginator(private val repository: FeedRepository) : Paginator<Any> {
+class FeedPaginator(private val repository: FeedRepository) : Paginator<FeedItem> {
 
     companion object {
         const val PAGE_SIZE = 10
@@ -18,7 +19,7 @@ class FeedPaginator(private val repository: FeedRepository) : Paginator<Any> {
     private var pageNum = 0
 
 
-    private var source = PublishSubject.create<PaginationData<Any>>()
+    private var source = PublishSubject.create<PaginationData<FeedItem>>()
 
     override fun loadNextPage() {
         val currentPageNum = pageNum
@@ -39,7 +40,7 @@ class FeedPaginator(private val repository: FeedRepository) : Paginator<Any> {
         pageNum = 0
     }
 
-    override fun paginationObservable(): Observable<PaginationData<Any>> {
+    override fun paginationObservable(): Observable<PaginationData<FeedItem>> {
         return source
     }
 

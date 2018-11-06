@@ -12,6 +12,7 @@ import com.zagulin.mycard.R
 import com.zagulin.mycard.common.ItemOffsetDecoration
 import com.zagulin.mycard.common.OnNewsItemClickListener
 import com.zagulin.mycard.common.pagination.RecyclerViewPagination
+import com.zagulin.mycard.models.FeedItem
 import com.zagulin.mycard.models.NewsItem
 import com.zagulin.mycard.presentation.presenter.FeedPresenter
 import com.zagulin.mycard.presentation.view.FeedView
@@ -47,7 +48,7 @@ class FeedActivity : MvpAppCompatActivity(), FeedView, OnNewsItemClickListener {
         initToolbar()
     }
 
-    override fun addNews(list: List<Any>) {
+    override fun addNews(list: List<FeedItem>) {
 
             feedAdapter?.addItems(list)
 
