@@ -3,6 +3,8 @@ package com.zagulin.mycard.ui.activity
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arellomobile.mvp.presenter.InjectPresenter
@@ -12,11 +14,13 @@ import com.zagulin.mycard.R
 import com.zagulin.mycard.common.ItemOffsetDecoration
 import com.zagulin.mycard.common.OnNewsItemClickListener
 import com.zagulin.mycard.common.pagination.RecyclerViewPagination
+import com.zagulin.mycard.models.Category
 import com.zagulin.mycard.models.FeedItem
 import com.zagulin.mycard.models.NewsItem
 import com.zagulin.mycard.presentation.presenter.FeedPresenter
 import com.zagulin.mycard.presentation.view.FeedView
 import com.zagulin.mycard.repositories.FeedRepositorySingleton
+import com.zagulin.mycard.ui.adapters.CategoryAdapter
 import com.zagulin.mycard.ui.adapters.FeedAdapter
 import kotlinx.android.synthetic.main.feed_activity.*
 import kotlinx.android.synthetic.main.feed_activity_toolbar.*
@@ -32,7 +36,7 @@ class FeedActivity : MvpAppCompatActivity(), FeedView, OnNewsItemClickListener {
         return FeedPresenter(FeedRepositorySingleton.instance)
     }
 
-
+    private var categoryAdapter: CategoryAdapter? = null
     private var feedAdapter: FeedAdapter? = null
     private var layoutManager: LinearLayoutManager? = null
 
@@ -41,19 +45,43 @@ class FeedActivity : MvpAppCompatActivity(), FeedView, OnNewsItemClickListener {
         startActivity(SpecificNewsActivity.intent(this, item.id!!))
     }
 
+    override fun clearFeed() {
+        feedAdapter?.run {
+            items =  mutableListOf()
+            notifyDataSetChanged()
+        }
+    }
+
+    override fun showCategoriesList(list: MutableList<Category>) {
+        categoryAdapter = CategoryAdapter(context = applicationContext, objects = list)
+        feed_activity_toolbar_spinner.adapter = categoryAdapter
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.feed_activity)
         initRecycle()
+        feed_activity_toolbar_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                categoryAdapter?.getItem(position)?.let {
+                    feedPresenter.changeCategory(it)
+                }
+
+            }
+
+        }
         initToolbar()
     }
 
     override fun addNews(list: List<FeedItem>) {
 
-            feedAdapter?.addItems(list)
+        feedAdapter?.addItems(list)
 
     }
-
 
 
     override fun showErrorMsg(msg: String) {
@@ -71,6 +99,7 @@ class FeedActivity : MvpAppCompatActivity(), FeedView, OnNewsItemClickListener {
         }
 
         initPagination()
+        feedPresenter.showCategories()
     }
 
     private fun initPagination() {

@@ -2,16 +2,26 @@ package com.zagulin.mycard.repositories
 
 import com.zagulin.mycard.common.DataUtils
 import com.zagulin.mycard.models.AdItem
+import com.zagulin.mycard.models.Category
 import com.zagulin.mycard.models.FeedItem
 import com.zagulin.mycard.models.NewsItem
 import io.reactivex.Observable
 import io.reactivex.Single
 
 class LocalFeedRepository : FeedRepositoryWithPagingationImitation() {
+    override fun getCategories(): Single<List<Category>> {
+       return Single.just(feedItems.filter { it is NewsItem }.mapNotNull { (it as NewsItem).category }.distinctBy { it.id })
+    }
+
+    override fun setCategory(category: Category) {
+        cat = category
+    }
+
+    var cat:Category?=null
 
     private val feedItems = getNewsWithAds()
     override fun getNewsWithAdsAsSingle(from: Int, shift: Int): Single<List<FeedItem>> {
-        return Single.just(getPage(feedItems, from, shift))
+        return Single.just(getPage(feedItems.filter {(it is NewsItem) && (it.category == cat)}, from, shift))
     }
 
     private fun getNewsWithAds(): List<FeedItem> {

@@ -1,6 +1,8 @@
 package com.zagulin.mycard.repositories
 
+import com.zagulin.mycard.models.Category
 import com.zagulin.mycard.models.FeedItem
+import io.reactivex.Single
 
 
 abstract class FeedRepositoryWithPagingationImitation : FeedRepository {
@@ -11,4 +13,7 @@ abstract class FeedRepositoryWithPagingationImitation : FeedRepository {
         }
         return newFeedItems
     }
+
+
+
 }
