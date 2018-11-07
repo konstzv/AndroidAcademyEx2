@@ -7,36 +7,38 @@ import com.zagulin.mycard.common.pagination.FeedPaginator
 import com.zagulin.mycard.models.Category
 import com.zagulin.mycard.presentation.view.FeedView
 import com.zagulin.mycard.repositories.FeedRepository
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
 
 @InjectViewState
 open class FeedPresenter(private val repository: FeedRepository) : MvpPresenter<FeedView>() {
 
+    private val compositeDisposable = CompositeDisposable()
+    private val feedPaginator = FeedPaginator(repository)
 
     init {
-        repository.getCategories().subscribeBy(
-                onSuccess = {
-                    repository.setCategory(it[0])
-                },
-                onError = {
-                    viewState.showErrorMsg(it.localizedMessage)
-                }
-        )
-
+        compositeDisposable.run {
+            add(repository.getCategories().subscribeBy(
+                    onSuccess = {
+                        repository.setCategory(it[0])
+                    },
+                    onError = {
+                        viewState.showErrorMsg(it.localizedMessage)
+                    }
+            ))
+            add(feedPaginator.paginationObservable().subscribeBy(
+                    onNext = {
+                        viewState.addNews(it.dataList)
+                    },
+                    onError = {
+                        viewState.showErrorMsg(it.localizedMessage)
+                    }
+            ))
+        }
     }
 
-    private val feedPaginator = FeedPaginator(repository)
-    private val paginationDisposable = feedPaginator.paginationObservable().subscribeBy(
-            onNext = {
-                viewState.addNews(it.dataList)
-            },
-            onError = {
-                viewState.showErrorMsg(it.localizedMessage)
-            }
-    )
-
     fun showCategories() {
-        repository.getCategories().subscribeBy(
+        compositeDisposable.add(repository.getCategories().subscribeBy(
                 onSuccess = {
                     viewState.showCategoriesList(it.toMutableList())
                 },
@@ -44,7 +46,7 @@ open class FeedPresenter(private val repository: FeedRepository) : MvpPresenter<
                     viewState.showErrorMsg(it.localizedMessage)
                 }
 
-        )
+        ))
 
 
     }
@@ -57,8 +59,7 @@ open class FeedPresenter(private val repository: FeedRepository) : MvpPresenter<
 
     override fun onDestroy() {
         super.onDestroy()
-        if (!paginationDisposable.isDisposed)
-            paginationDisposable.dispose()
+        compositeDisposable.dispose()
     }
 
     @SuppressLint("CheckResult")
