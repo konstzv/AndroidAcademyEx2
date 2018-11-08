@@ -6,7 +6,6 @@ import io.reactivex.Single
 
 open class NYTTopStoriesFeedRepository : FeedRepositoryWithPagingationImitation() {
 
-
     companion object {
         private val categories = arrayOf(
                 Category(0, "home")
@@ -22,8 +21,6 @@ open class NYTTopStoriesFeedRepository : FeedRepositoryWithPagingationImitation(
                 , Category(10, "sports")
                 , Category(11, "arts")
                 , Category(12, "books")
-
-
                 , Category(13, "movies")
                 , Category(14, "theater")
                 , Category(15, "sundayreview")
@@ -40,7 +37,7 @@ open class NYTTopStoriesFeedRepository : FeedRepositoryWithPagingationImitation(
         )
     }
 
-    private var cat:Category? = null
+    private var cat: Category? = null
 
     override fun setCategory(category: Category) {
         cat = category
@@ -57,7 +54,7 @@ open class NYTTopStoriesFeedRepository : FeedRepositoryWithPagingationImitation(
     private var data = HashMap<Int, List<FeedItem>>()
 
     override fun getNewsWithAdsAsSingle(from: Int, shift: Int): Single<List<FeedItem>> {
-        cat?.let {category ->
+        cat?.let { category ->
             category.name?.let { categoryName ->
                 //            if (data[category.id] == null) {
 
@@ -89,12 +86,18 @@ open class NYTTopStoriesFeedRepository : FeedRepositoryWithPagingationImitation(
             } ?: run {
                 return Single.just(emptyList())
             }
-        }?: run{  return Single.just(emptyList())}
+        } ?: run { return Single.just(emptyList()) }
     }
 
 
     override fun getNewsById(id: Int): Single<NewsItem> {
-        return Single.just(NewsItem())
+        val res = data[cat!!.id]!!.filter { (it is NewsItem) }.map { it as NewsItem }.filter { it.id == id }.firstOrNull()
+        return if (res == null) {
+            Single.error<NewsItem>(IllegalArgumentException("Новость не найдена"))
+        } else {
+            Single.just<NewsItem>(res)
+        }
+
 
     }
 }
