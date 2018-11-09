@@ -1,40 +1,54 @@
 package com.zagulin.mycard.presentation.presenter
 
 import android.annotation.SuppressLint
+import android.content.SharedPreferences
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
-import com.zagulin.mycard.common.pagination.FeedPaginator
+import com.zagulin.mycard.App
+import com.zagulin.mycard.FeedModule
+import com.zagulin.mycard.common.pagination.Paginator
 import com.zagulin.mycard.models.Category
+import com.zagulin.mycard.models.FeedItem
 import com.zagulin.mycard.presentation.view.FeedView
 import com.zagulin.mycard.repositories.FeedRepository
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
+import toothpick.Toothpick
+import javax.inject.Inject
 
 @InjectViewState
-open class FeedPresenter(private val repository: FeedRepository) : MvpPresenter<FeedView>() {
+class FeedPresenter : MvpPresenter<FeedView>() {
+
+    companion object {
+        const val CATEGORY_PREF_NAME = "category"
+    }
+
+    @Inject
+    lateinit var repository: FeedRepository
+
+    @Inject
+    lateinit var feedPaginator: Paginator<FeedItem>
+
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
+
 
     private val compositeDisposable = CompositeDisposable()
-    private val feedPaginator = FeedPaginator(repository)
+
 
     init {
-        compositeDisposable.run {
-            add(repository.getCategories().subscribeBy(
-                    onSuccess = {
-                        repository.setCategory(it[0])
-                    },
-                    onError = {
-                        viewState.showErrorMsg(it.localizedMessage)
-                    }
-            ))
-            add(feedPaginator.paginationObservable().subscribeBy(
-                    onNext = {
-                        viewState.addNews(it.dataList)
-                    },
-                    onError = {
-                        viewState.showErrorMsg(it.localizedMessage)
-                    }
-            ))
-        }
+        val feedScope = Toothpick.openScopes(App.Companion.Scopes.APP_SCOPE.name, App.Companion.Scopes.FEED_SCOPE.name)
+        feedScope.installModules(FeedModule)
+        Toothpick.inject(this, feedScope)
+
+        compositeDisposable.add(feedPaginator.paginationObservable().subscribeBy(
+                onNext = {
+                    viewState.addNews(it.dataList)
+                },
+                onError = {
+                    viewState.showErrorMsg(it.localizedMessage)
+                }
+        ))
     }
 
     fun showCategories() {
@@ -47,18 +61,40 @@ open class FeedPresenter(private val repository: FeedRepository) : MvpPresenter<
                 }
 
         ))
-
+        viewState.setSelectedCategory(repository.getCategory())
 
     }
 
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        onLoadMore()
+        getDefaultCtategory(
+                {
+                    viewState.setSelectedCategory(it)
+                    onLoadMore()
+                }
+                , viewState::showErrorMsg)
+    }
+
+
+    private fun getDefaultCtategory(onSuccess: (cat: Category) -> Unit, onError: (msg: String) -> Unit) {
+        val defCategory = sharedPreferences.getInt(CATEGORY_PREF_NAME, 0)
+        compositeDisposable.run {
+            add(repository.getCategories().subscribeBy(
+                    onSuccess = { list ->
+                        onSuccess(list.first { it.id == defCategory })
+                    },
+                    onError = {
+                        onError(it.localizedMessage)
+                    }
+            ))
+
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        Toothpick.closeScope(App.Companion.Scopes.FEED_SCOPE)
         compositeDisposable.dispose()
     }
 
@@ -72,6 +108,8 @@ open class FeedPresenter(private val repository: FeedRepository) : MvpPresenter<
         feedPaginator.reload()
         viewState.clearFeed()
         onLoadMore()
+        sharedPreferences.edit().putInt(CATEGORY_PREF_NAME, category.id).apply()
+
     }
 
 

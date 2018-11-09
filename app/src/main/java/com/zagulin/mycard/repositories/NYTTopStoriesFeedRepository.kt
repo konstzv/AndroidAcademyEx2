@@ -3,8 +3,15 @@ package com.zagulin.mycard.repositories
 import com.zagulin.mycard.models.*
 import com.zagulin.mycard.repositories.api.NewYorkTimesAPIService
 import io.reactivex.Single
+import toothpick.Toothpick
+import javax.inject.Inject
 
-open class NYTTopStoriesFeedRepository : FeedRepositoryWithPagingationImitation() {
+class  NYTTopStoriesFeedRepository @Inject constructor() : FeedRepositoryWithPagingationImitation() {
+
+    override fun getCategory(): Category {
+        return cat
+    }
+
 
     companion object {
         private val categories = arrayOf(
@@ -37,7 +44,11 @@ open class NYTTopStoriesFeedRepository : FeedRepositoryWithPagingationImitation(
         )
     }
 
-    private var cat: Category? = null
+    private var cat:Category = categories[0]
+
+    init {
+        Toothpick.inject(this, Toothpick.openScope("FeedScope"))
+    }
 
     override fun setCategory(category: Category) {
         cat = category
@@ -47,14 +58,15 @@ open class NYTTopStoriesFeedRepository : FeedRepositoryWithPagingationImitation(
         return Single.just(categories.asList())
     }
 
-    private val converter = NewItemModelConverter()
+    @Inject
+    lateinit var converter:NewItemModelConverter
     private val service = NewYorkTimesAPIService.create()
 
     @Volatile
     private var data = HashMap<Int, List<FeedItem>>()
 
     override fun getNewsWithAdsAsSingle(from: Int, shift: Int): Single<List<FeedItem>> {
-        cat?.let { category ->
+        cat.let {category ->
             category.name?.let { categoryName ->
                 //            if (data[category.id] == null) {
 
@@ -86,18 +98,19 @@ open class NYTTopStoriesFeedRepository : FeedRepositoryWithPagingationImitation(
             } ?: run {
                 return Single.just(emptyList())
             }
-        } ?: run { return Single.just(emptyList()) }
+        }?: run{  return Single.just(emptyList())}
     }
 
 
     override fun getNewsById(id: Int): Single<NewsItem> {
         val res = data[cat!!.id]!!.filter { (it is NewsItem) }.map { it as NewsItem }.filter { it.id == id }.firstOrNull()
-        return if (res == null) {
+        return if (res==null){
             Single.error<NewsItem>(IllegalArgumentException("Новость не найдена"))
-        } else {
+        }else{
             Single.just<NewsItem>(res)
         }
 
+//        return Single.just())
 
     }
 }

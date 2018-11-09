@@ -1,9 +1,10 @@
 package com.zagulin.mycard.models
 
 import org.joda.time.format.ISODateTimeFormat
+import javax.inject.Inject
 
 
-class NewItemModelConverter : ModelConvertor<NewsItemNetwork, NewsItem> {
+class NewItemModelConverter @Inject constructor() : ModelConvertor<NewsItemNetwork, NewsItem> {
 
 
     enum class ImageFormats(val formatName: String) {

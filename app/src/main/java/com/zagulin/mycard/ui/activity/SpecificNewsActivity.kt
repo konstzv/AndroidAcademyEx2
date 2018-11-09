@@ -5,30 +5,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.format.DateUtils
 import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.bumptech.glide.Glide
 import com.zagulin.mycard.R
 import com.zagulin.mycard.models.NewsItem
 import com.zagulin.mycard.presentation.presenter.SpecificNewsPresenter
 import com.zagulin.mycard.presentation.view.SpecificNewsView
-import com.zagulin.mycard.repositories.FeedRepositorySingleton
 import kotlinx.android.synthetic.main.specific_news_activity.*
 import java.util.*
-import android.graphics.drawable.Drawable
-import com.bumptech.glide.RequestBuilder
-
 
 
 class SpecificNewsActivity : MvpAppCompatActivity(), SpecificNewsView {
-
-    @InjectPresenter
-    lateinit var specificNewsPresenter: SpecificNewsPresenter
-
-    @ProvidePresenter
-    fun provideSpecificNewsPresenter(): SpecificNewsPresenter {
-        return SpecificNewsPresenter(FeedRepositorySingleton.instance)
-    }
-
 
     companion object {
         private const val EXTRA_NEWS_ITEM_ID = "extra_news_item_id"
@@ -39,6 +25,9 @@ class SpecificNewsActivity : MvpAppCompatActivity(), SpecificNewsView {
         }
 
     }
+
+    @InjectPresenter
+    lateinit var specificNewsPresenter: SpecificNewsPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

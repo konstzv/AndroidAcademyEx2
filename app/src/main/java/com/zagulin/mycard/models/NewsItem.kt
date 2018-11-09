@@ -4,7 +4,7 @@ import java.util.*
 
 data class NewsItem(
         var id: Int? = null,
-        val title: String? = null,
+        var title: String? = null,
         val imageUrl: String? = null,
         val category: Category? = null,
         val publishDate: Date? = null,

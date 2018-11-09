@@ -8,7 +8,6 @@ import android.widget.AdapterView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.google.android.material.snackbar.Snackbar
 import com.zagulin.mycard.R
 import com.zagulin.mycard.common.ItemOffsetDecoration
@@ -19,7 +18,6 @@ import com.zagulin.mycard.models.FeedItem
 import com.zagulin.mycard.models.NewsItem
 import com.zagulin.mycard.presentation.presenter.FeedPresenter
 import com.zagulin.mycard.presentation.view.FeedView
-import com.zagulin.mycard.repositories.FeedRepositorySingleton
 import com.zagulin.mycard.ui.adapters.CategoryAdapter
 import com.zagulin.mycard.ui.adapters.FeedAdapter
 import kotlinx.android.synthetic.main.feed_activity.*
@@ -27,14 +25,13 @@ import kotlinx.android.synthetic.main.feed_activity_toolbar.*
 
 
 class FeedActivity : MvpAppCompatActivity(), FeedView, OnNewsItemClickListener {
+    override fun setSelectedCategory(category: Category) {
+        feed_activity_toolbar_spinner.setSelection(categoryAdapter!!.getPosition(category))
+    }
 
     @InjectPresenter
     lateinit var feedPresenter: FeedPresenter
 
-    @ProvidePresenter
-    fun provideFeedPresenter(): FeedPresenter {
-        return FeedPresenter(FeedRepositorySingleton.instance)
-    }
 
     private var categoryAdapter: CategoryAdapter? = null
     private var feedAdapter: FeedAdapter? = null
@@ -47,7 +44,7 @@ class FeedActivity : MvpAppCompatActivity(), FeedView, OnNewsItemClickListener {
 
     override fun clearFeed() {
         feedAdapter?.run {
-            items =  mutableListOf()
+            items = mutableListOf()
             notifyDataSetChanged()
         }
     }
@@ -61,6 +58,11 @@ class FeedActivity : MvpAppCompatActivity(), FeedView, OnNewsItemClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.feed_activity)
         initRecycle()
+
+        initToolbar()
+    }
+
+    private fun initCategorySpinnerItemSelectListener() {
         feed_activity_toolbar_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
@@ -74,7 +76,6 @@ class FeedActivity : MvpAppCompatActivity(), FeedView, OnNewsItemClickListener {
             }
 
         }
-        initToolbar()
     }
 
     override fun addNews(list: List<FeedItem>) {
@@ -100,6 +101,7 @@ class FeedActivity : MvpAppCompatActivity(), FeedView, OnNewsItemClickListener {
 
         initPagination()
         feedPresenter.showCategories()
+        initCategorySpinnerItemSelectListener()
     }
 
     private fun initPagination() {

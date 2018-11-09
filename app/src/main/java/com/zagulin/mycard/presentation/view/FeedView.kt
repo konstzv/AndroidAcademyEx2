@@ -10,4 +10,5 @@ interface FeedView : MvpView {
     fun showErrorMsg(errorMsg: String)
     fun showCategoriesList(list: MutableList<Category>)
     fun clearFeed()
+     fun setSelectedCategory(category: Category)
 }
