@@ -1,11 +1,10 @@
-package com.zagulin.mycard
+package com.zagulin.mycard.di
 
 import com.zagulin.mycard.common.pagination.FeedPaginator
 import com.zagulin.mycard.common.pagination.Paginator
 import com.zagulin.mycard.models.ModelConvertor
 import com.zagulin.mycard.models.NewItemModelConverter
 import com.zagulin.mycard.repositories.FeedRepository
-import com.zagulin.mycard.repositories.LocalFeedRepository
 import com.zagulin.mycard.repositories.NYTTopStoriesFeedRepository
 import toothpick.config.Module
 

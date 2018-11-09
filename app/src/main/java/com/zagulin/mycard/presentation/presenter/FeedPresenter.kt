@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.zagulin.mycard.App
-import com.zagulin.mycard.FeedModule
+import com.zagulin.mycard.di.FeedModule
 import com.zagulin.mycard.common.pagination.Paginator
 import com.zagulin.mycard.models.Category
 import com.zagulin.mycard.models.FeedItem
