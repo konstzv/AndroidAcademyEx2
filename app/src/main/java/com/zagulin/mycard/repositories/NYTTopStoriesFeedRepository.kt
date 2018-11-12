@@ -1,12 +1,18 @@
 package com.zagulin.mycard.repositories
 
-import com.zagulin.mycard.models.*
+import com.zagulin.mycard.models.AdItem
+import com.zagulin.mycard.models.Category
+import com.zagulin.mycard.models.FeedItem
+import com.zagulin.mycard.models.NewsItem
+import com.zagulin.mycard.models.NewItemModelConverter
 import com.zagulin.mycard.repositories.api.NewYorkTimesAPIService
+import io.reactivex.Observable
 import io.reactivex.Single
 import toothpick.Toothpick
 import javax.inject.Inject
 
-class  NYTTopStoriesFeedRepository @Inject constructor() : FeedRepositoryWithPagingationImitation() {
+class NYTTopStoriesFeedRepository @Inject constructor()
+    : FeedRepositoryWithPagingationImitation() {
 
     override fun getCategory(): Category {
         return cat
@@ -44,7 +50,7 @@ class  NYTTopStoriesFeedRepository @Inject constructor() : FeedRepositoryWithPag
         )
     }
 
-    private var cat:Category = categories[0]
+    private var cat: Category = categories[0]
 
     init {
         Toothpick.inject(this, Toothpick.openScope("FeedScope"))
@@ -59,22 +65,22 @@ class  NYTTopStoriesFeedRepository @Inject constructor() : FeedRepositoryWithPag
     }
 
     @Inject
-    lateinit var converter:NewItemModelConverter
+    lateinit var converter: NewItemModelConverter
     private val service = NewYorkTimesAPIService.create()
 
     @Volatile
     private var data = HashMap<Int, List<FeedItem>>()
 
     override fun getNewsWithAdsAsSingle(from: Int, shift: Int): Single<List<FeedItem>> {
-        cat.let {category ->
-            category.name?.let { categoryName ->
+
+
                 //            if (data[category.id] == null) {
 
-                data[category.id]?.let { list ->
+                data[cat.id]?.let { list ->
                     return Single.just(getPage(list, from, shift))
                 } ?: run {
                     return service
-                            .getTopStories(categoryName)
+                            .getTopStories(cat.name)
 
                             .flatMapIterable { it.results }
                             .map { it -> converter.convert(it) }
@@ -86,7 +92,7 @@ class  NYTTopStoriesFeedRepository @Inject constructor() : FeedRepositoryWithPag
 
                                     list.addAll(it)
                                     list.add(1, AdItem())
-                                    data[category.id] = list
+                                    data[cat.id] = list
                                 }
                                 Single.just(getPage(list, from, shift))
 
@@ -95,22 +101,15 @@ class  NYTTopStoriesFeedRepository @Inject constructor() : FeedRepositoryWithPag
                 }
 
 
-            } ?: run {
-                return Single.just(emptyList())
-            }
-        }?: run{  return Single.just(emptyList())}
+
+
     }
 
 
     override fun getNewsById(id: Int): Single<NewsItem> {
-        val res = data[cat!!.id]!!.filter { (it is NewsItem) }.map { it as NewsItem }.filter { it.id == id }.firstOrNull()
-        return if (res==null){
-            Single.error<NewsItem>(IllegalArgumentException("Новость не найдена"))
-        }else{
-            Single.just<NewsItem>(res)
-        }
 
-//        return Single.just())
+          return  Observable.fromIterable( data[cat.id]).filter{it is NewsItem && it.id == id}.map { it as NewsItem }.firstOrError()
+
 
     }
 }

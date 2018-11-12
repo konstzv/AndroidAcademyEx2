@@ -1,3 +1,5 @@
+@file:Suppress("detekt.MagicNumber", "detekt.MaxLineLength","detekt.LongParameterList")
+
 package com.zagulin.mycard.common
 
 

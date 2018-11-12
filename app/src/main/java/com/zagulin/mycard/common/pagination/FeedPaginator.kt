@@ -50,7 +50,11 @@ lateinit var feedRepository:FeedRepository
                 state = STATE.LOADING
                 val currentPageNum = pageNum
                 val start = pageNum++ * PAGE_SIZE
-                feedRepository.getNewsWithAdsAsSingle(start, PAGE_SIZE).subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread()).subscribeBy(
+                feedRepository
+                        .getNewsWithAdsAsSingle(start, PAGE_SIZE)
+                        .subscribeOn(Schedulers.computation())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeBy(
                         onSuccess = {
                             source.onNext(PaginationData(it, currentPageNum, PAGE_SIZE))
                             state = STATE.IDLE

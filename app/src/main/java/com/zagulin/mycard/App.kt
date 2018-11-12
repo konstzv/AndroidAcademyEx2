@@ -13,7 +13,7 @@ import toothpick.config.Module
 class App : Application() {
 
     companion object {
-        val SHARED_PREFS_NAME = "NY_TIMES_PREFS"
+        const val SHARED_PREFS_NAME = "NY_TIMES_PREFS"
 
         enum class Scopes(name: String) {
             APP_SCOPE("AppScope"),
@@ -32,7 +32,8 @@ class App : Application() {
         appScope.installModules(object : Module() {
             init {
                 bind(Context::class.java).toInstance(applicationContext)
-                bind(SharedPreferences::class.java).toInstance(getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE))
+                bind(SharedPreferences::class.java)
+                        .toInstance(getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE))
             }
         })
 

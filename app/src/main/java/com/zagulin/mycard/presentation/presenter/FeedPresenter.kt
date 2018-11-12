@@ -71,7 +71,7 @@ class FeedPresenter : MvpPresenter<FeedView>() {
         getDefaultCtategory(
                 {
                     viewState.setSelectedCategory(it)
-                    onLoadMore()
+
                 }
                 , viewState::showErrorMsg)
     }

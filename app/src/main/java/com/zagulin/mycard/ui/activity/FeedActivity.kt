@@ -25,8 +25,12 @@ import kotlinx.android.synthetic.main.feed_activity_toolbar.*
 
 
 class FeedActivity : MvpAppCompatActivity(), FeedView, OnNewsItemClickListener {
+
     override fun setSelectedCategory(category: Category) {
-        feed_activity_toolbar_spinner.setSelection(categoryAdapter!!.getPosition(category))
+        categoryAdapter?.let {
+            feed_activity_toolbar_spinner.setSelection(it.getPosition(category))
+        }
+
     }
 
     @InjectPresenter
@@ -41,6 +45,8 @@ class FeedActivity : MvpAppCompatActivity(), FeedView, OnNewsItemClickListener {
     override fun onItemClick(item: NewsItem) {
         startActivity(SpecificNewsActivity.intent(this, item.id!!))
     }
+
+
 
     override fun clearFeed() {
         feedAdapter?.run {

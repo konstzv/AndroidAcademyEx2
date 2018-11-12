@@ -16,7 +16,10 @@ import kotlinx.android.synthetic.main.specific_news_activity.*
 import java.util.*
 
 
-class FeedAdapter(var items: MutableList<FeedItem> = mutableListOf(), val onNewsItemClickListener: OnNewsItemClickListener) : RecyclerView.Adapter<ViewHolder>() {
+class FeedAdapter(var items: MutableList<FeedItem> = mutableListOf()
+                  , val onNewsItemClickListener: OnNewsItemClickListener)
+    : RecyclerView.Adapter<ViewHolder>()
+{
 
 
     enum class ItemTypes(val type: Int) {
@@ -71,7 +74,8 @@ class NewsHolder(view: View) : ViewHolder(view) {
         title.text = item.title
         body.text = item.previewText
         item.publishDate?.let {
-            date.text = DateUtils.getRelativeTimeSpanString(it.time, Calendar.getInstance().time.time,
+            date.text = DateUtils
+                    .getRelativeTimeSpanString(it.time, Calendar.getInstance().time.time,
                     0L, DateUtils.FORMAT_ABBREV_ALL)
         }
 
@@ -89,7 +93,11 @@ class NewsHolder(view: View) : ViewHolder(view) {
                     .with(imageView)
                     .load(item.thumbnailUrl)
 
-            Glide.with(imageView).load(item.imageUrl).thumbnail(thumbnailRequest).into(imageView)
+            Glide
+                    .with(imageView)
+                    .load(item.imageUrl)
+                    .thumbnail(thumbnailRequest)
+                    .into(imageView)
         } ?: run {
             imageView.visibility = View.GONE
         }

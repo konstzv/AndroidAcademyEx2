@@ -11,7 +11,7 @@ data class NewsItem(
         val previewText: String? = null,
         val fullText: String? = null,
         val thumbnailUrl: String? = null
-):FeedItem {
+) : FeedItem {
 
 
     override fun equals(other: Any?): Boolean {
@@ -19,17 +19,11 @@ data class NewsItem(
         if (javaClass != other?.javaClass) return false
 
         other as NewsItem
-        if (id != null && (id == other.id)) return true
-        if (id != other.id) return false
-        if (title != other.title) return false
-        if (imageUrl != other.imageUrl) return false
-        if (thumbnailUrl != other.thumbnailUrl) return false
-        if (category != other.category) return false
-        if (publishDate != other.publishDate) return false
-        if (previewText != other.previewText) return false
-        if (fullText != other.fullText) return false
+        if (id != null) {
+            return id == other.id
+        }
+        return hashCode() == (other.hashCode())
 
-        return true
     }
 
     override fun hashCode(): Int {

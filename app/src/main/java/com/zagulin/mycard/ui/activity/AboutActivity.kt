@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -164,7 +165,7 @@ class AboutActivity : AppCompatActivity() {
 
 
     private fun convertDpToPixel(dp: Float): Int {
-        val px = dp * (resources.displayMetrics.densityDpi / 160f)
+        val px = dp * (resources.displayMetrics.densityDpi /  DisplayMetrics.DENSITY_DEFAULT)
         return Math.round(px)
     }
 
@@ -180,8 +181,9 @@ class AboutActivity : AppCompatActivity() {
 
     private fun hideInput() {
         val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        if (currentFocus != null)
+        if (currentFocus != null) {
             imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+        }
     }
 
 }

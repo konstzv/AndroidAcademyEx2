@@ -12,12 +12,15 @@ import javax.inject.Inject
 
 class LocalFeedRepository @Inject constructor() : FeedRepositoryWithPagingationImitation() {
     override fun getCategory(): Category {
-        return  cat
+        return cat
     }
 
 
     override fun getCategories(): Single<List<Category>> {
-        return Single.just(feedItems.filter { it is NewsItem }.mapNotNull { (it as NewsItem).category }.distinctBy { it.id })
+        return Single
+                .just(feedItems.filter { it is NewsItem }
+                        .mapNotNull { (it as NewsItem).category }
+                        .distinctBy { it.id })
     }
 
     override fun setCategory(category: Category) {
@@ -25,12 +28,16 @@ class LocalFeedRepository @Inject constructor() : FeedRepositoryWithPagingationI
     }
 
 
-
     private val feedItems = getNewsWithAds()
-    private  val categories = feedItems.filter { it is NewsItem }.mapNotNull { (it as NewsItem).category }.distinctBy { it.id }
+    private val categories = feedItems
+            .filter { it is NewsItem }
+            .mapNotNull { (it as NewsItem).category }
+            .distinctBy { it.id }
     var cat: Category = categories[0]
     override fun getNewsWithAdsAsSingle(from: Int, shift: Int): Single<List<FeedItem>> {
-        return Single.just(getPage(feedItems.filter { (it is NewsItem) && (it.category == cat) }, from, shift))
+        return Single.just(getPage(feedItems
+                .filter { (it is NewsItem) && (it.category == cat) }, from, shift
+        ))
     }
 
     private fun getNewsWithAds(): List<FeedItem> {
@@ -42,7 +49,9 @@ class LocalFeedRepository @Inject constructor() : FeedRepositoryWithPagingationI
     }
 
     override fun getNewsById(id: Int): Single<NewsItem> {
-        return Observable.fromIterable(feedItems).filter { it is NewsItem && it.id == id }.map { it as NewsItem }.firstOrError()
+        return Observable.fromIterable(feedItems).filter { it is NewsItem && it.id == id }
+                .map { it as NewsItem }
+                .firstOrError()
     }
 }
 
