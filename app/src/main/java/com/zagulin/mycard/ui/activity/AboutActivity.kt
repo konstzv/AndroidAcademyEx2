@@ -180,7 +180,8 @@ class AboutActivity : AppCompatActivity() {
 
 
     private fun hideInput() {
-        val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm = getSystemService(Activity.INPUT_METHOD_SERVICE)
+                as InputMethodManager
         if (currentFocus != null) {
             imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
         }

@@ -1,10 +1,6 @@
 package com.zagulin.mycard.repositories
 
-import com.zagulin.mycard.models.AdItem
-import com.zagulin.mycard.models.Category
-import com.zagulin.mycard.models.FeedItem
-import com.zagulin.mycard.models.NewsItem
-import com.zagulin.mycard.models.NewItemModelConverter
+import com.zagulin.mycard.models.*
 import com.zagulin.mycard.repositories.api.NewYorkTimesAPIService
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -74,33 +70,31 @@ class NYTTopStoriesFeedRepository @Inject constructor()
     override fun getNewsWithAdsAsSingle(from: Int, shift: Int): Single<List<FeedItem>> {
 
 
-                //            if (data[category.id] == null) {
+        //            if (data[category.id] == null) {
 
-                data[cat.id]?.let { list ->
-                    return Single.just(getPage(list, from, shift))
-                } ?: run {
-                    return service
-                            .getTopStories(cat.name)
+        data[cat.id]?.let { list ->
+            return Single.just(getPage(list, from, shift))
+        } ?: run {
+            return service
+                    .getTopStories(cat.name)
 
-                            .flatMapIterable { it.results }
-                            .map { it -> converter.convert(it) }
-                            .toList()
+                    .flatMapIterable { it.results }
+                    .map { it -> converter.convert(it) }
+                    .toList()
 
-                            .flatMap {
-                                val list = mutableListOf<FeedItem>()
-                                if (it.isNotEmpty()) {
+                    .flatMap {
+                        val list = mutableListOf<FeedItem>()
+                        if (it.isNotEmpty()) {
 
-                                    list.addAll(it)
-                                    list.add(1, AdItem())
-                                    data[cat.id] = list
-                                }
-                                Single.just(getPage(list, from, shift))
+                            list.addAll(it)
+                            list.add(1, AdItem())
+                            data[cat.id] = list
+                        }
+                        Single.just(getPage(list, from, shift))
 
-                            }
+                    }
 
-                }
-
-
+        }
 
 
     }
@@ -108,7 +102,10 @@ class NYTTopStoriesFeedRepository @Inject constructor()
 
     override fun getNewsById(id: Int): Single<NewsItem> {
 
-          return  Observable.fromIterable( data[cat.id]).filter{it is NewsItem && it.id == id}.map { it as NewsItem }.firstOrError()
+        return Observable.fromIterable(data[cat.id])
+                .filter { it is NewsItem && it.id == id }
+                .map { it as NewsItem }
+                .firstOrError()
 
 
     }
