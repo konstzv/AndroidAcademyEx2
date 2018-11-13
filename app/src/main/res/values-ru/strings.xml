@@ -16,4 +16,6 @@
     <string name="feed_activity_title">Лента</string>
     <string name="about_activity_title">Загулин Константин</string>
     <string name="ad_title">Реклама</string>
+    <string name="network_error">Ошибка сети</string>
+    <string name="repeart">Повторить</string>
 </resources>

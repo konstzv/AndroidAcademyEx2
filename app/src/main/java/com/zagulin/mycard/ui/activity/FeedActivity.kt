@@ -1,7 +1,9 @@
 package com.zagulin.mycard.ui.activity
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.content.res.Configuration
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -25,6 +27,16 @@ import kotlinx.android.synthetic.main.feed_activity_toolbar.*
 
 
 class FeedActivity : MvpAppCompatActivity(), FeedView, OnNewsItemClickListener {
+    override fun askUserToDoAction(msg: String, actionName: String, action: () -> Unit) {
+        Snackbar.make(
+                feed_activity_text_root,
+                msg,
+                Snackbar.LENGTH_INDEFINITE
+        ).setAction(actionName,{action.invoke()}
+        ).show()
+    }
+
+
 
     override fun setSelectedCategory(category: Category) {
         categoryAdapter?.let {
@@ -66,6 +78,11 @@ class FeedActivity : MvpAppCompatActivity(), FeedView, OnNewsItemClickListener {
         initRecycle()
 
         initToolbar()
+
+    }
+
+    override fun showProgress(isVisible:Boolean){
+        feed_activity_progress.visibility = if (isVisible) View.VISIBLE else View.GONE
     }
 
     private fun initCategorySpinnerItemSelectListener() {
@@ -136,6 +153,7 @@ class FeedActivity : MvpAppCompatActivity(), FeedView, OnNewsItemClickListener {
     private fun isVertical(): Boolean {
         return resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
     }
+
 
 
 }

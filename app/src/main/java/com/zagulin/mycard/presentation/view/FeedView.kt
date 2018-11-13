@@ -11,5 +11,7 @@ interface FeedView : MvpView {
     fun showCategoriesList(list: MutableList<Category>)
     fun clearFeed()
     fun setSelectedCategory(category: Category)
+    fun askUserToDoAction(msg: String,actionName:String, action:() -> Unit)
 
+    fun showProgress(isVisible: Boolean)
 }

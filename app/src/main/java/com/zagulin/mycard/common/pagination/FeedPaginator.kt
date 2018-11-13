@@ -18,19 +18,18 @@ class FeedPaginator @Inject constructor(
 ) : Paginator<FeedItem> {
 
 
-
     @Inject
-lateinit var feedRepository:FeedRepository
+    lateinit var feedRepository: FeedRepository
 
     init {
-        Toothpick.inject(this,Toothpick.openScopes( App.Companion.Scopes.FEED_SCOPE.name))
+        Toothpick.inject(this, Toothpick.openScopes(App.Companion.Scopes.FEED_SCOPE.name))
     }
 
     companion object {
         const val PAGE_SIZE = 10
 
         enum class STATE {
-            IDLE, LOADING
+            IDLE, LOADING, ERROR
         }
     }
 
@@ -42,31 +41,28 @@ lateinit var feedRepository:FeedRepository
     private var source = PublishSubject.create<PaginationData<FeedItem>>()
 
 
-
-
     override fun loadNextPage() {
 
-            if (state == STATE.IDLE) {
-                state = STATE.LOADING
-                val currentPageNum = pageNum
-                val start = pageNum++ * PAGE_SIZE
-                feedRepository
-                        .getNewsWithAdsAsSingle(start, PAGE_SIZE)
-                        .subscribeOn(Schedulers.computation())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeBy(
-                        onSuccess = {
-                            source.onNext(PaginationData(it, currentPageNum, PAGE_SIZE))
-                            state = STATE.IDLE
-                        },
-                        onError = {
-                            source.onError(it)
-                            state = STATE.IDLE
-                        }
+        if (state == STATE.IDLE) {
+            state = STATE.LOADING
+            val currentPageNum = pageNum
+            val start = pageNum++ * PAGE_SIZE
+            feedRepository
+                    .getNewsWithAdsAsSingle(start, PAGE_SIZE)
+                    .subscribeOn(Schedulers.computation())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeBy(
+                            onSuccess = {
+                                source.onNext(PaginationData(it, null, currentPageNum, PAGE_SIZE))
+                                state = STATE.IDLE
+                            },
+                            onError = {
+                                source.onNext(PaginationData(null, it, currentPageNum, PAGE_SIZE))
+                                state = STATE.IDLE
+                            }
 
-                )
-            }
-
+                    )
+        }
 
 
     }
