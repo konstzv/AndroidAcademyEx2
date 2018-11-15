@@ -9,6 +9,5 @@ interface FeedRepository {
     fun getNewsWithAdsAsSingle(from: Int, shift: Int): Single<List<FeedItem>>
     fun getNewsById(id: Int): Single<NewsItem>
     fun getCategories(): Single<List<Category>>
-    fun setCategory(category: Category)
-    fun getCategory(): Category
+    var selectedCategory:Category
 }

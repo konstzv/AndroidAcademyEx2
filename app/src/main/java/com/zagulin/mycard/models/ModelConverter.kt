@@ -1,6 +1,6 @@
 package com.zagulin.mycard.models
 
 
-interface ModelConvertor<From, To> {
+interface ModelConverter<From, To> {
     fun convert(item: From): To
 }

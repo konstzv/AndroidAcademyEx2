@@ -71,7 +71,7 @@ class NewsHolder(view: View) : ViewHolder(view) {
     private val body = view.item_news_layout_recycler_context
 
     fun bind(item: NewsItem, onNewsItemClickListener: OnNewsItemClickListener) {
-        title.text = item.title
+        title.text = item.id.toString()
         body.text = item.previewText
         item.publishDate?.let {
             date.text = DateUtils

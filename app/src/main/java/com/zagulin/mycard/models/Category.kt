@@ -1,13 +1,32 @@
 package com.zagulin.mycard.models
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.io.Serializable
 
-
+@Entity(tableName = "categories")
 class Category(
-        val id: Int = 0,
+        @PrimaryKey
+        val id: Int,
         var name: String
-) : Serializable {
-    companion object {
-        private const val serialVersionUID: Long = 1
+)  {
+
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Category
+
+        return id == other.id
+
+
+    }
+    @Suppress("detekt.MagicNumber")
+    override fun hashCode(): Int {
+        var result = 31 *id.hashCode()
+        result = 31 * result + name.hashCode()
+        return result
     }
 }
+

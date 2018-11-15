@@ -46,7 +46,7 @@ class IntroPresenter : MvpPresenter<IntroView>() {
 
     private fun needToSHowIntro(): Boolean {
         val result = sharedPreferences.getBoolean(SHOULD_SHOW_INTRO_PREF, true)
-        sharedPreferences.edit().putBoolean(SHOULD_SHOW_INTRO_PREF, result).apply()
+        sharedPreferences.edit().putBoolean(SHOULD_SHOW_INTRO_PREF, !result).apply()
         return result
     }
 

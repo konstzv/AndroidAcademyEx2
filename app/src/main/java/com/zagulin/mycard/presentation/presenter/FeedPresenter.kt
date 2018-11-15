@@ -23,8 +23,8 @@ import javax.inject.Inject
 class FeedPresenter : MvpPresenter<FeedView>() {
 
     companion object {
-        const val CATEGORY_PREF_NAME = "category"
-        const val TAG ="FeedPresenter"
+        const val CATEGORY_PREF_NAME = "selectedCategory"
+        const val TAG = "FeedPresenter"
     }
 
     @Inject
@@ -45,22 +45,25 @@ class FeedPresenter : MvpPresenter<FeedView>() {
 
 
     init {
-        val feedScope = Toothpick.openScopes(App.Companion.Scopes.APP_SCOPE.name, App.Companion.Scopes.FEED_SCOPE.name)
+        val feedScope = Toothpick.openScopes(
+                App.Companion.Scopes.APP_SCOPE.name
+                , App.Companion.Scopes.FEED_SCOPE.name
+        )
         feedScope.installModules(FeedModule)
         Toothpick.inject(this, feedScope)
 
         compositeDisposable.add(feedPaginator.paginationObservable().subscribeBy(
                 onNext = {
                     it.dataList?.let { list ->
-                        if (!isFirstLoadingDone){
+                        if (!isFirstLoadingDone) {
                             viewState.showProgress(false)
                         }
                         viewState.addNews(list)
                         viewState.showProgress(false)
-                    }?:it.error?.let {throwable ->
+                    } ?: it.error?.let { throwable ->
                         handleLoadingFeedError(throwable)
 
-                    }?: handleLoadingFeedError()
+                    } ?: handleLoadingFeedError()
 
                 },
                 onError = {
@@ -79,7 +82,7 @@ class FeedPresenter : MvpPresenter<FeedView>() {
                 }
 
         ))
-        viewState.setSelectedCategory(repository.getCategory())
+        viewState.setSelectedCategory(repository.selectedCategory)
 
     }
 
@@ -127,20 +130,26 @@ class FeedPresenter : MvpPresenter<FeedView>() {
 
     fun changeCategory(category: Category) {
 
-        repository.setCategory(category)
+        repository.selectedCategory = category
         feedPaginator.reload()
         viewState.clearFeed()
         onLoadMore()
+
         sharedPreferences.edit().putInt(CATEGORY_PREF_NAME, category.id).apply()
 
 
     }
-    private fun handleLoadingFeedError(throwable:Throwable? = null){
-        if (throwable!=null){
-            Log.e(TAG,throwable.localizedMessage)
+
+    private fun handleLoadingFeedError(throwable: Throwable? = null) {
+        if (throwable != null) {
+            Log.e(TAG, throwable.localizedMessage)
         }
 
-        viewState.askUserToDoAction(context.getString(R.string.network_error),context.getString(R.string.repeart),this::onLoadMore)
+        viewState.askUserToDoAction(
+                context.getString(R.string.network_error)
+                , context.getString(R.string.repeart)
+                , this::onLoadMore
+        )
     }
 
 }

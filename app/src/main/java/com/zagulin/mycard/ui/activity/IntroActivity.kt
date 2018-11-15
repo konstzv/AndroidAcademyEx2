@@ -26,7 +26,12 @@ class IntroActivity:MvpAppCompatActivity(),IntroView{
 
     override fun showIntroActivity() {
         setContentView(R.layout.intro_activity)
-        intro_activity_view_pager.adapter = IntroPageAdapter(supportFragmentManager, arrayOf(IntroFragment.newInstance(R.drawable.feed_screen),IntroFragment.newInstance(R.drawable.current_news_screen),IntroFragment.newInstance(R.drawable.about_screen)))
+        intro_activity_view_pager.adapter = IntroPageAdapter(
+                supportFragmentManager
+                , arrayOf(IntroFragment.newInstance(R.drawable.feed_screen)
+                ,IntroFragment.newInstance(R.drawable.current_news_screen)
+                ,IntroFragment.newInstance(R.drawable.about_screen))
+        )
         intro_activity_page_indicator.setViewPager(intro_activity_view_pager)
         intro_activity_text_view.setOnClickListener{
             moveToFeedActivity()

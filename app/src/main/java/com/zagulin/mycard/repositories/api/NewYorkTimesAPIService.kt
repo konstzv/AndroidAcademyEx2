@@ -3,6 +3,7 @@ package com.zagulin.mycard.repositories.api
 import com.zagulin.mycard.BuildConfig
 import com.zagulin.mycard.models.GetTopStoriesNetworkResponse
 import io.reactivex.Observable
+import io.reactivex.Single
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -16,7 +17,7 @@ interface NewYorkTimesAPIService {
     @GET("topstories/v2/{section}.json")
     fun getTopStories(
             @Path("section") address: String
-    ): Observable<GetTopStoriesNetworkResponse>
+    ): Single<GetTopStoriesNetworkResponse>
 
 
     companion object Factory {

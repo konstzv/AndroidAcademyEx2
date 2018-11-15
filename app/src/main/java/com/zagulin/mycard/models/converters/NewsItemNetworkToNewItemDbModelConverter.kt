@@ -1,10 +1,16 @@
-package com.zagulin.mycard.models
+package com.zagulin.mycard.models.converters
 
+
+import com.zagulin.mycard.models.ModelConverter
+import com.zagulin.mycard.models.NewsItemDb
+import com.zagulin.mycard.models.NewsItemNetwork
 import org.joda.time.format.ISODateTimeFormat
 import javax.inject.Inject
 
 
-class NewItemModelConverter @Inject constructor() : ModelConvertor<NewsItemNetwork, NewsItem> {
+open class NewsItemNetworkToNewItemDbModelConverter @Inject constructor() :
+        ModelConverter<NewsItemNetwork, NewsItemDb>
+        {
 
 
     enum class ImageFormats(val formatName: String) {
@@ -12,10 +18,11 @@ class NewItemModelConverter @Inject constructor() : ModelConvertor<NewsItemNetwo
         , Thumbnail("Standard Thumbnail")
     }
 
-    override fun convert(item: NewsItemNetwork): NewsItem {
+
+    override fun convert(item: NewsItemNetwork): NewsItemDb {
 
         var url: String? = null
-        var thumbnailUrl: String?? = null
+        var thumbnailUrl: String? = null
 
         (item.multimedia).run {
             if (this != null && this.isNotEmpty()) {
@@ -24,11 +31,8 @@ class NewItemModelConverter @Inject constructor() : ModelConvertor<NewsItemNetwo
             }
         }
 
-
-        val result = NewsItem(
-
+        return NewsItemDb(
                 title = item.title,
-                category = Category(name = item.subsection?:""),
                 previewText = item.abstract,
                 fullText = item.abstract,
                 imageUrl = url,
@@ -37,12 +41,7 @@ class NewItemModelConverter @Inject constructor() : ModelConvertor<NewsItemNetwo
                         .dateTimeParser()
                         .withOffsetParsed()
                         .parseDateTime(item.publishedDate)
-                        .toDate()
-
-        )
-
-        result.id = result.hashCode()
-        return result
+                        .toDate())
     }
 
 }

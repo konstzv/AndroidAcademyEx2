@@ -10,11 +10,15 @@ import io.reactivex.Single
 import javax.inject.Inject
 
 
-class LocalFeedRepository @Inject constructor() : FeedRepositoryWithPagingationImitation() {
-    override fun getCategory(): Category {
-        return cat
-    }
+class LocalFeedRepository @Inject constructor() : FeedRepository,PagingationImitation {
 
+    private val feedItems = getNewsWithAds()
+    private val categories = feedItems
+            .filter { it is NewsItem }
+            .mapNotNull { (it as NewsItem).category }
+            .distinctBy { it.id }
+
+    override var selectedCategory = categories[0]
 
     override fun getCategories(): Single<List<Category>> {
         return Single
@@ -23,20 +27,9 @@ class LocalFeedRepository @Inject constructor() : FeedRepositoryWithPagingationI
                         .distinctBy { it.id })
     }
 
-    override fun setCategory(category: Category) {
-        cat = category
-    }
-
-
-    private val feedItems = getNewsWithAds()
-    private val categories = feedItems
-            .filter { it is NewsItem }
-            .mapNotNull { (it as NewsItem).category }
-            .distinctBy { it.id }
-    var cat: Category = categories[0]
     override fun getNewsWithAdsAsSingle(from: Int, shift: Int): Single<List<FeedItem>> {
         return Single.just(getPage(feedItems
-                .filter { (it is NewsItem) && (it.category == cat) }, from, shift
+                .filter { (it is NewsItem) && (it.category == selectedCategory) }, from, shift
         ))
     }
 

@@ -1,19 +1,17 @@
 package com.zagulin.mycard.repositories
 
-import com.zagulin.mycard.models.*
-import com.zagulin.mycard.repositories.api.NewYorkTimesAPIService
+import com.zagulin.mycard.models.Category
+import com.zagulin.mycard.models.FeedItem
+import com.zagulin.mycard.models.NewsItem
+import com.zagulin.mycard.models.NewsItemNetwork
+import com.zagulin.mycard.models.converters.NewsItemNetworkToNewItemModelConverter
 import io.reactivex.Observable
 import io.reactivex.Single
 import toothpick.Toothpick
 import javax.inject.Inject
 
 class NYTTopStoriesFeedRepository @Inject constructor()
-    : FeedRepositoryWithPagingationImitation() {
-
-    override fun getCategory(): Category {
-        return cat
-    }
-
+    : FeedRepositoryWithNetwork(), PagingationImitation {
 
     companion object {
         private val categories = arrayOf(
@@ -46,68 +44,62 @@ class NYTTopStoriesFeedRepository @Inject constructor()
         )
     }
 
-    private var cat: Category = categories[0]
+
+    override var selectedCategory: Category = categories[0]
 
     init {
         Toothpick.inject(this, Toothpick.openScope("FeedScope"))
     }
 
-    override fun setCategory(category: Category) {
-        cat = category
-    }
 
     override fun getCategories(): Single<List<Category>> {
         return Single.just(categories.asList())
     }
 
-    @Inject
-    lateinit var converter: NewItemModelConverter
-    private val service = NewYorkTimesAPIService.create()
+    var mConverterItemNetworkToNews: NewsItemNetworkToNewItemModelConverter = NewsItemNetworkToNewItemModelConverter()
+
 
     @Volatile
     private var data = HashMap<Int, List<FeedItem>>()
 
+
     override fun getNewsWithAdsAsSingle(from: Int, shift: Int): Single<List<FeedItem>> {
-
-
-        //            if (data[category.id] == null) {
-
-        data[cat.id]?.let { list ->
-            return Single.just(getPage(list, from, shift))
+        getFromStorage()?.let {
+            return Single.just(getPage(it, from, shift))
         } ?: run {
-            return service
-                    .getTopStories(cat.name)
-
-                    .flatMapIterable { it.results }
-                    .map { it -> converter.convert(it) }
-                    .toList()
-
-                    .flatMap {
-                        val list = mutableListOf<FeedItem>()
-                        if (it.isNotEmpty()) {
-
-                            list.addAll(it)
-                            list.add(1, AdItem())
-                            data[cat.id] = list
-                        }
-                        Single.just(getPage(list, from, shift))
-
-                    }
-
+            return serverDataToBasic(getDataFromNetwork(selectedCategory))
+                    .doOnSuccess { saveToStorage(it) }
+                    .map { getPage(it, from, shift) }
         }
+    }
 
 
+    private fun serverDataToBasic(dataFromServer: Single<List<NewsItemNetwork?>>): Single<List<FeedItem>> {
+        return dataFromServer.flatMap {
+            Observable
+                    .fromIterable(it)
+                    .map(mConverterItemNetworkToNews::convert)
+                    .toList()
+        }
+    }
+
+    private fun saveToStorage(list: List<FeedItem>) {
+        data[selectedCategory.id] = list
+    }
+
+
+    private fun getFromStorage(): List<FeedItem>? {
+        return data[selectedCategory.id]
     }
 
 
     override fun getNewsById(id: Int): Single<NewsItem> {
-
-        return Observable.fromIterable(data[cat.id])
-                .filter { it is NewsItem && it.id == id }
+        return Observable.fromIterable(data[selectedCategory.id])
+                .filter {
+                    it is NewsItem && it.id == id
+                }
                 .map { it as NewsItem }
                 .firstOrError()
-
-
     }
 }
 
