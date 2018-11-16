@@ -5,6 +5,7 @@ import com.arellomobile.mvp.MvpPresenter
 import com.zagulin.mycard.App
 import com.zagulin.mycard.presentation.view.SpecificNewsView
 import com.zagulin.mycard.repositories.FeedRepository
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
 import toothpick.Toothpick
@@ -22,7 +23,7 @@ class SpecificNewsPresenter : MvpPresenter<SpecificNewsView>() {
 
     private val compositeDisposable = CompositeDisposable()
     fun displayNewsById(id: Int) {
-        compositeDisposable.add(repository.getNewsById(id).subscribeBy(
+        compositeDisposable.add(repository.getNewsById(id).observeOn(AndroidSchedulers.mainThread()).subscribeBy(
                 onSuccess = { viewState.displayNews(it) },
                 onError = { println(it) }
         ))

@@ -109,6 +109,7 @@ class FeedPresenter : MvpPresenter<FeedView>() {
                     },
                     onError = {
                         onError(it.localizedMessage)
+                        it.printStackTrace()
                     }
             ))
 

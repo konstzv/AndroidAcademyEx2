@@ -49,7 +49,6 @@ class FeedPaginator @Inject constructor(
             val start = pageNum++ * PAGE_SIZE
             feedRepository
                     .getNewsWithAdsAsSingle(start, PAGE_SIZE)
-                    .subscribeOn(Schedulers.computation())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeBy(
                             onSuccess = {

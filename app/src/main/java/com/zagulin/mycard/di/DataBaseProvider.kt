@@ -17,7 +17,7 @@ class DataBaseProvider : Provider<AppDatabase> {
 
     override fun get(): AppDatabase = Room
             .databaseBuilder(context.applicationContext, AppDatabase::class.java, "ny_times_db")
-            .allowMainThreadQueries()
+
             .fallbackToDestructiveMigration()
             .build()
 

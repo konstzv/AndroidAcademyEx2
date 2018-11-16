@@ -74,7 +74,7 @@ class NYTTopStoriesFeedRepository @Inject constructor()
     }
 
 
-    private fun serverDataToBasic(dataFromServer: Single<List<NewsItemNetwork?>>): Single<List<FeedItem>> {
+    private fun serverDataToBasic(dataFromServer: Single<List<NewsItemNetwork>>): Single<List<FeedItem>> {
         return dataFromServer.flatMap {
             Observable
                     .fromIterable(it)

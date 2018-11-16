@@ -1,0 +1,3 @@
+[submodule "android-style-guide"]
+	path = android-style-guide
+	url = https://github.com/hhru/android-style-guide.git

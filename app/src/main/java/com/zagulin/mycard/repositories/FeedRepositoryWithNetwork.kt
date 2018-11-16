@@ -10,7 +10,7 @@ abstract class FeedRepositoryWithNetwork : FeedRepository {
 
     private val service = NewYorkTimesAPIService.create()
 
-    fun getDataFromNetwork(category: Category): Single<List<NewsItemNetwork?>> {
+    fun getDataFromNetwork(category: Category): Single<List<NewsItemNetwork>> {
         return service
                 .getTopStories(category.name)
                 .map {

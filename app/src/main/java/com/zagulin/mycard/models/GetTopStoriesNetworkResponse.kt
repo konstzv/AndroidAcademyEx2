@@ -15,7 +15,7 @@ data class GetTopStoriesNetworkResponse(
         val section: String? = null,
 
         @field:SerializedName("results")
-        val results: List<NewsItemNetwork?>? = null,
+        val results: List<NewsItemNetwork>? = null,
 
         @field:SerializedName("num_results")
         val numResults: Int? = null,
