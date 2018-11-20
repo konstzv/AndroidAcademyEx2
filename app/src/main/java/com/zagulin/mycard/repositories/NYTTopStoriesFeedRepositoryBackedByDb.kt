@@ -5,8 +5,11 @@ import com.zagulin.mycard.db.AppDatabase
 import com.zagulin.mycard.models.*
 import com.zagulin.mycard.models.converters.NewsItemDbToNewItemModelConverter
 import com.zagulin.mycard.models.converters.NewsItemNetworkToNewItemDbModelConverter
+import com.zagulin.mycard.models.converters.NewsItemToNewItemDbModelConverter
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import toothpick.Toothpick
 import javax.inject.Inject
@@ -52,7 +55,7 @@ class NYTTopStoriesFeedRepositoryBackedByDb @Inject constructor()
 
     private var newsItemDbToNewItemModelConverter = NewsItemDbToNewItemModelConverter()
     private var newsItemNetworkToNewItemDbModelConverter = NewsItemNetworkToNewItemDbModelConverter()
-
+    private var  newsItemToNewItemDbModelConverter = NewsItemToNewItemDbModelConverter()
 
     init {
         Toothpick.inject(this, Toothpick.openScopes(
@@ -61,6 +64,16 @@ class NYTTopStoriesFeedRepositoryBackedByDb @Inject constructor()
         )
     }
 
+    override fun updateItem(newsItem: NewsItem): Completable {
+       return Completable.fromAction{
+            appDatabase
+                    .feedDao()
+                    .update(newsItemToNewItemDbModelConverter.convert(newsItem))
+        }.subscribeOn(Schedulers.io())
+
+
+
+    }
 
     override fun getCategories(): Single<List<Category>> {
         return appDatabase.feedDao().getAllCategories().subscribeOn(Schedulers.io())
@@ -69,7 +82,7 @@ class NYTTopStoriesFeedRepositoryBackedByDb @Inject constructor()
 
     override fun getNewsWithAdsAsSingle(from: Int, shift: Int): Single<List<FeedItem>> {
         return getFromStorage()
-                .filter { it.isEmpty() }
+                .filter { it.isNotEmpty() }
                 .switchIfEmpty(
                         serverDataToDb(getDataFromNetwork(selectedCategory))
                                 .doOnSuccess { saveToStorage(it) }
@@ -102,7 +115,11 @@ class NYTTopStoriesFeedRepositoryBackedByDb @Inject constructor()
     private fun getFromStorage(): Single<List<FeedItem>> {
         return appDatabase.feedDao().findItemByCategoryId(selectedCategory.id)
                 .flatMapObservable { it -> Observable.fromIterable(it) }
-                .map { newsItemDbToNewItemModelConverter.convert(it) as FeedItem }
+                .map {
+                  val item =  newsItemDbToNewItemModelConverter.convert(it)
+                    item.category = selectedCategory
+                     item as FeedItem
+                }
                 .toList().subscribeOn(Schedulers.io())
     }
 
@@ -110,7 +127,12 @@ class NYTTopStoriesFeedRepositoryBackedByDb @Inject constructor()
     override fun getNewsById(id: Int): Single<NewsItem> {
         return  appDatabase.feedDao()
                 .findItemById(id.toLong())
-                .map { newsItemDbToNewItemModelConverter.convert(it) }
+                .map {
+                    val item = newsItemDbToNewItemModelConverter.convert(it)
+                    item.category = selectedCategory
+                    item
+
+                }
                 .  subscribeOn(Schedulers.io())
     }
 }
