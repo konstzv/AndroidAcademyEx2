@@ -17,24 +17,23 @@
         <activity
             android:name=".ui.activity.FeedActivity"
             android:label="@string/feed_activity_title"
-            android:theme="@style/BaseTheme.NoToolbar"/>
+            android:theme="@style/BaseTheme.NoToolbar" />
         <activity
             android:name=".ui.activity.AboutActivity"
             android:label="@string/about_activity_title"
             android:theme="@style/AboutActivityTheme" />
+        <activity android:name=".ui.activity.SpecificNewsActivity" />
         <activity
-            android:name=".ui.activity.SpecificNewsActivity"
-            android:theme="@style/BaseTheme" />
-        <activity android:name=".ui.activity.IntroActivity"
+            android:name=".ui.activity.IntroActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

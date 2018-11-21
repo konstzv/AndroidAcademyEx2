@@ -14,6 +14,7 @@ import com.zagulin.mycard.models.Category
 import com.zagulin.mycard.models.FeedItem
 import com.zagulin.mycard.presentation.view.FeedView
 import com.zagulin.mycard.repositories.FeedRepository
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
 import toothpick.Toothpick
@@ -40,6 +41,8 @@ class FeedPresenter : MvpPresenter<FeedView>() {
 
 
     private val compositeDisposable = CompositeDisposable()
+
+    private val tempCompositeDisposable = CompositeDisposable()
 
     private var isFirstLoadingDone = false
 
@@ -151,6 +154,18 @@ class FeedPresenter : MvpPresenter<FeedView>() {
                 , context.getString(R.string.repeart)
                 , this::onLoadMore
         )
+    }
+
+    fun subscribeOnNewsItem(id: Int) {
+        tempCompositeDisposable.add(repository.listenItemUpdate(id).observeOn(AndroidSchedulers.mainThread()).subscribeBy(
+                onNext = { viewState.updateNews(it) },
+                onError = { println(it) }
+        )
+        )
+    }
+
+    fun clearTempSubscriptions(){
+        tempCompositeDisposable.clear()
     }
 
 }

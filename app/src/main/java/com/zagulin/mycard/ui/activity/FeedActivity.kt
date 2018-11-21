@@ -1,9 +1,7 @@
 package com.zagulin.mycard.ui.activity
 
-import android.app.ProgressDialog
 import android.content.Intent
 import android.content.res.Configuration
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -22,11 +20,33 @@ import com.zagulin.mycard.presentation.presenter.FeedPresenter
 import com.zagulin.mycard.presentation.view.FeedView
 import com.zagulin.mycard.ui.adapters.CategoryAdapter
 import com.zagulin.mycard.ui.adapters.FeedAdapter
+import io.reactivex.Observable
+import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.rxkotlin.zipWith
 import kotlinx.android.synthetic.main.feed_activity.*
 import kotlinx.android.synthetic.main.feed_activity_toolbar.*
 
 
 class FeedActivity : MvpAppCompatActivity(), FeedView, OnNewsItemClickListener {
+    override fun updateNews(newsItem: NewsItem) {
+        feedAdapter?.let {feedAdapter ->
+            val indexes = Observable.range(0, feedAdapter.items.size)
+            Observable.fromIterable(feedAdapter.items)
+                    .zipWith(indexes).filter{
+                        val item = it.first
+                        item is NewsItem && item.id == newsItem.id
+                    }.subscribeBy (
+                           onNext = {
+                               feedAdapter.updateItem(it.second,newsItem)
+                           }
+                    )
+//            for (i in 0 until it.items.size) { // equivalent of 1 <= i && i <= 10
+//                if (it.items )
+//            }
+        }
+
+    }
+
     override fun askUserToDoAction(msg: String, actionName: String, action: () -> Unit) {
         Snackbar.make(
                 feed_activity_text_root,
@@ -55,7 +75,12 @@ class FeedActivity : MvpAppCompatActivity(), FeedView, OnNewsItemClickListener {
 
 
     override fun onItemClick(item: NewsItem) {
-        startActivity(SpecificNewsActivity.intent(this, item.id!!))
+        item.id?.let {
+            feedPresenter.subscribeOnNewsItem(it)
+            startActivity(SpecificNewsActivity.intent(this, it))
+        }
+
+
     }
 
 
@@ -154,6 +179,10 @@ class FeedActivity : MvpAppCompatActivity(), FeedView, OnNewsItemClickListener {
         return resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
     }
 
+    override fun onResume() {
+        super.onResume()
+        feedPresenter.clearTempSubscriptions()
+    }
 
 
 }

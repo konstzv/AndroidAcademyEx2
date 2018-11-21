@@ -3,18 +3,16 @@ package com.zagulin.mycard.ui.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.text.format.DateUtils
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.bumptech.glide.Glide
+import androidx.appcompat.app.AppCompatActivity
 import com.zagulin.mycard.R
-import com.zagulin.mycard.models.NewsItem
-import com.zagulin.mycard.presentation.presenter.SpecificNewsPresenter
-import com.zagulin.mycard.presentation.view.SpecificNewsView
-import kotlinx.android.synthetic.main.specific_news_activity.*
-import java.util.*
+import com.zagulin.mycard.ui.fragment.SpecificNewsEditFragment
+import com.zagulin.mycard.ui.fragment.SpecificNewsViewFragment
 
 
-class SpecificNewsActivity : MvpAppCompatActivity(), SpecificNewsView {
+class SpecificNewsActivity : AppCompatActivity(), SpecificNewsViewFragment.Companion.OnEditClickListener {
+    override fun onEditClick() {
+        shoEditFragment(newsItemId)
+    }
 
     companion object {
         private const val EXTRA_NEWS_ITEM_ID = "extra_news_item_id"
@@ -26,37 +24,36 @@ class SpecificNewsActivity : MvpAppCompatActivity(), SpecificNewsView {
 
     }
 
-    @InjectPresenter
-    lateinit var specificNewsPresenter: SpecificNewsPresenter
+
+    private var newsItemId: Int = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.specific_news_activity)
-        val newsItemId = intent.getIntExtra(EXTRA_NEWS_ITEM_ID, 0)
-        specificNewsPresenter.displayNewsById(newsItemId)
+        newsItemId = intent.getIntExtra(EXTRA_NEWS_ITEM_ID, 0)
+        showViewFragment(newsItemId)
+
 
     }
 
-    override fun displayNews(newsItem: NewsItem) {
-        supportActionBar?.title = newsItem.category?.name
-        specific_news_activity_text_view_title.text = newsItem.title
-        specific_news_activity_text_view_article.text = newsItem.fullText
+    private fun showViewFragment(newsItemId: Int) {
+        val fragment = SpecificNewsViewFragment.newInstance(newsItemId)
+        fragment.onEditClickListener = this
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.specific_news_activity_content, fragment, "viewFragment")
 
-        val thumbnailRequest = Glide
-                .with(this)
-                .load(newsItem.thumbnailUrl)
-
-        Glide.with(this)
-                .load(newsItem.imageUrl)
-                .thumbnail(thumbnailRequest)
-                .into(specific_news_activity_image)
-
-        newsItem.publishDate?.let {
-            specific_news_activity_text_view_date.text =
-                    DateUtils.getRelativeTimeSpanString(it.time, Calendar.getInstance().time.time,
-                            0L, DateUtils.FORMAT_ABBREV_ALL)
-        }
+                .commit()
     }
 
+    private fun shoEditFragment(newsItemId: Int) {
+        val fragment = SpecificNewsEditFragment.newInstance(newsItemId)
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.specific_news_activity_content, fragment, "editFragment")
+                .addToBackStack(null)
+                .commit()
+    }
 
 }

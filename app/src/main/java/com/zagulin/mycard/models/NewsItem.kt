@@ -9,7 +9,7 @@ data class NewsItem(
         var category: Category? = null,
         val publishDate: Date? = null,
         val previewText: String? = null,
-        val fullText: String? = null,
+        var fullText: String? = null,
         val thumbnailUrl: String? = null
 ) : FeedItem {
     init {

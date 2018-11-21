@@ -7,15 +7,24 @@ import com.zagulin.mycard.models.converters.NewsItemDbToNewItemModelConverter
 import com.zagulin.mycard.models.converters.NewsItemNetworkToNewItemDbModelConverter
 import com.zagulin.mycard.models.converters.NewsItemToNewItemDbModelConverter
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import toothpick.Toothpick
 import javax.inject.Inject
 
 class NYTTopStoriesFeedRepositoryBackedByDb @Inject constructor()
     : FeedRepositoryWithNetwork(), PagingationImitation {
+
+
+    override fun listenItemUpdate(id: Int): Flowable<NewsItem> {
+        return appDatabase.feedDao().listenItemUpdate(id.toLong()).map {
+            val item = newsItemDbToNewItemModelConverter.convert(it)
+            item.category = selectedCategory
+            item
+        }.subscribeOn(Schedulers.io())
+    }
 
     companion object {
         private val categories = arrayOf(
@@ -55,7 +64,7 @@ class NYTTopStoriesFeedRepositoryBackedByDb @Inject constructor()
 
     private var newsItemDbToNewItemModelConverter = NewsItemDbToNewItemModelConverter()
     private var newsItemNetworkToNewItemDbModelConverter = NewsItemNetworkToNewItemDbModelConverter()
-    private var  newsItemToNewItemDbModelConverter = NewsItemToNewItemDbModelConverter()
+
 
     init {
         Toothpick.inject(this, Toothpick.openScopes(
@@ -65,18 +74,39 @@ class NYTTopStoriesFeedRepositoryBackedByDb @Inject constructor()
     }
 
     override fun updateItem(newsItem: NewsItem): Completable {
-       return Completable.fromAction{
+        return Completable.fromAction {
             appDatabase
                     .feedDao()
-                    .update(newsItemToNewItemDbModelConverter.convert(newsItem))
+                    .update(
+                            newsItem.id ?: 0
+                            , newsItem.title ?: ""
+                            , newsItem.fullText ?: ""
+                    )
         }.subscribeOn(Schedulers.io())
-
 
 
     }
 
+    override fun removeItem(id: Int): Completable {
+        return Completable.fromAction {
+            appDatabase.feedDao().deleteItem(id)
+        }.subscribeOn(Schedulers.io())
+    }
+
     override fun getCategories(): Single<List<Category>> {
-        return appDatabase.feedDao().getAllCategories().subscribeOn(Schedulers.io())
+        return appDatabase.feedDao().getAllCategories()
+                .filter { it.isNotEmpty() }
+                .switchIfEmpty(
+                        Completable
+                                .fromAction {
+                                    appDatabase
+                                        .feedDao()
+                                            .insertCategories(categories.toList())
+                                }.andThen(appDatabase.feedDao().getAllCategories())
+
+
+                ).subscribeOn(Schedulers.io())
+
     }
 
 
@@ -88,7 +118,7 @@ class NYTTopStoriesFeedRepositoryBackedByDb @Inject constructor()
                                 .doOnSuccess { saveToStorage(it) }
                                 .flatMap { getFromStorage() }
 
-                )
+                ).map { getPage(it,from,shift) }
 
     }
 
@@ -116,16 +146,16 @@ class NYTTopStoriesFeedRepositoryBackedByDb @Inject constructor()
         return appDatabase.feedDao().findItemByCategoryId(selectedCategory.id)
                 .flatMapObservable { it -> Observable.fromIterable(it) }
                 .map {
-                  val item =  newsItemDbToNewItemModelConverter.convert(it)
+                    val item = newsItemDbToNewItemModelConverter.convert(it)
                     item.category = selectedCategory
-                     item as FeedItem
+                    item as FeedItem
                 }
                 .toList().subscribeOn(Schedulers.io())
     }
 
 
     override fun getNewsById(id: Int): Single<NewsItem> {
-        return  appDatabase.feedDao()
+        return appDatabase.feedDao()
                 .findItemById(id.toLong())
                 .map {
                     val item = newsItemDbToNewItemModelConverter.convert(it)
@@ -133,8 +163,22 @@ class NYTTopStoriesFeedRepositoryBackedByDb @Inject constructor()
                     item
 
                 }
-                .  subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
     }
+
+//    override fun listenNewsUpdate(id: Int): Single<NewsItem> {
+//        return appDatabase.feedDao()
+//                .findItemById(id.toLong())
+//                .map {
+//                    val item = newsItemDbToNewItemModelConverter.convert(it)
+//                    item.category = selectedCategory
+//                    item
+//
+//                }
+//                .subscribeOn(Schedulers.io())
+//    }
+
+
 }
 
 

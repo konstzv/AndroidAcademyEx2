@@ -12,14 +12,12 @@ import com.zagulin.mycard.models.AdItem
 import com.zagulin.mycard.models.FeedItem
 import com.zagulin.mycard.models.NewsItem
 import kotlinx.android.synthetic.main.item_news.view.*
-import kotlinx.android.synthetic.main.specific_news_activity.*
 import java.util.*
 
 
 class FeedAdapter(var items: MutableList<FeedItem> = mutableListOf()
                   , val onNewsItemClickListener: OnNewsItemClickListener)
-    : RecyclerView.Adapter<ViewHolder>()
-{
+    : RecyclerView.Adapter<ViewHolder>() {
 
 
     enum class ItemTypes(val type: Int) {
@@ -57,6 +55,11 @@ class FeedAdapter(var items: MutableList<FeedItem> = mutableListOf()
             (holder as NewsHolder).bind(item, onNewsItemClickListener)
         }
     }
+
+    fun updateItem(index: Int, item: FeedItem) {
+        items[index] = item
+        notifyItemChanged(index)
+    }
 }
 
 open class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
@@ -72,11 +75,11 @@ class NewsHolder(view: View) : ViewHolder(view) {
 
     fun bind(item: NewsItem, onNewsItemClickListener: OnNewsItemClickListener) {
         title.text = item.id.toString()
-        body.text = item.previewText
+        body.text = item.fullText
         item.publishDate?.let {
             date.text = DateUtils
                     .getRelativeTimeSpanString(it.time, Calendar.getInstance().time.time,
-                    0L, DateUtils.FORMAT_ABBREV_ALL)
+                            0L, DateUtils.FORMAT_ABBREV_ALL)
         }
 
         item.category?.name.let {
