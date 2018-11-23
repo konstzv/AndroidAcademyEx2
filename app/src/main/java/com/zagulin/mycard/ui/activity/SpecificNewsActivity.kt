@@ -10,10 +10,6 @@ import com.zagulin.mycard.ui.fragment.SpecificNewsViewFragment
 
 
 class SpecificNewsActivity : AppCompatActivity(), SpecificNewsViewFragment.Companion.OnEditClickListener {
-    override fun onEditClick() {
-        shoEditFragment(newsItemId)
-    }
-
     companion object {
         private const val EXTRA_NEWS_ITEM_ID = "extra_news_item_id"
         fun intent(context: Context, newsItemId: Int): Intent {
@@ -35,6 +31,10 @@ class SpecificNewsActivity : AppCompatActivity(), SpecificNewsViewFragment.Compa
         showViewFragment(newsItemId)
 
 
+    }
+
+    override fun onEditClick() {
+        shoEditFragment(newsItemId)
     }
 
     private fun showViewFragment(newsItemId: Int) {

@@ -8,7 +8,8 @@ import java.util.*
 
 @Entity(tableName = "news_items")
 data class NewsItemDb(
-
+        @PrimaryKey(autoGenerate = true)
+        var id: Int = 0,
         var title: String? = null,
         var imageUrl: String? = null,
         var categoryId: Int? = null,
@@ -17,8 +18,6 @@ data class NewsItemDb(
         var fullText: String? = null,
         var thumbnailUrl: String? = null
 ){
-        @PrimaryKey(autoGenerate = true)
-        var id: Int = hashCode()
 
 
         override fun equals(other: Any?): Boolean {

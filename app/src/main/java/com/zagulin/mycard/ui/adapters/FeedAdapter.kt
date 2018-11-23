@@ -60,6 +60,11 @@ class FeedAdapter(var items: MutableList<FeedItem> = mutableListOf()
         items[index] = item
         notifyItemChanged(index)
     }
+
+    fun removeItem(index: Int) {
+        items.removeAt(index)
+        notifyItemRemoved(index)
+    }
 }
 
 open class ViewHolder(view: View) : RecyclerView.ViewHolder(view)

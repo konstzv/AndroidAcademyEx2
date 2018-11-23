@@ -18,7 +18,6 @@ class IntroActivity:MvpAppCompatActivity(),IntroView{
     @InjectPresenter
     lateinit var introPresenter: IntroPresenter
 
-
     override fun moveToFeedActivity() {
         startActivity(Intent(this, FeedActivity::class.java))
         finish()

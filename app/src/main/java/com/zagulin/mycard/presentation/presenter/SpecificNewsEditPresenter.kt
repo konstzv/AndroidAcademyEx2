@@ -1,5 +1,6 @@
 package com.zagulin.mycard.presentation.presenter
 
+import android.util.Log
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.zagulin.mycard.App
@@ -11,6 +12,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
 import toothpick.Toothpick
+import java.util.*
 import javax.inject.Inject
 
 @InjectViewState
@@ -42,12 +44,20 @@ class SpecificNewsEditPresenter : MvpPresenter<SpecificNewsEditView>() {
     }
 
 
-    fun saveChanges(title: String, article: String): Completable? {
+    fun saveChanges(title: String, article: String, date: Date) {
         newsItem?.let {
             it.title = title
             it.fullText = article
-            return repository.updateItem(it)
-        } ?: return null
+            it.publishDate = date
+             repository.updateItem(it).subscribeBy (
+                     onComplete = {
+                         Log.d("TEST","COMPLETE")
+                     },
+                     onError = {
+                         Log.d("TEST",it.localizedMessage)
+                     }
+             )
+        }
 
     }
 }

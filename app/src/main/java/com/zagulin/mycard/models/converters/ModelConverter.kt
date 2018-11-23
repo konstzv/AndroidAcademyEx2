@@ -1,4 +1,4 @@
-package com.zagulin.mycard.models
+package com.zagulin.mycard.models.converters
 
 
 interface ModelConverter<From, To> {

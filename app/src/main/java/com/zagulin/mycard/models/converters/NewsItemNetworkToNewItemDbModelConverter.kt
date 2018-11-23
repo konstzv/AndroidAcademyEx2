@@ -1,7 +1,6 @@
 package com.zagulin.mycard.models.converters
 
 
-import com.zagulin.mycard.models.ModelConverter
 import com.zagulin.mycard.models.NewsItemDb
 import com.zagulin.mycard.models.NewsItemNetwork
 import org.joda.time.format.ISODateTimeFormat

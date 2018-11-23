@@ -16,6 +16,7 @@ import com.zagulin.mycard.common.pagination.RecyclerViewPagination
 import com.zagulin.mycard.models.Category
 import com.zagulin.mycard.models.FeedItem
 import com.zagulin.mycard.models.NewsItem
+import com.zagulin.mycard.models.PaginationData
 import com.zagulin.mycard.presentation.presenter.FeedPresenter
 import com.zagulin.mycard.presentation.view.FeedView
 import com.zagulin.mycard.ui.adapters.CategoryAdapter
@@ -28,6 +29,22 @@ import kotlinx.android.synthetic.main.feed_activity_toolbar.*
 
 
 class FeedActivity : MvpAppCompatActivity(), FeedView, OnNewsItemClickListener {
+    override fun removeNews(id: Int) {
+        feedAdapter?.let {feedAdapter ->
+            val indexes = Observable.range(0, feedAdapter.items.size)
+            Observable.fromIterable(feedAdapter.items)
+                    .zipWith(indexes).filter{
+                        val item = it.first
+                        item is NewsItem && item.id == id
+                    }.subscribeBy (
+                            onNext = {
+                                feedAdapter.removeItem(it.second)
+                            }
+                    )
+
+        }
+    }
+
     override fun updateNews(newsItem: NewsItem) {
         feedAdapter?.let {feedAdapter ->
             val indexes = Observable.range(0, feedAdapter.items.size)
@@ -181,6 +198,7 @@ class FeedActivity : MvpAppCompatActivity(), FeedView, OnNewsItemClickListener {
 
     override fun onResume() {
         super.onResume()
+//      Отписываемся от подписки на изменение айтемов
         feedPresenter.clearTempSubscriptions()
     }
 

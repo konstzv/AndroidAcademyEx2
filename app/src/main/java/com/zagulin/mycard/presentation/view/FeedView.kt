@@ -18,4 +18,5 @@ interface FeedView : MvpView {
     fun askUserToDoAction(msg: String, actionName: String, action: () -> Unit)
     fun showProgress(isVisible: Boolean)
      fun updateNews(it: NewsItem)
+     fun removeNews(id: Int)
 }

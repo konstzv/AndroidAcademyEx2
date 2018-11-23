@@ -1,5 +1,6 @@
 package com.zagulin.mycard.presentation.presenter
 
+import android.util.Log
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.zagulin.mycard.App
@@ -26,12 +27,16 @@ class SpecificNewsViewPresenter : MvpPresenter<SpecificNewsView>() {
     var id = 0
 
 
-    fun subcribeOnNewsItem(id:Int){
+    fun subcribeOnNewsItem(id: Int) {
         this.id = id
-        repository.listenItemUpdate(id).observeOn(AndroidSchedulers.mainThread()).subscribeBy(
-                onNext = { viewState.displayNews(it) },
-                onError = { println(it) }
+        compositeDisposable.add(
+                repository.listenItemUpdate(id).observeOn(AndroidSchedulers.mainThread())
+                        .subscribeBy(onNext = {
+                            Log.d("SpecificNewsPresenter","SUBSCRIBE")
+                            it.value?.let { viewState.displayNews(it) } })
         )
+
+
     }
 
     override fun onDestroy() {
@@ -40,6 +45,6 @@ class SpecificNewsViewPresenter : MvpPresenter<SpecificNewsView>() {
     }
 
     fun removeItem() {
-        repository.removeItem(id).subscribeBy ()
+        repository.removeItem(id).subscribeBy()
     }
 }

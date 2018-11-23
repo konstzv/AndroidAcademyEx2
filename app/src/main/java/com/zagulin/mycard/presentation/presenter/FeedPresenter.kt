@@ -12,6 +12,7 @@ import com.zagulin.mycard.common.pagination.Paginator
 import com.zagulin.mycard.di.FeedModule
 import com.zagulin.mycard.models.Category
 import com.zagulin.mycard.models.FeedItem
+import com.zagulin.mycard.models.NewsItem
 import com.zagulin.mycard.presentation.view.FeedView
 import com.zagulin.mycard.repositories.FeedRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -76,7 +77,9 @@ class FeedPresenter : MvpPresenter<FeedView>() {
     }
 
     fun showCategories() {
-        compositeDisposable.add(repository.getCategories().subscribeBy(
+        compositeDisposable.add(repository.getCategories()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
                 onSuccess = {
                     viewState.showCategoriesList(it.toMutableList())
                 },
@@ -156,15 +159,21 @@ class FeedPresenter : MvpPresenter<FeedView>() {
         )
     }
 
+
     fun subscribeOnNewsItem(id: Int) {
-        tempCompositeDisposable.add(repository.listenItemUpdate(id).observeOn(AndroidSchedulers.mainThread()).subscribeBy(
-                onNext = { viewState.updateNews(it) },
-                onError = { println(it) }
-        )
+        tempCompositeDisposable.add(
+                repository.listenItemUpdate(id).observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                        onNext = {
+                            it.value?.let {
+                                viewState.updateNews(it)
+                            }?:viewState.removeNews(id)
+                        }
+                )
         )
     }
 
-    fun clearTempSubscriptions(){
+    fun clearTempSubscriptions() {
         tempCompositeDisposable.clear()
     }
 

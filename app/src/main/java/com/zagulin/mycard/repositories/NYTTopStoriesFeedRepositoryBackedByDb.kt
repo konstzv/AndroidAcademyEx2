@@ -2,6 +2,7 @@ package com.zagulin.mycard.repositories
 
 import com.zagulin.mycard.App
 import com.zagulin.mycard.db.AppDatabase
+import com.zagulin.mycard.db.DateConverter
 import com.zagulin.mycard.models.*
 import com.zagulin.mycard.models.converters.NewsItemDbToNewItemModelConverter
 import com.zagulin.mycard.models.converters.NewsItemNetworkToNewItemDbModelConverter
@@ -18,11 +19,17 @@ class NYTTopStoriesFeedRepositoryBackedByDb @Inject constructor()
     : FeedRepositoryWithNetwork(), PagingationImitation {
 
 
-    override fun listenItemUpdate(id: Int): Flowable<NewsItem> {
+
+    override fun listenItemUpdate(id: Int): Flowable<Optional<NewsItem>> {
         return appDatabase.feedDao().listenItemUpdate(id.toLong()).map {
-            val item = newsItemDbToNewItemModelConverter.convert(it)
+            if (it.isNotEmpty()){
+                val item = newsItemDbToNewItemModelConverter.convert(it[0])
             item.category = selectedCategory
-            item
+                Optional(item)
+            }else{
+                Optional<NewsItem>(null)
+            }
+
         }.subscribeOn(Schedulers.io())
     }
 
@@ -64,6 +71,7 @@ class NYTTopStoriesFeedRepositoryBackedByDb @Inject constructor()
 
     private var newsItemDbToNewItemModelConverter = NewsItemDbToNewItemModelConverter()
     private var newsItemNetworkToNewItemDbModelConverter = NewsItemNetworkToNewItemDbModelConverter()
+    private var newItemToItemDbToNewItemModelConverter = NewsItemToNewItemDbModelConverter()
 
 
     init {
@@ -75,13 +83,15 @@ class NYTTopStoriesFeedRepositoryBackedByDb @Inject constructor()
 
     override fun updateItem(newsItem: NewsItem): Completable {
         return Completable.fromAction {
+            val item = newItemToItemDbToNewItemModelConverter.convert(newsItem)
             appDatabase
                     .feedDao()
-                    .update(
-                            newsItem.id ?: 0
-                            , newsItem.title ?: ""
-                            , newsItem.fullText ?: ""
-                    )
+                    .update(item)
+//                    .update(
+//                            newsItem.id ?: 0
+//                            , newsItem.title ?: ""
+//                            , newsItem.fullText ?: ""
+//                            , publishDate = DateConverter().toLong(newsItem.publishDate)?: 0)
         }.subscribeOn(Schedulers.io())
 
 
