@@ -121,6 +121,10 @@ class FeedActivity : MvpAppCompatActivity(), FeedView, OnNewsItemClickListener {
 
         initToolbar()
 
+        feed_activity_update_btn.setOnClickListener{
+            feedPresenter.update()
+        }
+
     }
 
     override fun showProgress(isVisible:Boolean){

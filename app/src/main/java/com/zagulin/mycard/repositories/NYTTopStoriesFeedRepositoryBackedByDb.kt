@@ -74,12 +74,7 @@ class NYTTopStoriesFeedRepositoryBackedByDb @Inject constructor()
     private var newItemToItemDbToNewItemModelConverter = NewsItemToNewItemDbModelConverter()
 
 
-    init {
-        Toothpick.inject(this, Toothpick.openScopes(
-                App.Companion.Scopes.APP_SCOPE.name
-                , App.Companion.Scopes.FEED_SCOPE.name)
-        )
-    }
+
 
     override fun updateItem(newsItem: NewsItem): Completable {
         return Completable.fromAction {
@@ -129,6 +124,13 @@ class NYTTopStoriesFeedRepositoryBackedByDb @Inject constructor()
                                 .flatMap { getFromStorage() }
 
                 ).map { getPage(it,from,shift) }
+
+    }
+
+    override  fun clearStorage(): Completable {
+       return Completable.fromAction{
+            appDatabase.feedDao().deleteAllItems()
+        }.subscribeOn(Schedulers.io())
 
     }
 

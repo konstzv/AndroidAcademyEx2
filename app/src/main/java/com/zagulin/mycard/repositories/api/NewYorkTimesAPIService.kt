@@ -22,7 +22,7 @@ interface NewYorkTimesAPIService {
 
     companion object Factory {
         private const val HEADER_API_KEY_NAME = "api-key"
-        private const val BASE_URL = "https://api.nytimes.com/svc/"
+        public const val BASE_URL = "https://api.nytimes.com/svc/"
 
         fun create(): NewYorkTimesAPIService {
 

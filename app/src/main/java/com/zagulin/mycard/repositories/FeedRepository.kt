@@ -16,4 +16,6 @@ interface FeedRepository {
     fun listenItemUpdate(id:Int): Flowable<Optional<NewsItem>>
     fun removeItem(id:Int):Completable
     var selectedCategory:Category
+    fun clearStorage(): Completable
+    fun isServerAvailable(): Single<Boolean>
 }

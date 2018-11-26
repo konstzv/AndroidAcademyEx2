@@ -41,5 +41,7 @@ interface FeedDao {
     @Query("DELETE  FROM news_items WHERE id = :id ")
     fun deleteItem(id: Int): Int
 
+    @Query("DELETE FROM  news_items")
+    fun deleteAllItems()
 
 }

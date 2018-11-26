@@ -1,32 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_height="match_parent"
-    android:layout_width="match_parent">
-<LinearLayout
-    android:id="@+id/feed_activity_text_root"
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout android:id="@+id/feed_activity_text_root"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="match_parent">
 
-    android:orientation="vertical">
-
-
-        <include layout="@layout/feed_activity_toolbar" />
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/feed_activity_recycler"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center" />
+        android:layout_height="match_parent">
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:orientation="vertical">
 
 
-</LinearLayout>
+            <include layout="@layout/feed_activity_toolbar" />
 
-    <ProgressBar
-        android:id="@+id/feed_activity_progress"
-        android:visibility="gone"
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/feed_activity_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center" />
+
+
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/feed_activity_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
+
+
+    </RelativeLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/feed_activity_update_btn"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"/>
-
-</RelativeLayout>
-
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="10dp"
+        android:src="@drawable/ic_delete_white_24dp" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

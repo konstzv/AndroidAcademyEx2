@@ -12,7 +12,6 @@ import com.zagulin.mycard.common.pagination.Paginator
 import com.zagulin.mycard.di.FeedModule
 import com.zagulin.mycard.models.Category
 import com.zagulin.mycard.models.FeedItem
-import com.zagulin.mycard.models.NewsItem
 import com.zagulin.mycard.presentation.view.FeedView
 import com.zagulin.mycard.repositories.FeedRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -80,15 +79,38 @@ class FeedPresenter : MvpPresenter<FeedView>() {
         compositeDisposable.add(repository.getCategories()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
-                onSuccess = {
-                    viewState.showCategoriesList(it.toMutableList())
-                },
-                onError = {
-                    viewState.showErrorMsg(it.localizedMessage)
-                }
+                        onSuccess = {
+                            viewState.showCategoriesList(it.toMutableList())
+                        },
+                        onError = {
+                            viewState.showErrorMsg(it.localizedMessage)
+                        }
 
-        ))
+                ))
         viewState.setSelectedCategory(repository.selectedCategory)
+
+    }
+
+    fun update() {
+//        if (repository.isServerAvailable()) {
+//             repository.clearStorage().subscribeBy()
+//             feedPaginator.reload()
+//             viewState.clearFeed()
+//             onLoadMore()
+//         }
+
+        repository.isServerAvailable().subscribeBy(
+                onSuccess = { isServerAvailable ->
+                    if (isServerAvailable) {
+                        repository.clearStorage().subscribeBy()
+                        feedPaginator.reload()
+                        viewState.clearFeed()
+                        onLoadMore()
+                    } else {
+                         viewState.showErrorMsg("Интернет недоустпен")
+                    }
+                }
+        )
 
     }
 
@@ -163,13 +185,13 @@ class FeedPresenter : MvpPresenter<FeedView>() {
     fun subscribeOnNewsItem(id: Int) {
         tempCompositeDisposable.add(
                 repository.listenItemUpdate(id).observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy(
-                        onNext = {
-                            it.value?.let {
-                                viewState.updateNews(it)
-                            }?:viewState.removeNews(id)
-                        }
-                )
+                        .subscribeBy(
+                                onNext = {
+                                    it.value?.let {
+                                        viewState.updateNews(it)
+                                    } ?: viewState.removeNews(id)
+                                }
+                        )
         )
     }
 
