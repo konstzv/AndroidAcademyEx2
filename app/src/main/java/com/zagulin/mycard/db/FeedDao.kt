@@ -1,6 +1,10 @@
 package com.zagulin.mycard.db
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Update
 import com.zagulin.mycard.models.Category
 import com.zagulin.mycard.models.NewsItemDb
 import io.reactivex.Flowable
@@ -36,7 +40,7 @@ interface FeedDao {
     fun getAllCategories(): Single<List<Category>>
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun update(item:NewsItemDb): Int
+    fun update(item: NewsItemDb): Int
 
     @Query("DELETE  FROM news_items WHERE id = :id ")
     fun deleteItem(id: Int): Int

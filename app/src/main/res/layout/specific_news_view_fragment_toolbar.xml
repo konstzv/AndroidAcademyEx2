@@ -17,8 +17,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_toStartOf="@id/feed_activity_toolbar_spinner"
+            android:layout_toStartOf="@id/specific_news_activity_toolbar_image_delete"
             android:textColor="@android:color/black"
+            android:lines="1"
+            android:ellipsize="end"
             tools:text="@tools:sample/cities" />
 
 

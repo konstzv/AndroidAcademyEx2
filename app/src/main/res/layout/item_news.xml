@@ -34,17 +34,10 @@
                     android:id="@+id/item_news_layout_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="@tools:sample/first_names" />
-
-                <TextView
-                    android:id="@+id/item_news_subtitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-
-                    android:ellipsize="end"
-
                     android:textStyle="bold"
                     tools:text="@tools:sample/first_names" />
+
+
 
                 <TextView
                     android:id="@+id/item_news_layout_recycler_context"
@@ -53,8 +46,9 @@
 
                     android:ellipsize="end"
                     android:maxLines="3"
-                    android:textStyle="bold"
+
                     tools:text="@tools:sample/lorem/random" />
+
             </LinearLayout>
 
             <ImageView

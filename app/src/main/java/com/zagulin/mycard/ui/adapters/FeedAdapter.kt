@@ -74,37 +74,28 @@ class NewsHolder(view: View) : ViewHolder(view) {
 
     private val title = view.item_news_layout_title
     private val imageView = view.item_news_layout_recycler_img
-    private val subTitle = view.item_news_subtitle
     private val date = view.item_news_layout_recycler_date
     private val body = view.item_news_layout_recycler_context
 
     fun bind(item: NewsItem, onNewsItemClickListener: OnNewsItemClickListener) {
-        title.text = item.id.toString()
-        body.text = item.fullText
+        title.text = item.title.toString()
+        body.text = item.previewText
         item.publishDate?.let {
             date.text = DateUtils
                     .getRelativeTimeSpanString(it.time, Calendar.getInstance().time.time,
                             0L, DateUtils.FORMAT_ABBREV_ALL)
         }
 
-        item.category?.name.let {
-            subTitle.text = it
-        }
-//        item.imageUrl?.let {
-//            Glide.with(imageView).load(it).into(imageView)
-//        }
-//
+
+
 
         item.imageUrl?.let {
             imageView.visibility = View.VISIBLE
-            val thumbnailRequest = Glide
-                    .with(imageView)
-                    .load(item.thumbnailUrl)
+
 
             Glide
                     .with(imageView)
-                    .load(item.imageUrl)
-                    .thumbnail(thumbnailRequest)
+                    .load(item.thumbnailUrl)
                     .into(imageView)
         } ?: run {
             imageView.visibility = View.GONE

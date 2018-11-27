@@ -29,6 +29,10 @@ class IntroPresenter : MvpPresenter<IntroView>() {
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         Toothpick.inject(this, Toothpick.openScope(App.Companion.Scopes.APP_SCOPE.name))
+        handleIntroShowing()
+    }
+
+    private fun handleIntroShowing() {
         if (needToSHowIntro()) {
             viewState.showIntroActivity()
             val disposable = Completable.complete()

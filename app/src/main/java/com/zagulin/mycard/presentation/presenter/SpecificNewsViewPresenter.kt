@@ -4,7 +4,7 @@ import android.util.Log
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.zagulin.mycard.App
-import com.zagulin.mycard.presentation.view.SpecificNewsView
+import com.zagulin.mycard.presentation.view.SpecificNewsDisplayView
 import com.zagulin.mycard.repositories.FeedRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -13,7 +13,7 @@ import toothpick.Toothpick
 import javax.inject.Inject
 
 @InjectViewState
-class SpecificNewsViewPresenter : MvpPresenter<SpecificNewsView>() {
+class SpecificNewsViewPresenter : MvpPresenter<SpecificNewsDisplayView>() {
 
     @Inject
     lateinit var repository: FeedRepository
@@ -32,8 +32,9 @@ class SpecificNewsViewPresenter : MvpPresenter<SpecificNewsView>() {
         compositeDisposable.add(
                 repository.listenItemUpdate(id).observeOn(AndroidSchedulers.mainThread())
                         .subscribeBy(onNext = {
-                            Log.d("SpecificNewsPresenter","SUBSCRIBE")
-                            it.value?.let { viewState.displayNews(it) } })
+                            Log.d("SpecificNewsPresenter", "SUBSCRIBE")
+                            it.value?.let { viewState.displayNews(it) }
+                        })
         )
 
 
@@ -45,6 +46,13 @@ class SpecificNewsViewPresenter : MvpPresenter<SpecificNewsView>() {
     }
 
     fun removeItem() {
-        repository.removeItem(id).subscribeBy()
+        repository.removeItem(id).subscribeBy(
+                onComplete = {
+                    viewState.finish()
+                },
+                onError = {
+                    viewState.showMsg("Ошибка при изменение новости")
+                }
+        )
     }
 }

@@ -1,13 +1,12 @@
 package com.zagulin.mycard.presentation.presenter
 
-import android.util.Log
+import android.content.Context
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.zagulin.mycard.App
 import com.zagulin.mycard.models.NewsItem
 import com.zagulin.mycard.presentation.view.SpecificNewsEditView
 import com.zagulin.mycard.repositories.FeedRepository
-import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
@@ -21,9 +20,14 @@ class SpecificNewsEditPresenter : MvpPresenter<SpecificNewsEditView>() {
     @Inject
     lateinit var repository: FeedRepository
 
+    @Inject
+    lateinit var context: Context
 
     init {
-        Toothpick.inject(this, Toothpick.openScope(App.Companion.Scopes.FEED_SCOPE.name))
+        Toothpick.inject(this, Toothpick.openScopes(
+                App.Companion.Scopes.APP_SCOPE.name
+                , App.Companion.Scopes.FEED_SCOPE.name
+        ))
     }
 
     private var newsItem: NewsItem? = null
@@ -47,16 +51,16 @@ class SpecificNewsEditPresenter : MvpPresenter<SpecificNewsEditView>() {
     fun saveChanges(title: String, article: String, date: Date) {
         newsItem?.let {
             it.title = title
-            it.fullText = article
+            it.previewText = article
             it.publishDate = date
-             repository.updateItem(it).subscribeBy (
-                     onComplete = {
-                         Log.d("TEST","COMPLETE")
-                     },
-                     onError = {
-                         Log.d("TEST",it.localizedMessage)
-                     }
-             )
+            compositeDisposable.add(repository.updateItem(it).subscribeBy(
+                    onComplete = {
+                        viewState.finish()
+                    },
+                    onError = {
+                        viewState.showMsg("Ошибка при изменение новости")
+                    }
+            ))
         }
 
     }

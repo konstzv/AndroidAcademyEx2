@@ -10,13 +10,13 @@ import com.zagulin.mycard.models.NewsItem
 interface FeedView : MvpView {
     fun addNews(list: List<FeedItem>)
     @StateStrategyType(OneExecutionStateStrategy::class)
-    fun showErrorMsg(errorMsg: String)
+    fun showMsg(msg: String)
     fun showCategoriesList(list: MutableList<Category>)
     fun clearFeed()
     fun setSelectedCategory(category: Category)
     @StateStrategyType(OneExecutionStateStrategy::class)
     fun askUserToDoAction(msg: String, actionName: String, action: () -> Unit)
     fun showProgress(isVisible: Boolean)
-     fun updateNews(it: NewsItem)
-     fun removeNews(id: Int)
+    fun updateNews(it: NewsItem)
+    fun removeNews(id: Int)
 }

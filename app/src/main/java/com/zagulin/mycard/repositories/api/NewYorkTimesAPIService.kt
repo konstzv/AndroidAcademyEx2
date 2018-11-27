@@ -2,7 +2,6 @@ package com.zagulin.mycard.repositories.api
 
 import com.zagulin.mycard.BuildConfig
 import com.zagulin.mycard.models.GetTopStoriesNetworkResponse
-import io.reactivex.Observable
 import io.reactivex.Single
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -22,7 +21,7 @@ interface NewYorkTimesAPIService {
 
     companion object Factory {
         private const val HEADER_API_KEY_NAME = "api-key"
-        public const val BASE_URL = "https://api.nytimes.com/svc/"
+        private const val BASE_URL = "https://api.nytimes.com/svc/"
 
         fun create(): NewYorkTimesAPIService {
 

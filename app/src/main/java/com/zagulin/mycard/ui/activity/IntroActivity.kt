@@ -1,11 +1,8 @@
 package com.zagulin.mycard.ui.activity
 
 import android.content.Intent
-import android.os.Bundle
-import androidx.fragment.app.Fragment
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.zagulin.mycard.R
-import com.zagulin.mycard.presentation.presenter.FeedPresenter
 import com.zagulin.mycard.presentation.presenter.IntroPresenter
 import com.zagulin.mycard.presentation.view.IntroView
 import com.zagulin.mycard.ui.adapters.IntroPageAdapter

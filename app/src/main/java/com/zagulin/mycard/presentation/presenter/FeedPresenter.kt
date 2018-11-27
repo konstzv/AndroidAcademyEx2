@@ -70,7 +70,7 @@ class FeedPresenter : MvpPresenter<FeedView>() {
 
                 },
                 onError = {
-                    viewState.showErrorMsg(it.localizedMessage)
+                    viewState.showMsg(it.localizedMessage)
                 }
         ))
     }
@@ -83,7 +83,7 @@ class FeedPresenter : MvpPresenter<FeedView>() {
                             viewState.showCategoriesList(it.toMutableList())
                         },
                         onError = {
-                            viewState.showErrorMsg(it.localizedMessage)
+                            viewState.showMsg(it.localizedMessage)
                         }
 
                 ))
@@ -92,13 +92,6 @@ class FeedPresenter : MvpPresenter<FeedView>() {
     }
 
     fun update() {
-//        if (repository.isServerAvailable()) {
-//             repository.clearStorage().subscribeBy()
-//             feedPaginator.reload()
-//             viewState.clearFeed()
-//             onLoadMore()
-//         }
-
         repository.isServerAvailable().subscribeBy(
                 onSuccess = { isServerAvailable ->
                     if (isServerAvailable) {
@@ -107,8 +100,11 @@ class FeedPresenter : MvpPresenter<FeedView>() {
                         viewState.clearFeed()
                         onLoadMore()
                     } else {
-                         viewState.showErrorMsg("Интернет недоустпен")
+                         viewState.showMsg(context.getString(R.string.network_unavailable))
                     }
+                },
+                onError = {
+                    viewState.showMsg(context.getString(R.string.update_error,it.localizedMessage))
                 }
         )
 
@@ -123,7 +119,7 @@ class FeedPresenter : MvpPresenter<FeedView>() {
                     viewState.setSelectedCategory(it)
 
                 }
-                , viewState::showErrorMsg)
+                , viewState::showMsg)
     }
 
 

@@ -1,18 +1,13 @@
 package com.zagulin.mycard.repositories
 
 import android.content.Context
+import android.net.ConnectivityManager
 import com.zagulin.mycard.App
 import com.zagulin.mycard.models.Category
 import com.zagulin.mycard.models.NewsItemNetwork
 import com.zagulin.mycard.repositories.api.NewYorkTimesAPIService
 import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
 import toothpick.Toothpick
-import java.net.InetAddress
-import android.net.NetworkInfo
-import android.content.Context.CONNECTIVITY_SERVICE
-import androidx.core.content.ContextCompat.getSystemService
-import android.net.ConnectivityManager
 import javax.inject.Inject
 
 
@@ -34,7 +29,7 @@ abstract class FeedRepositoryWithNetwork : FeedRepository {
                 .getTopStories(category.name)
                 .map {
                     val res = it.results
-                    res ?: emptyList<NewsItemNetwork>()
+                    res ?: emptyList()
                 }
     }
 

@@ -28,7 +28,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         JodaTimeAndroid.init(this)
-        Stetho.initializeWithDefaults(this);
+        Stetho.initializeWithDefaults(this)
         RxJavaPlugins.setErrorHandler { e ->
             Log.w("RX", "Undeliverable exception received, not sure what to do", e)
         }

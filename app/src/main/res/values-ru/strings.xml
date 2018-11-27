@@ -18,4 +18,8 @@
     <string name="ad_title">Реклама</string>
     <string name="network_error">Ошибка сети</string>
     <string name="repeart">Повторить</string>
+    <string name="update_error">Ошибка при попытке обновления ленты %1$s</string>
+    <string name="network_unavailable">Сеть недоступна</string>
+    <string name="apply">Принять</string>
+    <string name="welcome">Привет</string>
 </resources>

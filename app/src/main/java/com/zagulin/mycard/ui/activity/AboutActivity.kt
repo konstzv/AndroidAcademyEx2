@@ -99,7 +99,7 @@ class AboutActivity : AppCompatActivity() {
         }
         edit_text.setOnEditorActionListener { _, _, _ ->
             onSendBtnClick()
-            return@setOnEditorActionListener true
+           true
         }
     }
 

@@ -2,7 +2,6 @@ package com.zagulin.mycard.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.io.Serializable
 
 @Entity(tableName = "categories")
 class Category(

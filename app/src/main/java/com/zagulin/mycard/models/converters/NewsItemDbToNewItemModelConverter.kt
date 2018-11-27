@@ -14,7 +14,7 @@ open class NewsItemDbToNewItemModelConverter @Inject constructor() :
                 ,title = item.title
                 , imageUrl = item.imageUrl
                 , thumbnailUrl = item.thumbnailUrl
-                , fullText = item.fullText
+                , fullTextUrl = item.fullTextUrl
                 , previewText = item.previewText
                 , publishDate = item.publishDate
         )

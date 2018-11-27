@@ -8,8 +8,8 @@ data class NewsItem(
         val imageUrl: String? = null,
         var category: Category? = null,
         var publishDate: Date? = null,
-        val previewText: String? = null,
-        var fullText: String? = null,
+        var previewText: String? = null,
+        var fullTextUrl: String? = null,
         val thumbnailUrl: String? = null
 ) : FeedItem {
 
@@ -31,7 +31,7 @@ data class NewsItem(
         result = 31 * result + (imageUrl?.hashCode() ?: 0)
         result = 31 * result + (publishDate?.hashCode() ?: 0)
         result = 31 * result + (previewText?.hashCode() ?: 0)
-        result = 31 * result + (fullText?.hashCode() ?: 0)
+        result = 31 * result + (fullTextUrl?.hashCode() ?: 0)
         return result
     }
 }

@@ -7,7 +7,6 @@ import com.zagulin.mycard.repositories.FeedRepository
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import toothpick.Toothpick
 import javax.inject.Inject

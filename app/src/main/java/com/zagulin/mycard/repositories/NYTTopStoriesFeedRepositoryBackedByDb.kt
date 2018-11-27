@@ -1,9 +1,12 @@
 package com.zagulin.mycard.repositories
 
-import com.zagulin.mycard.App
 import com.zagulin.mycard.db.AppDatabase
-import com.zagulin.mycard.db.DateConverter
-import com.zagulin.mycard.models.*
+import com.zagulin.mycard.models.Category
+import com.zagulin.mycard.models.FeedItem
+import com.zagulin.mycard.models.NewsItem
+import com.zagulin.mycard.models.NewsItemDb
+import com.zagulin.mycard.models.NewsItemNetwork
+import com.zagulin.mycard.models.Optional
 import com.zagulin.mycard.models.converters.NewsItemDbToNewItemModelConverter
 import com.zagulin.mycard.models.converters.NewsItemNetworkToNewItemDbModelConverter
 import com.zagulin.mycard.models.converters.NewsItemToNewItemDbModelConverter
@@ -12,21 +15,19 @@ import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
-import toothpick.Toothpick
 import javax.inject.Inject
 
 class NYTTopStoriesFeedRepositoryBackedByDb @Inject constructor()
     : FeedRepositoryWithNetwork(), PagingationImitation {
 
 
-
     override fun listenItemUpdate(id: Int): Flowable<Optional<NewsItem>> {
         return appDatabase.feedDao().listenItemUpdate(id.toLong()).map {
-            if (it.isNotEmpty()){
+            if (it.isNotEmpty()) {
                 val item = newsItemDbToNewItemModelConverter.convert(it[0])
-            item.category = selectedCategory
+                item.category = selectedCategory
                 Optional(item)
-            }else{
+            } else {
                 Optional<NewsItem>(null)
             }
 
@@ -74,19 +75,12 @@ class NYTTopStoriesFeedRepositoryBackedByDb @Inject constructor()
     private var newItemToItemDbToNewItemModelConverter = NewsItemToNewItemDbModelConverter()
 
 
-
-
     override fun updateItem(newsItem: NewsItem): Completable {
         return Completable.fromAction {
             val item = newItemToItemDbToNewItemModelConverter.convert(newsItem)
             appDatabase
                     .feedDao()
                     .update(item)
-//                    .update(
-//                            newsItem.id ?: 0
-//                            , newsItem.title ?: ""
-//                            , newsItem.fullText ?: ""
-//                            , publishDate = DateConverter().toLong(newsItem.publishDate)?: 0)
         }.subscribeOn(Schedulers.io())
 
 
@@ -105,7 +99,7 @@ class NYTTopStoriesFeedRepositoryBackedByDb @Inject constructor()
                         Completable
                                 .fromAction {
                                     appDatabase
-                                        .feedDao()
+                                            .feedDao()
                                             .insertCategories(categories.toList())
                                 }.andThen(appDatabase.feedDao().getAllCategories())
 
@@ -123,12 +117,12 @@ class NYTTopStoriesFeedRepositoryBackedByDb @Inject constructor()
                                 .doOnSuccess { saveToStorage(it) }
                                 .flatMap { getFromStorage() }
 
-                ).map { getPage(it,from,shift) }
+                ).map { getPage(it, from, shift) }
 
     }
 
-    override  fun clearStorage(): Completable {
-       return Completable.fromAction{
+    override fun clearStorage(): Completable {
+        return Completable.fromAction {
             appDatabase.feedDao().deleteAllItems()
         }.subscribeOn(Schedulers.io())
 
@@ -177,18 +171,6 @@ class NYTTopStoriesFeedRepositoryBackedByDb @Inject constructor()
                 }
                 .subscribeOn(Schedulers.io())
     }
-
-//    override fun listenNewsUpdate(id: Int): Single<NewsItem> {
-//        return appDatabase.feedDao()
-//                .findItemById(id.toLong())
-//                .map {
-//                    val item = newsItemDbToNewItemModelConverter.convert(it)
-//                    item.category = selectedCategory
-//                    item
-//
-//                }
-//                .subscribeOn(Schedulers.io())
-//    }
 
 
 }

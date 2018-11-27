@@ -16,7 +16,6 @@ import com.zagulin.mycard.common.pagination.RecyclerViewPagination
 import com.zagulin.mycard.models.Category
 import com.zagulin.mycard.models.FeedItem
 import com.zagulin.mycard.models.NewsItem
-import com.zagulin.mycard.models.PaginationData
 import com.zagulin.mycard.presentation.presenter.FeedPresenter
 import com.zagulin.mycard.presentation.view.FeedView
 import com.zagulin.mycard.ui.adapters.CategoryAdapter
@@ -30,13 +29,13 @@ import kotlinx.android.synthetic.main.feed_activity_toolbar.*
 
 class FeedActivity : MvpAppCompatActivity(), FeedView, OnNewsItemClickListener {
     override fun removeNews(id: Int) {
-        feedAdapter?.let {feedAdapter ->
+        feedAdapter?.let { feedAdapter ->
             val indexes = Observable.range(0, feedAdapter.items.size)
             Observable.fromIterable(feedAdapter.items)
-                    .zipWith(indexes).filter{
+                    .zipWith(indexes).filter {
                         val item = it.first
                         item is NewsItem && item.id == id
-                    }.subscribeBy (
+                    }.subscribeBy(
                             onNext = {
                                 feedAdapter.removeItem(it.second)
                             }
@@ -46,33 +45,29 @@ class FeedActivity : MvpAppCompatActivity(), FeedView, OnNewsItemClickListener {
     }
 
     override fun updateNews(newsItem: NewsItem) {
-        feedAdapter?.let {feedAdapter ->
+        feedAdapter?.let { feedAdapter ->
             val indexes = Observable.range(0, feedAdapter.items.size)
             Observable.fromIterable(feedAdapter.items)
-                    .zipWith(indexes).filter{
+                    .zipWith(indexes).filter {
                         val item = it.first
                         item is NewsItem && item.id == newsItem.id
-                    }.subscribeBy (
-                           onNext = {
-                               feedAdapter.updateItem(it.second,newsItem)
-                           }
+                    }.subscribeBy(
+                            onNext = {
+                                feedAdapter.updateItem(it.second, newsItem)
+                            }
                     )
-//            for (i in 0 until it.items.size) { // equivalent of 1 <= i && i <= 10
-//                if (it.items )
-//            }
         }
 
     }
 
     override fun askUserToDoAction(msg: String, actionName: String, action: () -> Unit) {
         Snackbar.make(
-                feed_activity_text_root,
+                feed_activity_root,
                 msg,
                 Snackbar.LENGTH_INDEFINITE
-        ).setAction(actionName,{action.invoke()}
+        ).setAction(actionName, { action.invoke() }
         ).show()
     }
-
 
 
     override fun setSelectedCategory(category: Category) {
@@ -92,14 +87,13 @@ class FeedActivity : MvpAppCompatActivity(), FeedView, OnNewsItemClickListener {
 
 
     override fun onItemClick(item: NewsItem) {
-        item.id?.let {
+        item.id.let {
             feedPresenter.subscribeOnNewsItem(it)
             startActivity(SpecificNewsActivity.intent(this, it))
         }
 
 
     }
-
 
 
     override fun clearFeed() {
@@ -121,13 +115,13 @@ class FeedActivity : MvpAppCompatActivity(), FeedView, OnNewsItemClickListener {
 
         initToolbar()
 
-        feed_activity_update_btn.setOnClickListener{
+        feed_activity_update_btn.setOnClickListener {
             feedPresenter.update()
         }
 
     }
 
-    override fun showProgress(isVisible:Boolean){
+    override fun showProgress(isVisible: Boolean) {
         feed_activity_progress.visibility = if (isVisible) View.VISIBLE else View.GONE
     }
 
@@ -154,7 +148,7 @@ class FeedActivity : MvpAppCompatActivity(), FeedView, OnNewsItemClickListener {
     }
 
 
-    override fun showErrorMsg(msg: String) {
+    override fun showMsg(msg: String) {
         Snackbar.make(
                 window.decorView.rootView,
                 msg,
@@ -202,7 +196,7 @@ class FeedActivity : MvpAppCompatActivity(), FeedView, OnNewsItemClickListener {
 
     override fun onResume() {
         super.onResume()
-//      Отписываемся от подписки на изменение айтемов
+//      Отписываемся от изменения айтемов
         feedPresenter.clearTempSubscriptions()
     }
 

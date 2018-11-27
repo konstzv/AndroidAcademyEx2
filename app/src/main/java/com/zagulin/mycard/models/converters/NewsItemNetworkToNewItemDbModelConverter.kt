@@ -14,7 +14,7 @@ open class NewsItemNetworkToNewItemDbModelConverter @Inject constructor() :
 
     enum class ImageFormats(val formatName: String) {
         LargeImage("superJumbo")
-        , Thumbnail("Standard Thumbnail")
+        , Thumbnail("Normal")
     }
 
 
@@ -33,7 +33,7 @@ open class NewsItemNetworkToNewItemDbModelConverter @Inject constructor() :
         return NewsItemDb(
                 title = item.title,
                 previewText = item.abstract,
-                fullText = item.abstract,
+                fullTextUrl = item.url,
                 imageUrl = url,
                 thumbnailUrl = thumbnailUrl,
                 publishDate = ISODateTimeFormat

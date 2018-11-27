@@ -2,23 +2,17 @@
 <Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="?android:attr/actionBarSize">
+    android:layout_height="?android:attr/actionBarSize"
+
+    android:contentInsetEnd="@dimen/short_indent"
+    android:contentInsetStart="@dimen/short_indent">
 
 
-    <RelativeLayout
-        xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize">
 
-        <TextView
-            android:id="@+id/specific_news_activity_toolbar_text_view_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_centerVertical="true"
-            android:layout_toStartOf="@id/feed_activity_toolbar_spinner"
-            android:textColor="@android:color/black"
-            tools:text="@tools:sample/cities" />
+
 
         <ImageButton
             android:id="@+id/specific_news_activity_edit_toolbar_image_cancel"
