@@ -55,7 +55,7 @@ class SpecificNewsEditPresenter : MvpPresenter<SpecificNewsEditView>() {
             it.publishDate = date
             compositeDisposable.add(repository.updateItem(it).subscribeBy(
                     onComplete = {
-                        viewState.finish()
+                        viewState.backAction()
                     },
                     onError = {
                         viewState.showMsg("Ошибка при изменение новости")
@@ -63,5 +63,9 @@ class SpecificNewsEditPresenter : MvpPresenter<SpecificNewsEditView>() {
             ))
         }
 
+    }
+
+    fun onBackPressed() {
+        viewState.backAction()
     }
 }

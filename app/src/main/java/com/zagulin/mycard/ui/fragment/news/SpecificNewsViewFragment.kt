@@ -1,4 +1,4 @@
-package com.zagulin.mycard.ui.fragment
+package com.zagulin.mycard.ui.fragment.news
 
 import android.os.Bundle
 import android.text.format.DateUtils
@@ -12,12 +12,18 @@ import com.zagulin.mycard.R
 import com.zagulin.mycard.models.NewsItem
 import com.zagulin.mycard.presentation.presenter.SpecificNewsViewPresenter
 import com.zagulin.mycard.presentation.view.SpecificNewsDisplayView
+import com.zagulin.mycard.ui.fragment.BaseFragment
+import com.zagulin.mycard.ui.fragment.MvpAppCompatFragment
 import kotlinx.android.synthetic.main.specific_news_view_fragment.*
 import kotlinx.android.synthetic.main.specific_news_view_fragment_toolbar.*
 import java.util.*
 
 
-class SpecificNewsViewFragment : MvpAppCompatFragment(), SpecificNewsDisplayView {
+class SpecificNewsViewFragment : BaseFragment(), SpecificNewsDisplayView {
+
+    override fun backAction() {
+        activity?.onBackPressed()
+    }
 
     companion object {
         private const val EXTRA_NEWS_ITEM_ID = "extra_news_item_id"
@@ -110,8 +116,10 @@ class SpecificNewsViewFragment : MvpAppCompatFragment(), SpecificNewsDisplayView
 
     }
 
-    override fun finish() {
-        activity?.finish()
-    }
+
+
+//    override fun finish() {
+//        activity?.supportFragmentManager?.popBackStack()
+//    }
 
 }

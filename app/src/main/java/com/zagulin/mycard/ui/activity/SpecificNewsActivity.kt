@@ -7,8 +7,8 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.zagulin.mycard.R
 import com.zagulin.mycard.presentation.presenter.SpecificNewsPresenter
 import com.zagulin.mycard.presentation.view.SpecificNewsView
-import com.zagulin.mycard.ui.fragment.SpecificNewsEditFragment
-import com.zagulin.mycard.ui.fragment.SpecificNewsViewFragment
+import com.zagulin.mycard.ui.fragment.news.SpecificNewsEditFragment
+import com.zagulin.mycard.ui.fragment.news.SpecificNewsViewFragment
 
 
 class SpecificNewsActivity : MvpAppCompatActivity(), SpecificNewsView, SpecificNewsViewFragment.Companion.OnEditClickListener {
@@ -37,7 +37,7 @@ class SpecificNewsActivity : MvpAppCompatActivity(), SpecificNewsView, SpecificN
             supportFragmentManager
                     .beginTransaction()
                     .replace(R.id.specific_news_activity_content, fragment, TIME_FRAGMENT_EDiT)
-                    .addToBackStack(null)
+
                     .commit()
         }
     }

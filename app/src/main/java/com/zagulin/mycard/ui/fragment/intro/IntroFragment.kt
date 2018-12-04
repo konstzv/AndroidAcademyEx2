@@ -1,4 +1,4 @@
-package com.zagulin.mycard.ui.activity
+package com.zagulin.mycard.ui.fragment.intro
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,10 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.zagulin.mycard.R
+import com.zagulin.mycard.ui.fragment.BaseFragment
 import kotlinx.android.synthetic.main.intro_fragment.view.*
 
 
-class IntroFragment : Fragment() {
+class IntroFragment : BaseFragment() {
 
     companion object {
 

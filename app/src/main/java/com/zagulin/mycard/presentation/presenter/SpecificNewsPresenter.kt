@@ -18,10 +18,6 @@ class SpecificNewsPresenter : MvpPresenter<SpecificNewsView>() {
 
 
 
-    override fun onFirstViewAttach() {
-        super.onFirstViewAttach()
-        viewState.showNews()
-    }
 
     fun showEditFragment() {
         viewState.editNews()

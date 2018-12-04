@@ -7,18 +7,32 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.zagulin.mycard.R
-import com.zagulin.mycard.common.OnNewsItemClickListener
 import com.zagulin.mycard.models.AdItem
 import com.zagulin.mycard.models.FeedItem
 import com.zagulin.mycard.models.NewsItem
+import io.reactivex.Observable
 import kotlinx.android.synthetic.main.item_news.view.*
 import java.util.*
+import io.reactivex.subjects.PublishSubject
+
+
 
 
 class FeedAdapter(var items: MutableList<FeedItem> = mutableListOf()
-                  , val onNewsItemClickListener: OnNewsItemClickListener)
+                  )
     : RecyclerView.Adapter<ViewHolder>() {
 
+//    private val onNewsItemClickListeners= ArrayList<OnNewsItemClickListener>()
+
+//    public fun addOnNewsItemClickListenerval (listener:OnNewsItemClickListener){
+//        onNewsItemClickListeners.add(listener)
+//    }
+
+    private var onNewsItemClickPublishSubject = PublishSubject.create<NewsItem>()
+
+    fun getNewsItemClickPublishObservable(): Observable<NewsItem> {
+        return onNewsItemClickPublishSubject
+    }
 
     enum class ItemTypes(val type: Int) {
         TYPE_NEWS(0),
@@ -52,7 +66,7 @@ class FeedAdapter(var items: MutableList<FeedItem> = mutableListOf()
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
         if (item is NewsItem) {
-            (holder as NewsHolder).bind(item, onNewsItemClickListener)
+            (holder as NewsHolder).bind(item, onNewsItemClickPublishSubject)
         }
     }
 
@@ -77,7 +91,7 @@ class NewsHolder(view: View) : ViewHolder(view) {
     private val date = view.item_news_layout_recycler_date
     private val body = view.item_news_layout_recycler_context
 
-    fun bind(item: NewsItem, onNewsItemClickListener: OnNewsItemClickListener) {
+    fun bind(item: NewsItem, onNewsItemClickPublishSubject: PublishSubject<NewsItem>) {
         title.text = item.title.toString()
         body.text = item.previewText
         item.publishDate?.let {
@@ -101,6 +115,8 @@ class NewsHolder(view: View) : ViewHolder(view) {
             imageView.visibility = View.GONE
         }
 
-        itemView.setOnClickListener { onNewsItemClickListener.onItemClick(item) }
+        itemView.setOnClickListener {
+            onNewsItemClickPublishSubject.onNext(item)
+        }
     }
 }

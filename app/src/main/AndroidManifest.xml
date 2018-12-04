@@ -15,24 +15,20 @@
         android:supportsRtl="true"
         android:theme="@style/BaseTheme.NoToolbar"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity
-            android:name=".ui.activity.FeedActivity"
-            android:label="@string/feed_activity_title"
-            android:theme="@style/BaseTheme.NoToolbar" />
+
         <activity
             android:name=".ui.activity.AboutActivity"
             android:label="@string/about_activity_title"
             android:theme="@style/AboutActivityTheme" />
         <activity android:name=".ui.activity.SpecificNewsActivity" />
-        <activity
-            android:name=".ui.activity.IntroActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <activity android:name=".ui.activity.MainActivity">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+
         </activity>
 
     </application>

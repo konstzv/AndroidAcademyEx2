@@ -1,4 +1,4 @@
-package com.zagulin.mycard.ui.activity
+package com.zagulin.mycard.ui.adapters
 
 import android.app.Activity
 import android.content.Intent
@@ -7,19 +7,24 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.Gravity
+import android.view.LayoutInflater
 import com.zagulin.mycard.R
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
+import com.zagulin.mycard.ui.activity.MvpAppCompatActivity
+import com.zagulin.mycard.ui.fragment.BaseFragment
+import com.zagulin.mycard.ui.fragment.MvpAppCompatFragment
 import kotlinx.android.synthetic.main.about_activity.*
 import kotlinx.android.synthetic.main.about_activity_bottom_sheet.*
 import kotlinx.android.synthetic.main.about_activity_main_block.*
 
 
-class AboutActivity : MvpAppCompatActivity() {
+class AboutFragment : BaseFragment() {
     companion object {
         private const val MAIL_TO_URI = "mailto:"
         private const val copyringPaddingDp = 50F
@@ -28,14 +33,16 @@ class AboutActivity : MvpAppCompatActivity() {
     private var bottomSheetBehavior: BottomSheetBehavior<View>? = null
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.about_activity)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.about_activity,container,false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setBottomSheet()
         addCopyring()
         setListeners()
         setCustomToolbarIfPortrait()
-
     }
 
     private fun setBottomSheet() {
@@ -62,14 +69,13 @@ class AboutActivity : MvpAppCompatActivity() {
     private fun setCustomToolbarIfPortrait() {
         val orientation = resources.configuration.orientation
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            setSupportActionBar(toolbar)
-
+            (activity as? MvpAppCompatActivity)?.setSupportActionBar(toolbar)
         }
     }
 
     private fun addCopyring() {
         val paddingPx = convertDpToPixel(copyringPaddingDp)
-        val textView = TextView(this).apply {
+        val textView = TextView(context).apply {
             text = getString(R.string.copyring)
             gravity = Gravity.CENTER
             setPadding(0, paddingPx, 0, paddingPx)
@@ -157,9 +163,12 @@ class AboutActivity : MvpAppCompatActivity() {
     }
 
     private fun checkIntentResolving(intent: Intent): Boolean {
-        if (intent.resolveActivity(packageManager) != null) {
-            return true
+        activity?.run {
+            if (intent.resolveActivity(packageManager) != null) {
+                return true
+            }
         }
+
         return false
     }
 
@@ -171,19 +180,24 @@ class AboutActivity : MvpAppCompatActivity() {
 
     private fun showMsgById(id: Int) {
         hideInput()
-        Snackbar.make(
-                window.decorView.rootView,
-                id,
-                Snackbar.LENGTH_SHORT
-        ).show()
+        activity?.run {
+            Snackbar.make(
+                    window.decorView.rootView,
+                    id,
+                    Snackbar.LENGTH_SHORT
+            ).show()
+        }
+
     }
 
 
     private fun hideInput() {
-        val imm = getSystemService(Activity.INPUT_METHOD_SERVICE)
-                as InputMethodManager
-        if (currentFocus != null) {
-            imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+        activity?.run {
+            val imm = getSystemService(Activity.INPUT_METHOD_SERVICE)
+                    as InputMethodManager
+            if (currentFocus != null) {
+                imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+            }
         }
     }
 

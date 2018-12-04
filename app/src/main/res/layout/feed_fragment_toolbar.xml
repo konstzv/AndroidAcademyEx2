@@ -11,25 +11,25 @@
         android:padding="@dimen/short_indent">
 
         <TextView
-            android:id="@+id/feed_activity_toolbar_text_view_title"
+            android:id="@+id/feed_fragment_toolbar_text_view_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_toStartOf="@id/feed_activity_toolbar_spinner"
+            android:layout_toStartOf="@id/feed_fragment_toolbar_spinner"
             android:textColor="@android:color/black"
             tools:text="@tools:sample/cities" />
 
         <Spinner
-            android:id="@+id/feed_activity_toolbar_spinner"
+            android:id="@+id/feed_fragment_toolbar_spinner"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_alignEnd="@id/feed_activity_toolbar_image_about"
+            android:layout_alignEnd="@id/feed_fragment_toolbar_image_about"
             android:layout_centerVertical="true"
             android:layout_marginEnd="20dp" />
 
         <ImageButton
-            android:id="@+id/feed_activity_toolbar_image_about"
+            android:id="@+id/feed_fragment_toolbar_image_about"
             android:layout_width="@dimen/toolbar_icon_size"
             android:layout_height="@dimen/toolbar_icon_size"
             android:layout_alignParentEnd="true"

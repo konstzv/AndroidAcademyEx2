@@ -5,6 +5,7 @@ import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.zagulin.mycard.App
 import com.zagulin.mycard.presentation.view.IntroView
+import com.zagulin.mycard.presentation.view.MainActivityView
 import io.reactivex.Completable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
@@ -14,7 +15,7 @@ import javax.inject.Inject
 
 
 @InjectViewState
-class IntroPresenter : MvpPresenter<IntroView>() {
+class MainPresenter : MvpPresenter<MainActivityView>() {
 
     companion object {
         private const val TIME_TO_SHOW_INTRO: Long = 5
@@ -30,20 +31,22 @@ class IntroPresenter : MvpPresenter<IntroView>() {
         super.onFirstViewAttach()
         Toothpick.inject(this, Toothpick.openScope(App.Companion.Scopes.APP_SCOPE.name))
         handleIntroShowing()
+
     }
 
     private fun handleIntroShowing() {
         if (needToSHowIntro()) {
-            viewState.showIntroActivity()
+            viewState.showIntro()
             val disposable = Completable.complete()
                     .delay(TIME_TO_SHOW_INTRO, TimeUnit.SECONDS)
                     .subscribeBy {
-                        viewState.moveToFeedActivity()
+                        viewState.showMainFeed()
+
                     }
             compositeDisposable.add(disposable)
 
         } else {
-            viewState.moveToFeedActivity()
+            viewState.showMainFeed()
         }
     }
 
@@ -58,4 +61,6 @@ class IntroPresenter : MvpPresenter<IntroView>() {
         super.onDestroy()
         compositeDisposable.dispose()
     }
+
+
 }

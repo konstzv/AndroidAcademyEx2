@@ -1,7 +1,6 @@
-package com.zagulin.mycard.ui.fragment
+package com.zagulin.mycard.ui.fragment.news
 
 import android.os.Bundle
-import android.text.method.KeyListener
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,14 +11,15 @@ import com.zagulin.mycard.R
 import com.zagulin.mycard.models.NewsItem
 import com.zagulin.mycard.presentation.presenter.SpecificNewsEditPresenter
 import com.zagulin.mycard.presentation.view.SpecificNewsEditView
+import com.zagulin.mycard.ui.fragment.BaseFragment
+import com.zagulin.mycard.ui.fragment.MvpAppCompatFragment
 import kotlinx.android.synthetic.main.specific_news_edit_fragment.*
 import kotlinx.android.synthetic.main.specific_news_edit_fragment_toolbar.*
-import kotlinx.android.synthetic.main.specific_news_view_fragment_toolbar.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class SpecificNewsEditFragment : MvpAppCompatFragment(), SpecificNewsEditView {
+class SpecificNewsEditFragment : BaseFragment(), SpecificNewsEditView {
 
     companion object {
         private const val EXTRA_NEWS_ITEM_ID = "extra_news_item_id"
@@ -51,7 +51,7 @@ class SpecificNewsEditFragment : MvpAppCompatFragment(), SpecificNewsEditView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            presenter.displayNewsById(it.getInt(SpecificNewsEditFragment.EXTRA_NEWS_ITEM_ID))
+            presenter.displayNewsById(it.getInt(EXTRA_NEWS_ITEM_ID))
         }
     }
 
@@ -70,7 +70,7 @@ class SpecificNewsEditFragment : MvpAppCompatFragment(), SpecificNewsEditView {
 
     private fun initListeners() {
         specific_news_activity_edit_toolbar_image_cancel.setOnClickListener {
-            activity?.supportFragmentManager?.popBackStack()
+            presenter.onBackPressed()
         }
 
         specific_news_activity_edit_toolbar_image_apply.setOnClickListener {
@@ -125,7 +125,7 @@ class SpecificNewsEditFragment : MvpAppCompatFragment(), SpecificNewsEditView {
 
     }
 
-    override fun finish() {
-        activity?.supportFragmentManager?.popBackStack()
+    override fun backAction() {
+        activity?.onBackPressed()
     }
 }

@@ -48,7 +48,7 @@ class SpecificNewsViewPresenter : MvpPresenter<SpecificNewsDisplayView>() {
     fun removeItem() {
         repository.removeItem(id).subscribeBy(
                 onComplete = {
-                    viewState.finish()
+                    viewState.backAction()
                 },
                 onError = {
                     viewState.showMsg("Ошибка при изменение новости")

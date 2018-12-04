@@ -5,7 +5,9 @@ import com.zagulin.mycard.models.NewsItem
 
 interface SpecificNewsDisplayView : MvpView {
     fun displayNews(newsItem: NewsItem)
-    fun finish()
+//    fun finish()
     fun showMsg(msg: String)
+
+    fun backAction()
 
 }
