@@ -69,20 +69,20 @@ class SpecificNewsEditFragment : BaseFragment(), SpecificNewsEditView {
     }
 
     private fun initListeners() {
-        specific_news_activity_edit_toolbar_image_cancel.setOnClickListener {
-            presenter.onBackPressed()
-        }
-
-        specific_news_activity_edit_toolbar_image_apply.setOnClickListener {
-
-            presenter.saveChanges(
-                    specific_news_edit_fragment_text_view_title.text.toString()
-                    , specific_news_edit_fragment_text_view_article.text.toString()
-                    , DATA_FORMAT.parse(specific_news_edit_fragment_text_view_date.text.toString())
-
-            )
-
-        }
+//        specific_news_activity_edit_toolbar_image_cancel.setOnClickListener {
+//            presenter.onBackPressed()
+//        }
+//
+//        specific_news_activity_edit_toolbar_image_apply.setOnClickListener {
+//
+//            presenter.saveChanges(
+//                    specific_news_edit_fragment_text_view_title.text.toString()
+//                    , specific_news_edit_fragment_text_view_article.text.toString()
+//                    , DATA_FORMAT.parse(specific_news_edit_fragment_text_view_date.text.toString())
+//
+//            )
+//
+//        }
         specific_news_edit_fragment_text_view_date.setOnClickListener {
             activity?.let { activity ->
                 val dateTimeDialogFragment = SwitchDateTimeDialogFragment.newInstance(

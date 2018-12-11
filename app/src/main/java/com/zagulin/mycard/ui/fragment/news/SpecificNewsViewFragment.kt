@@ -13,7 +13,6 @@ import com.zagulin.mycard.models.NewsItem
 import com.zagulin.mycard.presentation.presenter.SpecificNewsViewPresenter
 import com.zagulin.mycard.presentation.view.SpecificNewsDisplayView
 import com.zagulin.mycard.ui.fragment.BaseFragment
-import com.zagulin.mycard.ui.fragment.MvpAppCompatFragment
 import kotlinx.android.synthetic.main.specific_news_view_fragment.*
 import kotlinx.android.synthetic.main.specific_news_view_fragment_toolbar.*
 import java.util.*
@@ -35,17 +34,17 @@ class SpecificNewsViewFragment : BaseFragment(), SpecificNewsDisplayView {
             fragment.arguments = args
             return fragment
         }
-
-        interface OnEditClickListener {
-            fun onEditClick()
-        }
+//
+//        interface OnEditClickListener {
+//            fun onEditClick()
+//        }
 
     }
 
     @InjectPresenter
     lateinit var presenter: SpecificNewsViewPresenter
 
-    var onEditClickListener: OnEditClickListener? = null
+//    var onEditClickListener: OnEditClickListener? = null
 
     override fun onCreateView(
             inflater: LayoutInflater
@@ -59,7 +58,7 @@ class SpecificNewsViewFragment : BaseFragment(), SpecificNewsDisplayView {
         specific_news_view_fragment_text_view_title.setText(newsItem.title)
         specific_news_view_fragment_text_view_article.setText(newsItem.previewText)
         specific_news_view_fragment_text_view_article_url.setText(newsItem.fullTextUrl)
-        specific_news_activity_toolbar_text_view_title.setText(newsItem.title)
+//        specific_news_activity_toolbar_text_view_title.setText(newsItem.title)
 
         val thumbnailRequest = Glide
                 .with(this)
@@ -85,17 +84,17 @@ class SpecificNewsViewFragment : BaseFragment(), SpecificNewsDisplayView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.setActionBar(specific_news_view_fragment_toolbar)
-        initListeners()
+//        initListeners()
     }
 
-    private fun initListeners() {
-        specific_news_activity_toolbar_image_edit.setOnClickListener {
-            onEditClickListener?.onEditClick()
-        }
-        specific_news_activity_toolbar_image_delete.setOnClickListener {
-            presenter.removeItem()
-        }
-    }
+//    private fun initListeners() {
+////        specific_news_activity_toolbar_image_edit.setOnClickListener {
+////            onEditClickListener?.onEditClick()
+////        }
+//        specific_news_activity_toolbar_image_delete.setOnClickListener {
+//            presenter.removeItem()
+//        }
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,6 +104,7 @@ class SpecificNewsViewFragment : BaseFragment(), SpecificNewsDisplayView {
 
 
     }
+
     override fun showMsg(msg: String) {
         activity?.let {
             Snackbar.make(
@@ -115,7 +115,6 @@ class SpecificNewsViewFragment : BaseFragment(), SpecificNewsDisplayView {
         }
 
     }
-
 
 
 //    override fun finish() {

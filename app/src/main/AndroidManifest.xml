@@ -16,12 +16,6 @@
         android:theme="@style/BaseTheme.NoToolbar"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity
-            android:name=".ui.activity.AboutActivity"
-            android:label="@string/about_activity_title"
-            android:theme="@style/AboutActivityTheme" />
-        <activity android:name=".ui.activity.SpecificNewsActivity" />
-
         <activity android:name=".ui.activity.MainActivity">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />

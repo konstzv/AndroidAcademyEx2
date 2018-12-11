@@ -4,8 +4,10 @@ import android.content.SharedPreferences
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.zagulin.mycard.App
+import com.zagulin.mycard.models.NavigationEvents
 import com.zagulin.mycard.presentation.view.IntroView
 import com.zagulin.mycard.presentation.view.MainActivityView
+import com.zagulin.mycard.repositories.MainNavigationInteractor
 import io.reactivex.Completable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
@@ -25,12 +27,25 @@ class MainPresenter : MvpPresenter<MainActivityView>() {
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
+
+    @Inject
+    lateinit var mainNavigationInteractor: MainNavigationInteractor
+
     private var compositeDisposable = CompositeDisposable()
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         Toothpick.inject(this, Toothpick.openScope(App.Companion.Scopes.APP_SCOPE.name))
         handleIntroShowing()
+
+        mainNavigationInteractor
+                .getNavigationEventObservable()
+                .filter{it == NavigationEvents.OPEN_ABOUT}
+                .subscribeBy(
+                        onNext = {
+                            viewState.showAbout()
+                        }
+                )
 
     }
 

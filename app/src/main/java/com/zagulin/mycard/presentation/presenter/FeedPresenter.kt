@@ -12,8 +12,10 @@ import com.zagulin.mycard.common.pagination.Paginator
 import com.zagulin.mycard.di.FeedModule
 import com.zagulin.mycard.models.Category
 import com.zagulin.mycard.models.FeedItem
+import com.zagulin.mycard.models.NavigationEvents
 import com.zagulin.mycard.presentation.view.FeedView
 import com.zagulin.mycard.repositories.FeedRepository
+import com.zagulin.mycard.repositories.MainNavigationInteractor
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
@@ -45,7 +47,8 @@ class FeedPresenter : MvpPresenter<FeedView>() {
     private val tempCompositeDisposable = CompositeDisposable()
 
     private var isFirstLoadingDone = false
-
+    @Inject
+    lateinit var mainNavigationInteractor: MainNavigationInteractor
 
     init {
         val feedScope = Toothpick.openScopes(
@@ -55,41 +58,46 @@ class FeedPresenter : MvpPresenter<FeedView>() {
         feedScope.installModules(FeedModule)
         Toothpick.inject(this, feedScope)
 
-        compositeDisposable.add(feedPaginator.paginationObservable().subscribeBy(
-                onNext = {
-                    it.dataList?.let { list ->
-                        if (!isFirstLoadingDone) {
-                            viewState.showProgress(false)
-                        }
-                        viewState.addNews(list)
-                        viewState.showProgress(false)
-                    } ?: it.error?.let { throwable ->
-                        handleLoadingFeedError(throwable)
+        compositeDisposable.addAll(
+                feedPaginator.paginationObservable().subscribeBy(
+                        onNext = {
+                            it.dataList?.let { list ->
+                                if (!isFirstLoadingDone) {
+                                    viewState.showProgress(false)
+                                }
+                                viewState.addNews(list)
+                                viewState.showProgress(false)
+                            } ?: it.error?.let { throwable ->
+                                handleLoadingFeedError(throwable)
 
-                    } ?: handleLoadingFeedError()
+                            } ?: handleLoadingFeedError()
 
-                },
-                onError = {
-                    viewState.showMsg(it.localizedMessage)
-                }
-        ))
-    }
-
-    fun showCategories() {
-        compositeDisposable.add(repository.getCategories()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy(
-                        onSuccess = {
-                            viewState.showCategoriesList(it.toMutableList())
                         },
                         onError = {
                             viewState.showMsg(it.localizedMessage)
                         }
-
-                ))
-        viewState.setSelectedCategory(repository.selectedCategory)
-
+                )
+        )
     }
+
+
+//    fun subscribeOnItemClickObservable
+
+//    fun showCategories() {
+//        compositeDisposable.add(repository.getCategories()
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeBy(
+//                        onSuccess = {
+//                            viewState.showCategoriesList(it.toMutableList())
+//                        },
+//                        onError = {
+//                            viewState.showMsg(it.localizedMessage)
+//                        }
+//
+//                ))
+//        viewState.setSelectedCategory(repository.selectedCategory)
+//
+//    }
 
     fun update() {
         repository.isServerAvailable().subscribeBy(
@@ -100,11 +108,11 @@ class FeedPresenter : MvpPresenter<FeedView>() {
                         viewState.clearFeed()
                         onLoadMore()
                     } else {
-                         viewState.showMsg(context.getString(R.string.network_unavailable))
+                        viewState.showMsg(context.getString(R.string.network_unavailable))
                     }
                 },
                 onError = {
-                    viewState.showMsg(context.getString(R.string.update_error,it.localizedMessage))
+                    viewState.showMsg(context.getString(R.string.update_error, it.localizedMessage))
                 }
         )
 
@@ -116,10 +124,18 @@ class FeedPresenter : MvpPresenter<FeedView>() {
         viewState.showProgress(true)
         getDefaultCtategory(
                 {
-                    viewState.setSelectedCategory(it)
+                    repository.selectedCategory = it
 
                 }
                 , viewState::showMsg)
+
+        repository.getSelectedCategoryObserbable().observeOn(AndroidSchedulers.mainThread()).subscribeBy(
+                onNext = {
+                    changeCategory(it)
+                    val d = repository.selectedCategory
+                    print(d)
+                }
+        )
     }
 
 
@@ -144,6 +160,7 @@ class FeedPresenter : MvpPresenter<FeedView>() {
         super.onDestroy()
         Toothpick.closeScope(App.Companion.Scopes.FEED_SCOPE)
         compositeDisposable.dispose()
+        clearTempSubscriptions()
     }
 
     @SuppressLint("CheckResult")
@@ -155,7 +172,7 @@ class FeedPresenter : MvpPresenter<FeedView>() {
 
     fun changeCategory(category: Category) {
 
-        repository.selectedCategory = category
+//        repository.selectedCategory = category
         feedPaginator.reload()
         viewState.clearFeed()
         onLoadMore()
@@ -194,5 +211,12 @@ class FeedPresenter : MvpPresenter<FeedView>() {
     fun clearTempSubscriptions() {
         tempCompositeDisposable.clear()
     }
+
+    fun callOpenNews(id: Int) {
+        val event = NavigationEvents.OPEN_NEWS
+        mainNavigationInteractor.callEvent(event)
+        mainNavigationInteractor.selectedNewsId = id
+    }
+
 
 }

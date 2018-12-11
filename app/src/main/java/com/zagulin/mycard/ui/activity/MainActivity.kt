@@ -10,6 +10,7 @@ import com.zagulin.mycard.ui.fragment.BaseFragment
 import com.zagulin.mycard.ui.fragment.intro.IntroMainFragment
 import com.zagulin.mycard.ui.fragment.news.FeedFragment
 import com.zagulin.mycard.ui.fragment.news.FeedMainFragment
+import io.reactivex.rxkotlin.subscribeBy
 
 
 class MainActivity : MvpAppCompatActivity(), MainActivityView,FeedFragment.Companion.OnAboutButtonClickCallback {
@@ -44,11 +45,10 @@ class MainActivity : MvpAppCompatActivity(), MainActivityView,FeedFragment.Compa
 
         val feedMainFragment = FeedMainFragment()
 
-        feedMainFragment.onAboutButtonClickCallback = this
+
         supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.main_activity_container, feedMainFragment, "feed_main_fragment")
-                .addToBackStack(null)
                 .commit()
 
     }
@@ -69,13 +69,14 @@ class MainActivity : MvpAppCompatActivity(), MainActivityView,FeedFragment.Compa
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
-        if (savedInstanceState !=null){
-            (supportFragmentManager.findFragmentByTag("feed_main_fragment")
-                    as? FeedMainFragment)
-                    ?.onAboutButtonClickCallback = this
-        }
+//        if (savedInstanceState !=null){
+//
+////                    ?.onAboutButtonClickCallback = this
+//        }
 
     }
+
+
 
 
     override fun onBackPressed() {

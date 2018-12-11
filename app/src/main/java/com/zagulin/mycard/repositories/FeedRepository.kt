@@ -6,6 +6,7 @@ import com.zagulin.mycard.models.NewsItem
 import com.zagulin.mycard.models.Optional
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Observable
 import io.reactivex.Single
 
 interface FeedRepository {
@@ -18,4 +19,5 @@ interface FeedRepository {
     var selectedCategory:Category
     fun clearStorage(): Completable
     fun isServerAvailable(): Single<Boolean>
+    fun getSelectedCategoryObserbable(): Observable<Category>
 }

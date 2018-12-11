@@ -7,6 +7,7 @@ import com.zagulin.mycard.models.NewsItem
 import com.zagulin.mycard.models.NewsItemDb
 import com.zagulin.mycard.models.NewsItemNetwork
 import com.zagulin.mycard.models.Optional
+import com.zagulin.mycard.models.PaginationData
 import com.zagulin.mycard.models.converters.NewsItemDbToNewItemModelConverter
 import com.zagulin.mycard.models.converters.NewsItemNetworkToNewItemDbModelConverter
 import com.zagulin.mycard.models.converters.NewsItemToNewItemDbModelConverter
@@ -15,6 +16,7 @@ import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 class NYTTopStoriesFeedRepositoryBackedByDb @Inject constructor()
@@ -65,7 +67,21 @@ class NYTTopStoriesFeedRepositoryBackedByDb @Inject constructor()
         )
     }
 
+
+    private val selectedCategoryPublisher = PublishSubject.create<Category>()
+
+
+
+
+
     override var selectedCategory: Category = categories[0]
+    set(value) {
+        field = value
+        selectedCategoryPublisher.onNext(value)}
+
+    override fun getSelectedCategoryObserbable():Observable<Category>{
+        return selectedCategoryPublisher
+    }
 
     @Inject
     lateinit var appDatabase: AppDatabase
