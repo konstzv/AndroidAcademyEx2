@@ -1,1 +1,4 @@
 include ':app'
+//, ':staticAnalysis.gradle'
+//project(':staticAnalysis.gradle').projectDir =
+//        new File('android-style-guide/tools/static-analysis/gradle/staticAnalysis.gradle')

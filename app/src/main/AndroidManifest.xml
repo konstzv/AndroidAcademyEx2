@@ -3,7 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -13,23 +15,15 @@
         android:supportsRtl="true"
         android:theme="@style/BaseTheme.NoToolbar"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity
-            android:name=".FeedActivity"
-            android:label="@string/feed_activity_title"
-            android:theme="@style/BaseTheme.NoToolbar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <activity android:name=".ui.activity.MainActivity">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+
         </activity>
-        <activity
-            android:name=".AboutActivity"
-            android:label="@string/about_activity_title"
-            android:theme="@style/AboutActivityTheme" />
-        <activity
-            android:name=".SpecificNewsActivity"
-            android:theme="@style/BaseTheme.NoToolbar" />
 
     </application>
 

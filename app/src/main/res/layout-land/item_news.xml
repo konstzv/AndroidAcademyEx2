@@ -17,7 +17,6 @@
 
         <TextView
             android:id="@+id/item_news_layout_recycler_date"
-            style="@style/StandardPadding"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="end"
@@ -27,7 +26,6 @@
 
         <ImageView
             android:id="@+id/item_news_layout_recycler_img"
-            style="@style/StandardPadding"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -40,7 +38,7 @@
 
         <TextView
             android:id="@+id/item_news_layout_title"
-            style="@style/StandardPadding"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="@tools:sample/first_names" />

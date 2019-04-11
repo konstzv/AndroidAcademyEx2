@@ -19,4 +19,10 @@
     <string name="cancel">Cancel</string>
     <string name="about">About</string>
     <string name="ad_title">Advertise</string>
+    <string name="network_error">Network error</string>
+    <string name="repeart">Repeat</string>
+    <string name="update_error">Error on feed update %1$s</string>
+    <string name="network_unavailable">Network unavailable</string>
+    <string name="apply">Apply</string>
+    <string name="welcome">Welcome</string>
 </resources>
